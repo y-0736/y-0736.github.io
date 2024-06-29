@@ -187,7 +187,9 @@ Backgroun Animation Styles .background {
 .space {
     height: 48.4px;
 }
-
+.bigcards{
+    margin-top: 25px;
+}
 .card-container {
     perspective: 1000px;
     position: relative;
