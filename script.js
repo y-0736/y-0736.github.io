@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const colors = ['#ff7e5f', '#feb47b', '#6a82fb', '#fc5c7d', '#c5c6c7'];
     const numCircles = 15;
     const background = document.querySelector('.background');
@@ -40,3 +40,13 @@ function closeSidebar() {
     document.getElementById("mySidebar").style.width = "0";
     document.getElementById("navbar").classList.remove("responsive");
 }
+
+document.getElementById('rotatebutton1').addEventListener('click', function () {
+    document.getElementById('card').style.transform = 'rotateY(180deg)';
+});
+
+
+document.getElementById('rotatebutton2').addEventListener('click', function() {
+    document.getElementById('card').style.transform = 'rotateY(0deg)';
+  });
+  
