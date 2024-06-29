@@ -119,6 +119,9 @@ body, html {
 
     .navbar.responsive .ulno2 {
         display: none;
+    }
+
+    .navbar.responsive {
         height: 48.4px;
     }
 }
