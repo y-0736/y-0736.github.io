@@ -24,6 +24,12 @@
     <title>y-0736</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="shortcut icon" href="flashico.ico" type="image/x-icon">
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("4uJCgWQxTpW0Ittci"); // Replace "YOUR_USER_ID" with your actual User ID
+        })();
+    </script>
 </head>
 
 <body>
@@ -38,7 +44,7 @@
             <li><a href="#home">Ana Sayfa</a></li>
             <li><a href="#about">Hakkımda</a></li>
             <li><a href="#blog">Blog</a></li>
-            <li><a href="y-0736/Contact/index.html">İletişim</a></li>
+            <li><a href="#contact">İletişim</a></li>
         </ul>
         <ul class="ulno2">
             <li>y-0736</li>
@@ -50,7 +56,7 @@
         <a href="#">Ana Sayfa</a>
         <a href="#">Hakkımda</a>
         <a href="#">Blog</a>
-        <a href="y-0736/Contact/index.html">İletişim</a>
+        <a href="#">İletişim</a>
         <div class="ths">
             <p class="©">© 2024 — y-0736.github.io</p>
             <p class="©">Tüm Hakları Saklıdır.</p>
@@ -63,26 +69,21 @@
     <!---->
     <div class="space"></div>
     <!---->
-    <center>
-        <div class="bigcards">
-            <div class="card-container">
-                <div class="card" id="card">
-                    <div class="front" id="front">
-                        <h4>NavBar</h4>
-                        <div class="rotatebutton" id="rotatebutton1">
-                            <h6>Daha Fazla</h6>
-                        </div>
-                    </div>
-                    <div class="back" id="back">
-                        <h4>NavBar</h4>
-                        <div class="rotatebutton" id="rotatebutton2">
-                            <h6>Önizleme</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </center>
+    <div class="container">
+        <h2>Contact Us</h2>
+        <form id="contactForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <button type="submit">Send</button>
+        </form>
+    </div>
     <script src="script.js"></script>
 </body>
 
