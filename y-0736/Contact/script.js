@@ -56,7 +56,7 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         message: message
     };
 
-    emailjs.send('service_fduwjvg', 'template_5wgmpcm', templateParams)
+    emailjs.send('service_iafiuqc', 'template_5wgmpcm', templateParams)
         .then(function(response) {
             alert('Mesajınızı Aldık!');
         }, function(error) {
