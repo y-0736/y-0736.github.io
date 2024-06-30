@@ -195,6 +195,8 @@ html {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
+    position: relative;
+    z-index: 10;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
