@@ -41,7 +41,7 @@ function closeSidebar() {
     document.getElementById("navbar").classList.remove("responsive");
 }
 
-/* BURDAN KODA YAZMAYA BAŞLA YUKARIYA SAKIN DOKUNMA */
+/* BURDAN KOD YAZMAYA BAŞLA ÜST KISMA SAKIN DOKUNMA */
 
 document.getElementById('contactForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -56,7 +56,7 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         message: message
     };
 
-    emailjs.send('service_iafiuqc', 'template_5wgmpcm', templateParams)
+    emailjs.send('service_3eh04lq', 'template_xu94wbu', templateParams)
         .then(function(response) {
             alert('Mesajınızı Aldık!');
         }, function(error) {
