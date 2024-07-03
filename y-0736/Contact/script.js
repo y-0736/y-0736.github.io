@@ -40,8 +40,8 @@ function closeSidebar() {
     document.getElementById("mySidebar").style.width = "0";
     document.getElementById("navbar").classList.remove("responsive");
 }
-
-/* BURDAN KOD YAZMAYA BAŞLA ÜST KISMA SAKIN DOKUNMA */
+ 
+// BURDAN KOD YAZMAYA BAŞLA ÜST KISMA SAKIN DOKUNMA //
 
 document.getElementById('contactForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -58,8 +58,8 @@ document.getElementById('contactForm').addEventListener('submit', function(event
 
     emailjs.send('service_3eh04lq', 'template_xu94wbu', templateParams)
         .then(function(response) {
-            alert('Mesajınızı Aldık!');
+            alert('Mesajınız başarıyla gönderilmiştir!');
         }, function(error) {
-            alert('There was an error sending your message: ' + JSON.stringify(error));
+            alert('Mesajınız gönderilmedi. Hata Mesajı: ' + JSON.stringify(error));
         });
 });
