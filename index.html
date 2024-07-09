@@ -6,27 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>y-0736</title>
     <link rel="shortcut icon" href="https://y-0736.github.io/flashico.ico" type="image/x-icon">
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const url ='https://y-0736.github.io/Home/index.html';
-            const xhr = new XMLHttpRequest();
-            xhr.open('HEAD', url, true);
-            xhr.onload = function() {
-                if (xhr.status >= 200 && xhr.status < 400) {
-                    // Sayfa mevcut, yönlendirme yapılıyor
-                    window.location.href = url;
-                } else {
-                    // Sayfa mevcut değil, bu sayfada kal
-                    console.error('Sayfa bulunamadı:', xhr.status);
-                }
-            };
-            xhr.onerror = function() {
-                // Bir hata oluştu, bu sayfada kal
-                console.error('Bir hata oluştu:', xhr.status);
-            };
-            xhr.send();
-        });
-    </script>
+
 </head>
 
 <body>
