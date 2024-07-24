@@ -40,7 +40,7 @@
     display: flex;
 }
 
-.ulno2 li {
+.y-0736 {
     margin-right: 15px;
     display: inline-block;
     padding: 15px 25px;
@@ -88,11 +88,6 @@
         display: none;
     }
 
-    .ulno2 li {
-        margin-right: 15px;
-        font-family: Consolas;
-    }
-
     .navbar.responsive .ulno2 {
         display: none;
     }
@@ -109,7 +104,6 @@
     z-index: 2;
     top: 0;
     right: 0;
-    background-color: rgb(28, 27, 27);
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -119,7 +113,6 @@
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
-    color: white;
     display: block;
     transition: 0.3s;
 }
@@ -133,4 +126,45 @@
 
 .sidebar .closebtn:hover {
     color: red;
+}
+
+/* Theme */
+@import "https://unpkg.com/open-props/easings.min.css";
+
+.themes {
+    right: 50px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    height: auto;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    height: 48.4px;
+}
+
+.theme-toggle .fa-sun {
+    color: #f39c12;
+    transition: transform 0.5s;
+}
+
+.theme-toggle .fa-moon {
+    color: #ffffff;
+    transition: transform 0.5s;
+    transform: scale(0);
+}
+
+.dark .fa-sun {
+    transform: scale(0);
+}
+
+.dark .fa-moon {
+    transform: scale(1);
 }
