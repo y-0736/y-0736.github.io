@@ -34,12 +34,14 @@ function closeSidebar() {
 document.addEventListener('DOMContentLoaded', function () {
     const themeToggle = document.querySelector('.theme-toggle');
     const body = document.body;
-    const colarone = document.querySelector('.colarone');
-    const backgroundone = document.querySelector('.backgroundone')
+    const navbar = document.getElementById('navbar')
 
     themeToggle.addEventListener('click', function () {
-        body.classList.toggle('dark');
-        body.classList.toggle('light');
+        body.classList.toggle('dark')
+        navbar.classList.toggle('dark');
+        body.classList.toggle('light')
+        navbar.classList.toggle('light');
     });
     body.classList.add('light')
+    navbar.classList.add('light')
 });

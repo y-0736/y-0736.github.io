@@ -1,6 +1,5 @@
 /* Compiter Nav Bar */
 .navbar {
-    background-color: rgb(28, 27, 27);
     width: 100%;
     position: fixed;
     z-index: 1;
@@ -24,7 +23,6 @@
 }
 
 .navbar ul li a {
-    color: white;
     text-decoration: none;
     padding: 15px 25px;
     display: inline-block;
@@ -151,7 +149,7 @@
 }
 
 .theme-toggle .fa-sun {
-    color: #f39c12;
+    color: rgb(28, 27, 27);;
     transition: transform 0.5s;
 }
 
