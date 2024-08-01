@@ -1,0 +1,118 @@
+#box403 {
+    align-items: center;
+    background-color: white;
+    color: white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    margin: 0px;
+    width: 90%;
+}
+
+#infobox403 {
+    background-color: rgb(31, 31, 31);
+    width: 70%;
+    padding: 15px;
+    z-index: 5;
+    position: relative;
+    border-radius: 15px;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* İçerikleri dikey olarak hizalar */
+}
+
+#infobox403 h2 {
+    margin: 0px;
+    text-align: center;
+}
+
+#infobox403 p {
+    text-align: left;
+}
+
+#formactive {
+    background-color: rgb(42, 101, 230);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    transition: 0.5s;
+}
+
+#formactive:hover {
+    background-color: rgb(15, 47, 117);
+    transition: 0.5s;
+}
+
+a {
+    text-decoration: none;
+}
+
+#form403 {
+    background-color: rgb(50, 50, 50);
+    width: 70%;
+    z-index: 2;
+    top: -160px;
+    position: absolute;
+    opacity: 0;
+    padding: 15px;
+    border-radius: 0px 0px 15px 15px;
+    margin: 0;
+    display: flex;
+    transition: opacity 0.5s ease;
+    transition: top 0.5s ease;
+    flex-direction: column; /* İçerikleri dikey olarak hizalar */
+}
+
+#form403 h2 {
+    margin: 0px;
+    text-align: center;
+}
+
+#form403 p {
+    text-align: left;
+}
+
+#formactive {
+    background-color: rgb(42, 101, 230);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    transition: 0.5s;
+}
+
+#formactive:hover {
+    background-color: rgb(15, 47, 117);
+    transition: 0.5s;
+}
+
+a {
+    text-decoration: none;
+}
+.contact-input,
+.contact-textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.contact-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact-button:hover {
+    background-color: #218838;
+}

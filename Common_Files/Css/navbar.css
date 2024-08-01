@@ -2,13 +2,16 @@
 .navbar {
     width: 100%;
     position: fixed;
-    z-index: 1;
+    z-index: 7;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    background-color: rgb(31, 31, 31);
 }
-
+a {
+    color: white;
+}
 .navbar ul {
     list-style: none;
     padding: 0;
@@ -79,6 +82,7 @@
         display: inline-block;
         text-align: center;
         margin: 0;
+        color: white;
         padding: 0;
     }
 
@@ -101,10 +105,15 @@
     position: fixed;
     z-index: 2;
     top: 0;
+    background-color: rgb(31, 31, 31);
     right: 0;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+}
+
+.sidebar h2{
+    text-align: center;
 }
 
 .sidebar a {
@@ -124,45 +133,4 @@
 
 .sidebar .closebtn:hover {
     color: red;
-}
-
-/* Theme */
-@import "https://unpkg.com/open-props/easings.min.css";
-
-.themes {
-    right: 50px;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    height: auto;
-}
-
-.theme-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    top: 20px;
-    right: 20px;
-    font-size: 24px;
-    height: 48.4px;
-}
-
-.theme-toggle .fa-sun {
-    color: rgb(28, 27, 27);;
-    transition: transform 0.5s;
-}
-
-.theme-toggle .fa-moon {
-    color: #ffffff;
-    transition: transform 0.5s;
-    transform: scale(0);
-}
-
-.dark .fa-sun {
-    transform: scale(0);
-}
-
-.dark .fa-moon {
-    transform: scale(1);
 }

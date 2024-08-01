@@ -1,20 +1,21 @@
-document.getElementById('contactForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+        event.preventDefault();
 
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-
-    const templateParams = {
-        from_name: name,
-        from_email: email,
-        message: message
-    };
-
-    emailjs.send('service_3eh04lq', 'template_xu94wbu', templateParams)
-        .then(function(response) {
-            alert('Mesajınız başarıyla gönderilmiştir!');
-        }, function(error) {
-            alert('Mesajınız gönderilmedi. Hata Mesajı: ' + JSON.stringify(error));
+        emailsjs.init({
+            user_id: 'XAwBmb6X1yVQ6vdiM', // Emails.js kullanıcı kimliğiniz
+            service_id: 'service_3eh04lq', // Emails.js hizmet kimliğiniz
+            template_id: 'template_xu94wbu', // Emails.js şablon kimliğiniz
+            template_params: {
+                'name': document.getElementById('name').value,
+                'email': document.getElementById('email').value,
+                'message': document.getElementById('message').value,
+            }
+        }).then(function (response) {
+            alert('Mesaj başarıyla gönderildi!');
+        }).catch(function (error) {
+            console.error('Mesaj gönderme hatası:', error);
+            alert('Mesaj gönderilemedi.');
         });
-});
+    });
+}); 
