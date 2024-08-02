@@ -116,3 +116,18 @@ a {
 .contact-button:hover {
     background-color: #218838;
 }
+
+#name{
+    position: absolute;
+    left: 15px;
+}
+
+#email{
+    position: absolute;
+    right: 15px;
+}
+
+.contact-input{
+    display: inline-block;
+    width: 47%;
+}
