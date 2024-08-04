@@ -1,6 +1,6 @@
 #box403 {
     align-items: center;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.241);
     color: white;
     border-radius: 15px;
     padding: 15px;
@@ -10,10 +10,10 @@
 }
 
 #infobox403 {
-    background-color: rgb(31, 31, 31);
-    width: 70%;
+    background-color: rgba(31, 31, 31);
+    width: 85%;
     padding: 15px;
-    z-index: 5;
+    z-index: 4;
     position: relative;
     border-radius: 15px;
     margin: 0;
@@ -50,8 +50,8 @@ a {
 }
 
 #form403 {
-    background-color: rgb(50, 50, 50);
-    width: 70%;
+    background-color: rgba(50, 50, 50);
+    width: 85%;
     z-index: 2;
     top: -160px;
     position: absolute;
@@ -129,5 +129,5 @@ a {
 
 .contact-input{
     display: inline-block;
-    width: 47%;
+    width: 44%;
 }
