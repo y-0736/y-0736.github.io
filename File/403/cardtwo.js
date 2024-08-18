@@ -5,7 +5,7 @@ document.getElementById("formactive").addEventListener("click", function(event) 
     form403.style.opacity = "1";
     form403.style.position = "relative";
     form403.style.top = "-15px";
-    form403.style.paddingTop = "75px";
+    form403.style.paddingTop = "30px";
     box403.style.transition = "height 0.5s ease";
 });
 

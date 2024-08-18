@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonim Kişi Mesajı</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            background-color: aliceblue;
+            border: black 5px;
+            width: 100%;
+            margin: 0px;
+            display: inline-block;
+            border-radius: 24px;
+            padding: 8px;
+        }
+
+        .header {
+            margin: 0px;
+            border-radius: 16px 16px 0px 0px;
+            background-color: aqua;
+            padding: 10px;
+        }
+        .message {
+            background-color: white;
+            padding: 15px;
+            text-align: left;
+            border-radius: 0px 0px 16px 16px;
+        }
+        .content {
+            padding: 0px 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 style="text-align: center; font-family: Open Sans, Roboto, Oxygen, Ubuntu, Cantarell, Lato, Helvetica Neue, sans-serif; margin: 0px;">Emailsj</h1>
+           <div style="height: 10px;"></div>
+            <h6 style="margin: 0px;"><a href="https://y-0736.github.io" style="text-align: center; text-decoration: none; color: black;">© 2024 y-0736.github.ico</a></h6>
+        </div>
+        <br>
+        <div class="content">
+            <span>EmailSJ aracılığıyla size gönderilen bir mesajınız var.</span>
+            <br>
+            <br>
+            <span>Mesajınız <a href="https://y-0736.github.io/403/403.html" style="color: black; font-weight: bolder;"> 'y-0736.github.ico'</a> sayfasından gönderilmiştir. Mesajınızın ayrıntıları aşşağıda bulunan kutuda yer almaktadır.</span>
+        </div>
+        <br>
+        <div class="message">
+            <p style="font-weight: bolder;">Mesaj:</p>
+            <span>{{message}}</span>
+            <br>
+            <br>
+            <span>Bana ulaşmak için '{{from_email}}' adresini kullanabilirsiniz.</span>
+            <br>
+            <br>
+            <p style="margin-right: 15px; text-align: right;">BY {{from_name}}</p>
+        </div>
+    </div>
+</body>
+
+</html>
