@@ -4,7 +4,7 @@ document.getElementById("formactive").addEventListener("click", function(event) 
     var box403 = document.getElementById("box403");
     form403.style.opacity = "1";
     form403.style.position = "relative";
-    form403.style.top = "-50px";
+    form403.style.top = "-15px";
     form403.style.paddingTop = "75px";
     box403.style.transition = "height 0.5s ease";
 });
@@ -33,3 +33,8 @@ document.getElementById('contactForm').addEventListener('submit', function (even
             alert('Mesaj gönderilemedi. Lütfen tekrar deneyin.');
         });
 });
+
+document.getElementById('extbtn').addEventListener('click', function(event) {
+    event.preventDefault();
+    window.location.href = 'http://www.google.com';
+})

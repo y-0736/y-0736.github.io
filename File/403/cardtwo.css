@@ -29,22 +29,6 @@
 #infobox403 p {
     text-align: left;
 }
-
-#formactive {
-    background-color: rgb(42, 101, 230);
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    transition: 0.5s;
-}
-
-#formactive:hover {
-    background-color: rgb(15, 47, 117);
-    transition: 0.5s;
-}
-
 a {
     text-decoration: none;
 }
@@ -53,7 +37,7 @@ a {
     background-color: rgba(50, 50, 50);
     width: 85%;
     z-index: 2;
-    top: -160px;
+    top: -175px;
     position: absolute;
     opacity: 0;
     padding: 15px;
@@ -65,6 +49,27 @@ a {
     flex-direction: column; /* İçerikleri dikey olarak hizalar */
 }
 
+.butons{
+    display: flex;
+    justify-content: center;
+}
+
+.btns{
+    margin: 0px 3px;
+    border-radius: 5px;
+    padding: 10px 5%;
+    background-color: rgb(42, 101, 230);
+    color: white;
+    transition: background-color 0.5s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btns:hover{
+    transition: 0.5s ease;
+    background-color: rgb(15, 47, 117);
+}
+
 #form403 h2 {
     margin: 0px;
     text-align: center;
@@ -72,21 +77,6 @@ a {
 
 #form403 p {
     text-align: left;
-}
-
-#formactive {
-    background-color: rgb(42, 101, 230);
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    transition: 0.5s;
-}
-
-#formactive:hover {
-    background-color: rgb(15, 47, 117);
-    transition: 0.5s;
 }
 
 a {
