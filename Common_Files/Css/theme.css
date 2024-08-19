@@ -1,23 +1,11 @@
-body.dark {
+.dark {
     color: white;
-    background-color: rgb(32, 32, 32);
+    background-color: rgb(0, 0, 0);
     transition: 0.5s;
 }
 
-body.light {
+.light {
     color: black;
-    background-color: rgb(249, 249, 249);
-    transition: 0.5s;
-}
-
-.navbar.light {
-    color: black;
-    background-color: rgb(213, 213, 213);
-    transition: 0.5s;
-}
-
-.navbar.dark {
-    color: rgb(255, 255, 255);
-    background-color: rgb(28, 27, 27);
+    background-color: rgb(160, 160, 160);
     transition: 0.5s;
 }

@@ -30,3 +30,14 @@ function closeSidebar() {
     document.getElementById("mySidebar").style.width = "0";
     document.getElementById("navbar").classList.remove("responsive");
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const themeToggle = document.querySelector('.theme-toggle');
+    const navbar = document.body;
+
+    themeToggle.addEventListener('click', function () {
+        body.classList.toggle('dark');
+        body.classList.toggle('light');
+    });
+    navbar.classList.add('light')
+});
