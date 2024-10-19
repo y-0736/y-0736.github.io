@@ -1,24 +1,24 @@
-(function () {
-    emailjs.init("XAwBmb6X1yVQ6vdiM");
-})();
+document.getElementById("contactForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Sayfa yenilenmesini engelle
+    document.getElementById("loadingIco").classList.add("fa-solid","fa-spinner","fa-spin-pulse");
+    
+    // Form bilgilerini al
+    const formData = new FormData(event.target);
+    const formObject = Object.fromEntries(formData);
 
-document.getElementById('contactForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-
-    const templateParams = {
-        from_name: name,
-        message: message,
-        from_email: email
-    };
-
-    emailjs.send('service_3eh04lq', 'template_xu94wbu', templateParams)
-        .then(function () {
-            alert('Mesaj başarıyla gönderildi!');
+    // EmailJS ile gönderim
+    emailjs.send("service_3eh04lq", "template_xu94wbu", formObject)
+        .then(function (response) {
+            document.getElementById("loadingIco").classList.remove("fa-solid", "fa-spinner", "fa-spin-pulse");
+            console.log("SUCCESS!", response.status, response.text);
+            document.getElementById("sendButton").classList.toggle("success");
+            document.getElementById("sendText").textContent = "Gönderildi";
+            document.getElementById("sendIco").classList.add("fa-solid", "fa-check");
         }, function (error) {
-            console.error('FAILED...', error);
-            alert('Mesaj gönderilemedi. Lütfen tekrar deneyin.');
+            document.getElementById("loadingIco").classList.remove("fa-solid","fa-spinner","fa-spin-pulse");
+            console.log("FAILED...", error);
+            document.getElementById("sendButton").classList.toggle("failed");
+            document.getElementById("sendText").textContent = "Gönderilmedi";
+            document.getElementById("sendIco").classList.add("fa-solid", "fa-xmark");
         });
 });

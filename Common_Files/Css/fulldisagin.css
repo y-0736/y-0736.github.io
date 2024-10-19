@@ -1,0 +1,13 @@
+#mainContent {
+    margin: 0px 25%;
+    padding: 15px;
+    border-radius: 0.75rem;
+    transition: all 0.5s ease;
+    font-family: "SUSE", sans-serif;
+}
+
+@media screen and (max-width: 768px) {
+    #mainContent {
+        margin: 0px 5%;
+    }
+}

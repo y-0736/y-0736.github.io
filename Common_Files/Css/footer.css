@@ -1,69 +1,141 @@
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-  }
-  
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -15px;
-  }
-  
-  .col-lg-2, .col-md-2, .col-sm-6, .col-xs-12, .col-lg-3, .col-md-3 {
+footer {
+    width: 100%;
+    bottom: 0px;
+    box-shadow: rgb(22, 22, 22) -1px 0px 15px;
+}
+
+
+/* *Compiter Footer */
+.footer-computer {
     padding: 15px;
-  }
-  
-  .footer-logo img {
-    max-width: 100%;
-  }
-  
-  .footer-links p.h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    font-weight: bold;
-  }
-  
-  .footer-links ul li a {
-    color: #555;
+    margin-top: 15px;
+}
+
+.footer-computer-top-colons:nth-child(2) {
+    flex: 2;
+}
+
+.footer-computer-top-colons:not(:nth-child(2)) {
+    flex: 1;
+}
+
+.footer-computer-top-colons p {
+    font-size: small;
+}
+
+.footer-computer-top-a {
     text-decoration: none;
+    font-size: medium;
     display: block;
-    padding: 5px 0;
-  }
-  
-  .footer-links ul li a:hover {
+    color: black;
+    transition: all 0.5s ease;
+}
+
+.footer-computer-top-a:hover {
     text-decoration: underline;
-    color: #007BFF;
-  }
-  
-  .laberContact i {
-    margin-right: 8px;
-    color: #007BFF;
-  }
-  
-  .laberContact p.address {
-    margin-bottom: 5px;
-  }
-  
-  .laberContact p.phone span, .laberContact p.email a {
-    color: #007BFF;
+    padding-left: 5px;
+    transition: all 0.5s ease;
+}
+
+.footer-computer-bottom ul li a {
     text-decoration: none;
-  }
-  
-  .laberContact p.email a:hover {
-    text-decoration: underline;
-  }
-  
-  @media (max-width: 768px) {
-    .footer-top .row, .footer-center .row {
-      flex-direction: column;
-      align-items: center;
+}
+
+/* *Phone Footer */
+
+.footer-phone {
+    display: none;
+}
+
+.footer-ico-a {
+    display: inline-block;
+    transition: all 0.5s ease;
+}
+
+.phone-ico-link {
+    cursor: pointer;
+}
+
+.phone-ico-link:hover .footer-ico.phone {
+    font-size: larger;
+    transition: all 0.5s ease;
+}
+
+.footer-ico.phone {
+    transition: all 0.5s ease;
+}
+
+@media screen and (max-width: 768px) {
+    .footer-computer {
+        display: none;
     }
-  
-    .col-lg-2, .col-md-2, .col-sm-6, .col-xs-12, .col-lg-3, .col-md-3 {
-      width: 100%;
-      max-width: 100%;
-      margin-bottom: 20px;
+
+    .footer-phone {
+        display: block;
     }
-  }
-  
+}
+
+.footer-phone-bottom ul {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+}
+
+.footer-phone-bottom ul li {
+    display: inline-block;
+}
+
+.footer-phone-bottom ul li div p {
+    margin: 0px;
+}
+
+.footer-phone-bottom ul li {
+    margin: 0px 10px;
+}
+
+.footer-element.phone {
+    transition: all 0.5s ease;
+}
+
+.footer-element.phone:hover {
+    transform: translateY(-5px);
+    transition: all 0.5s ease;
+}
+
+.footer-computer-bottom ul {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+}
+
+.footer-computer-bottom ul li {
+    display: inline-block;
+}
+
+.footer-computer-bottom ul li div p {
+    margin: 0px;
+    padding: 0px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.5s ease;
+}
+
+.footer-computer-bottom ul li div:hover p {
+    transform: translateY(0px);
+    transition: all 0.5s ease;
+    opacity: 1;
+}
+
+.footer-ico.computer {
+    font-size: larger;
+    transition: all 0.5s ease;
+    transform: translateY(20px);
+}
+
+.footer-computer-bottom ul li div:hover .footer-ico {
+    transform: translateY(0px);
+}
+
+.footer-computer-bottom ul li {
+    margin: 0px 10px;
+}

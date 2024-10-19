@@ -1,80 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
+<!--YORUM SATIRI NOTU -->
+<!--
+     * ( BAŞLIK )
+     ! ( Kodlar ne işe yarar )
+     ? ( Belirsiz )
+     TODO ( Daha sonra kullanılcak kodlar. ) 
+-->
 
 <head>
-    <meta name="google-adsense-account" content="ca-pub-1787801989276978">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1787801989276978"
-        crossorigin="anonymous"></script>
-    <script async src="https://fundingchoicesmessages.google.com/i/pub-1787801989276978?ers=1"
-        nonce="YH5InRFW_GUF3HVOJstWaw"></script>
-    <script
-        nonce="YH5InRFW_GUF3HVOJstWaw">(function () { function signalGooglefcPresent() { if (!window.frames['googlefcPresent']) { if (document.body) { const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe); } else { setTimeout(signalGooglefcPresent, 0); } } } signalGooglefcPresent(); })();</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>y-0736</title>
+    <title>y-0736 • Contact</title>
+    <!-- *Kaynak Kodları -->
+    <!-- !Favicon -->
     <link rel="shortcut icon" href="https://y-0736.github.io/flashico.ico" type="image/x-icon">
+    <!-- * -->
+    <!-- !Page Css -->
+    <link rel="stylesheet" href="/Common_Files/Css/403page.css">
+    <!-- * -->
+    <!-- !FullDisagin Css -->
+    <link rel="stylesheet" href="/Common_Files/Css/fulldisagin.css">
+    <!-- * -->
+    <!-- !Footer Css -->
+    <link rel="stylesheet" href="/Common_Files/Css/footer.css">
+    <!-- * -->
+    <!-- !Theme Css -->
+    <link rel="stylesheet" href="/Common_Files/Css/theme.css">
+    <!-- * -->
+    <!-- !BackGround Csss -->
+    <link rel="stylesheet" href="/Common_Files/Css/backgroundanimation.css">
+    <!-- * -->
+    <!-- !ScrolBar Css -->
     <link rel="stylesheet" href="/Common_Files/Css/scrollbar.css">
-    <link rel="stylesheet" href="/Common_Files/Css/contact.css">
+    <!-- * -->
+    <!-- !NavBar Css -->
     <link rel="stylesheet" href="/Common_Files/Css/navbar.css">
+    <!-- * -->
+    <!-- !FontAwsomeİco -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <script type="text/javascript" src="https://y-0736.github.io/Common_Files/Js/contact.js"></script>
-        <script type="text/javascript">
-            (function () {
-                emailjs.init("95taI4yl4rSry-f5R");
-            })();
-        </script>
+    <!-- * -->
+    <!-- !GoogleFont -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Todo <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=   FONT_NAME   "> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SUSE" rel="stylesheet">
+    <!-- * -->
+    <!-- !Email Js -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init({
+                publicKey: "hegzm-SojzTBW7lfB",
+            });
+        })();
+    </script>
+    <!-- * -->
+    <!-- ! STYLE CODE -->
+    <style>
+        footer{
+            position: fixed;
+        }
+        #mainContent {
+            margin: 0px 25%;
+            padding: 15px;
+            border-radius: 0.75rem;
+            transition: all 0.5s ease;
+            font-family: "SUSE", sans-serif;
+        }
+
+        @media screen and (max-width: 800px) {
+            #mainContent {
+                margin: 0px 5%;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            .form-content {
+                display: block;
+            }
+
+            #contactForm div {
+                flex-direction: column;
+            }
+        }
+
+        .theme-text.lighttheme {
+            color: black;
+        }
+
+        .theme-text.darktheme:not(#sendText) {
+            color: white;
+        }
+
+        .send-button {
+            border-radius: 5px;
+            padding: 5px;
+            cursor: pointer;
+            border: 0px;
+            transition: all 0.5s ease;
+            padding: 10px 50px;
+        }
+
+        .form-content {
+            border: 0px;
+        }
+
+        .success {
+            pointer-events: none;
+            border: solid 1px green;
+            color: white;
+            background-color: green;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        .failed {
+            pointer-events: none;
+            border: solid 1px rgb(188, 0, 0);
+            color: white;
+            background-color: rgb(188, 0, 0);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+    </style>
 </head>
 
-<body>
+<body style="padding: 0px; margin: 0px; font-family: SUSE;">
     <div class="content-wrapper">
         <header>
-            <!--Navbar-->
+            <!-- *Sayfanızın tepesi burada bulunmaktadır. -->
+            <!-- Navbar -->
             <div id="navbar-container"></div>
             <!-- Backgroun Animation -->
-            <div class="background">
+            <div class="background lighttheme themelemnt" id="BckgrndAnmtn">
                 <div class="circle"></div>
             </div>
-            <!---->
-            <div class="space" style="height: 48.4px;"></div>
-            <!---->
+            <!--  -->
         </header>
-
+        <div style="height: 50px;">
+        </div>
         <main>
-            <!-- Sayfanızın ana içeriği buraya -->
-            <div class="bigcontacttt">
-                <div class="contact" id="contact" >
-                    <div class="contact-info">
-                        <h2 class="contact-title">Bilgilerimiz</h2>
-                        <hr class="divider" style="border-bottom: 4px solid #ddd; margin-bottom: 26px;">
-                        <h4 class="contact-subtitle">Adres</h4>
-                        <hr class="divider">
-                        <p class="contact-text">Antalya/Turkey</p>
-                        <h4 class="contact-subtitle">E-ail</h4>
-                        <hr class="divider">
-                        <p class="contact-text"><a href="mailto:7y0736@gmail.com">7y0736@gmail.com</a></p>
+            <div id="mainContent" class="lighttheme themelemnt">
+                <h4 class="theme-text lighttheme themelemnt" style="padding-left: 5px; margin: 0px;">Bizimle İletişim
+                    Kurun</h4>
+                <form id="contactForm">
+                    <div style="display: flex; padding: 0px; justify-content: space-around;">
+                        <input class="form-content lighttheme themelemnt"
+                            style="flex: 1; border-radius: 5px; padding: 7px; margin: 5px;" type="text" name="from_name"
+                            placeholder="Ad">
+                        <input class="form-content lighttheme themelemnt"
+                            style="flex: 1; border-radius: 5px; padding: 7px; margin: 5px; " type="email"
+                            name="from_email" placeholder="E-posta *" required>
+                        <span style="height: 5px;"></span>
                     </div>
-                    <div class="contact-form-container">
-                        <h2 class="contact-title">Bizimle İletişime Geçin</h2>
-                        <hr class="divider" style="border-bottom: 4px solid #ddd; margin-bottom: 16px;">
-                        <form id="contactForm" class="contact-form">
-                            <input type="text" placeholder="Adınız Soyadınız" id="name" name="name" class="contact-input" required>
-                            <input type="email" placeholder="E-mail Adresiniz" id="email" name="email" class="contact-input" required>
-                            <textarea id="message" placeholder="Mesajınız" name="message" class="contact-textarea" rows="5" required></textarea>
-                            <center><button type="submit" class="contact-button">Gönder</button></center>
-                        </form>
+                    <div style="width: 100%; display: flex;">
+                        <textarea class="form-content lighttheme themelemnt"
+                            style="resize: none; margin: 5px; flex: 1; border-radius: 5px; padding: 5px;" name="message"
+                            placeholder="Mesajınız *" required></textarea>
                     </div>
-                </div>
+                    <div style="padding-top: 10px; width: 100%; text-align: center;"><button type="submit"
+                            class="send-button lighttheme themelemnt" id="sendButton"><span id="sendText"
+                                class="theme-text lighttheme themelemnt">Gönder</span> <i id="loadingIco" class="a"></i>
+                            <i id="sendIco" class="a"></i></button></div>
+                </form>
             </div>
         </main>
 
-        <!-- Footer burada yüklenecek -->
-        <div id="footer-placeholder"></div>
-    </div>
-    <script type="text/javascript" src="/Common_Files/Js/navbar.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
-    <script type="text/javascript" src="/Common_Files/Js/contact.js"></script>
+        <footer id="main-footer" class="lighttheme themelemnt">
+            <!-- *Sayfanızın footer burada bulunmaktadır. -->
+            <div id="footer-placeholder"></div>
+        </footer>
+
+        <!-- *Script File -->
+        <!-- !BackGround JS -->
+        <script type="text/javascript" src="/Common_Files/Js/backgroundanimation.js"></script>
+        <!-- * -->
+        <!-- !NavBar JS -->
+        <script type="text/javascript" src="/Common_Files/Js/navbar.js"></script>
+        <!-- * -->
+        <!-- !Theme Js -->
+        <script type="text/javascript" src="/Common_Files/Js/theme.js"></script>
+        <!-- * -->
+        <!-- !Footer Js -->
+        <script type="text/javascript" src="/Common_Files/Js/load-footer.js"></script>
+        <!-- * -->
+        <!-- !Contact Js -->
+        <script type="text/javascript" src="/Common_Files/Js/contact.js"></script>
 </body>
 
 </html>

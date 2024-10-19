@@ -1,4 +1,4 @@
-/* Compiter Nav Bar */
+/* *Compiter Nav Bar */
 .navbar {
     width: 100%;
     position: fixed;
@@ -7,14 +7,19 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    box-shadow: rgb(22, 22, 22) 0px 0px 30px;
-    background-color: rgb(31, 31, 31);
+    height: 48.400px;
+    box-shadow: rgb(22, 22, 22) -1px 0px 15px;
 }
 
-a {
-    color: white;
+.sidebar a, .navbar a {
+    font-family: SUSE;
+    font-weight: 600;
 }
 
+.sidebar p, .navbar p {
+    font-family: SUSE;
+    font-weight: 600;
+}
 .navbar ul {
     list-style: none;
     padding: 0;
@@ -32,12 +37,7 @@ a {
     text-decoration: none;
     padding: 15px 25px;
     display: inline-block;
-    transition: 0.9s;
-}
-
-.navbar .ulno1 li a:hover {
-    background-color: rgb(24, 24, 24);
-    transition: 0.9s;
+    transition: 0.5s;
 }
 
 .ulno2 {
@@ -48,9 +48,16 @@ a {
     margin-right: 15px;
     display: inline-block;
     padding: 15px 25px;
+    transition: 0.5s;
+    cursor: pointer;
 }
 
-/* Mobile Dropdown Menu */
+.y-0736:hover {
+    padding-top: 10px;
+    transition: 0.5s;
+}
+
+/* *Mobile Dropdown Menu */
 .hamburger {
     display: none;
     cursor: pointer;
@@ -59,10 +66,10 @@ a {
 .hamburger div {
     width: 25px;
     height: 3px;
-    background-color: white;
     margin: 5px;
-    transition: 0.4s;
+    transition: 0.5s;
 }
+
 
 @media screen and (max-width: 768px) {
     .hamburger {
@@ -85,7 +92,6 @@ a {
         display: inline-block;
         text-align: center;
         margin: 0;
-        color: white;
         padding: 0;
     }
 
@@ -108,11 +114,10 @@ a {
     position: fixed;
     z-index: 5;
     top: 0;
-    background-color: rgb(31, 31, 31);
     right: 0;
     overflow-x: hidden;
     transition: 0.5s;
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     padding-top: 60px;
 }
 
@@ -125,7 +130,7 @@ a {
     text-decoration: none;
     font-size: 25px;
     display: block;
-    transition: 0.3s;
+    transition: 0.5s;
 }
 
 .sidebar .closebtn {
@@ -139,114 +144,45 @@ a {
     color: red;
 }
 
-/* Theme */
-
-.themes {
-    right: 50px;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    height: auto;
-}
-
-.theme-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    top: 20px;
-    right: 20px;
-    font-size: 24px;
-    height: 48.4px;
-}
+/* *Theme */
 
 .theme {
-    padding: 15px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48.400px;
+    transition: 0.5s;
 }
 
-.light .fa-sun {
-    color: white;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 25px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
+.theme-ico {
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #313131;
-    -webkit-transition: .1s;
-    transition: .1s;
+    transition: 0.5s;
+    font-size: 20px;
 }
 
-.slider:before {
-    z-index: 1;
-    position: absolute;
-    content: "";
-    height: 17px;
-    width: 17px;
-    left: 11px;
-    bottom: 4px;
-    background-color: #313131;
-    -webkit-transition: .1s;
-    transition: .1s;
+.theme-ico:hover {
+    opacity: 0.8;
 }
 
-input:checked + .slider {
-    background-color: whitesmoke;
+.theme:hover {
+    height: 43.400px;
+    transition: 0.1s;
 }
 
-input:checked + .slider:before {
-    background-color: rgb(57, 57, 57);
-}
-input:checked + .slider:before {
-    -webkit-transform: translateX(28px);
-    -ms-transform: translateX(28px);
-    transform: translateX(28px);
+.navbar-element.compiter:hover {
+    padding-top: 10px;
+    padding-bottom: 20px;
 }
 
-
-/* Rounded sliders  */
-.slider.round {
-    border-radius: 17px;
+.navbar-element.phone:hover {
+    padding-left: 37px;
 }
 
-.slider.round:before {
-    border-radius: 50%;
+.hamburger:hover .hamburgerline.second {
+
+    padding-left: 4px;
 }
 
-.slinder {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    transition: .4s;
-}
-
-.slinder:before {
-    position: absolute;
-    content: "";
-    height: 17px;
-    width: 17px;
-    left: 4px;
-    bottom: 4px;
-    background-color: whitesmoke;
-    transition: .4s;
-    border-radius: 50%;
+.hamburger:hover .hamburgerline.one, .hamburger:hover .hamburgerline.there {
+    padding-right: 8px;
 }

@@ -1,17 +1,24 @@
-document.addEventListener('DOMContentLoaded', () => {
-    fetch('/Common_Files/html/navbar.html')
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("/Common_Files/html/navbar.html")
         .then(response => response.text())
         .then(data => {
-            document.getElementById('navbar-container').innerHTML = data;
+            document.getElementById("navbar-container").innerHTML = data;
         });
 });
 
+
+document.getElementById("btnthm").addEventListener("click", function () {
+    document.getElementById("solid-second").style.transform = "translateX(28px)";
+
+});
+
 function toggleSidebar() {
-    document.getElementById("mySidebar").classList.toggle('active');
+    document.getElementById("mySidebar").classList.toggle("active");
 }
 
 function closeSidebar() {
-    document.getElementById("mySidebar").classList.remove('active');
+    document.getElementById("mySidebar").classList.remove("active");
 }
 
 function toggleSidebar() {
@@ -31,13 +38,6 @@ function closeSidebar() {
     document.getElementById("navbar").classList.remove("responsive");
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const themeToggle = document.querySelector('.theme-toggle');
-    const navbar = document.body;
-
-    themeToggle.addEventListener('click', function () {
-        body.classList.toggle('dark');
-        body.classList.toggle('light');
-    });
-    navbar.classList.add('light')
-});
+function y0736() {
+    window.location.href = "https://y-0736.github.io";
+}
