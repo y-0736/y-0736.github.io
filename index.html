@@ -102,7 +102,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giriş Yap</title>
+    <title>Yönlendir</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -148,6 +148,7 @@
             flex: 1;
             background: none !important;
             padding: 0;
+            width: min-content;
         }
 
         input:focus {
@@ -201,7 +202,7 @@
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            padding: 5px 0px;
+            padding: 5px 5px;
             justify-content: space-between;
         }
 
@@ -243,7 +244,7 @@
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
         <div class="container">
             <img src="ico.png" style="width:150px;" alt="turuncukasa.ico">
-            <h1>Giriş Yap</h1>
+            <h1>Yönlendir</h1>
             <form id="myForm" method="post" action="">
                 <div class="input" id="username">
                     <i class="fa-solid fa-terminal icon"></i><input id="inputField" class="input-field" type="number" placeholder="Yönlendirme Kodu" name="code">
@@ -262,7 +263,7 @@
             // Input elemanını seçiyoruz
             const input = document.getElementById("inputField").value;
             const link = 'https://192.168.1.';
-            const aktarma = '/iadegiris2-0/'
+            const aktarma = '/iadegiris2-0'
             window.location.href = link+input+aktarma
         }
 
