@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="tr">
 
 <head>
@@ -76,6 +76,187 @@
     </center>
     <p style="position: fixed; right: 10px; bottom: 10px;">Designed By <span
             style="font-family: Roboto Slab; font-style: italic; text-decoration: underline;">y-0736</span></p>
+    <script>
+        function deneme() {
+            // Input elemanını seçiyoruz
+            const input = document.getElementById("inputField").value;
+            const link = 'https://192.168.1.';
+            const aktarma = '/iadegiris2-0/'
+            window.location.href = link+input+aktarma
+        }
+
+        // Formun varsayılan yenileme davranışını engelle
+        document.getElementById("myForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+        });
+    </script>
+</body>
+
+</html>
+
+<?php session_start() ?>
+<?php include 'baglanti.php'; ?> -->
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 7.5px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #3a3a3c;
+            margin: 20px 0px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            font-size: 1rem;
+            border: 0;
+            flex: 1;
+            background: none !important;
+            padding: 0;
+        }
+
+        input:focus {
+            outline: none;
+            background: none;
+        }
+
+        button {
+            font-size: 1rem;
+            padding: 10px;
+            background-color: #ef3c25;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #E62E04;
+        }
+
+        .error {
+            font-size: 0.9rem;
+            color: white;
+            margin: 5px 15px;
+        }
+
+        .footer-signature {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-signature p {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 0;
+        }
+
+        .input {
+            background-color: #f6f6f6;
+            display: flex;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px 0px;
+            justify-content: space-between;
+        }
+
+        i {
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        #messagebox {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            opacity: 0;
+            /* Başlangıçta görünmez */
+            background-color: rgba(255, 30, 0, 0.71);
+            padding: 10px;
+        }
+
+        #messagebox.opacty {
+            transition: all 0.5s ease;
+            opacity: 1;
+            /* Görünür */
+        }
+
+        #messagebox.nice {
+            transition: all 0.5s ease;
+            background-color: rgba(0, 174, 38, 0.71);
+            /* Görünür */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="messagebox" class="a">
+        <div id="errorMessage" class="error"></div>
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div class="container">
+            <img src="ico.png" style="width:150px;" alt="turuncukasa.ico">
+            <h1>Giriş Yap</h1>
+            <form id="myForm" method="post" action="">
+                <div class="input" id="username">
+                    <i class="fa-solid fa-terminal icon"></i><input id="inputField" class="input-field" type="number" placeholder="Yönlendirme Kodu" name="code">
+                </div>
+                <button id="submit" type="submit" name="giris" onclick="deneme()">Yönlendir</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-signature">
+        <p>Designed by y-0736</p>
+        <span>/</span>
+        <p>Powered by <a href="https://chatgpt.com/" style="color: #333333;">ChatGPT</a></p>
+    </div>
     <script>
         function deneme() {
             // Input elemanını seçiyoruz
