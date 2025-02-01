@@ -150,12 +150,14 @@
             <h1>Yönlendir</h1>
             <form id="myForm" method="post" action="">
                 <div class="input" id="username">
-                    <i class="fa-solid fa-terminal icon"></i><input id="inputField" class="input-field" type="number"
-                        placeholder="Yönlendirme Kodu" name="code">
+                    <i onclick="localhost()" class="fa-solid fa-terminal icon"></i><input id="inputField"
+                        class="input-field" type="number" placeholder="Yönlendirme Kodu" name="code">
                 </div>
-                <p style="margin: 0; margin-bottom: 5px; font-style: italic; font-size: x-small;">*Eğerki Yönlendirme Kodu Hatalıysa Sayfa Yönlendirme
+                <p style="margin: 0; margin-bottom: 5px; font-style: italic; font-size: x-small;">*Eğerki Yönlendirme
+                    Kodu Hatalıysa Sayfa Yönlendirme
                     Yapmaz.</p>
-                <p style="margin: 0; margin-bottom: 15px; font-style: italic; font-size: x-small;">*Admin Notu; Ctrl+Alt+I</p>
+                <p style="margin: 0; margin-bottom: 15px; font-style: italic; font-size: x-small;">*Admin Notu;
+                    Ctrl+Alt+I</p>
                 <button id="submit" type="submit" name="giris" onclick="deneme()">Yönlendir</button>
             </form>
         </div>
@@ -166,6 +168,11 @@
         <p>Powered by <a href="https://chatgpt.com/" target="_blank" style="color: #333333;">ChatGPT</a></p>
     </div>
     <script>
+
+        function localhost() {
+            window.location.href = 'https://localhost'
+        }
+
         function deneme() {
             // Input elemanını seçiyoruz
             const input = document.getElementById("inputField").value;
