@@ -7,10 +7,8 @@
     <title>Flip Clock</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Anton+SC&display=swap"
-        rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    <link href="https://fonts.googleapis.com/css2?family=Anton+SC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -36,21 +34,19 @@
             font-family: Anton SC;
             font-size: 500px;
         }
-        button{
-            background: none;
-            color: white;
-            border: none;
-            font-size: 25px;
-            position: fixed;
-            right: 15px;
-            top: 15px;
-            cursor: pointer;
-        }
+
     </style>
 </head>
 
 <body>
-    <button onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
+    <button style="background: none;
+    color: white;
+    border: none;
+    font-size: 25px;
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    cursor: pointer;" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
     <div id="clock"></div>
     <script>
         function updateClock() {
@@ -66,6 +62,16 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
+    </script>
+    <button style="background: none;
+    color: white;
+    border: none;
+    font-size: 25px;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    cursor: pointer;" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
+    <script>
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
