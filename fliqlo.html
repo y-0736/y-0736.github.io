@@ -25,14 +25,27 @@
             padding: 0;
             text-align: center;
         }
+            
 
         #clock {
             display: flex;
         }
 
+        
+        @media (min-width: 850px) {
+            
+            span {
+                font-family: Anton SC;
+                font-size: 500px;
+            }
+            }
+
+        @media (max-width: 850px) {
+            
         span {
             font-family: Anton SC;
-            font-size: 500px;
+            font-size: 250px;
+        }
         }
 
     </style>
@@ -63,14 +76,15 @@
         setInterval(updateClock, 1000);
         updateClock();
     </script>
-    <button style="background: none;
+    <p style="background: none;
     color: white;
     border: none;
     font-size: 25px;
     position: fixed;
     right: 15px;
     bottom: 15px;
-    cursor: pointer;" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
+    cursor: pointer;
+    font-family: Arial, sans-serif;">ygid</p>
     <script>
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
