@@ -315,26 +315,6 @@
             document.getElementById("openclosedinfo").onclick = openinfo;
             document.getElementById("form").style.borderRadius = "8px 8px 8px 8px";
         }
-        function deneme() {
-            // Input elemanını seçiyoruz
-            const input = document.getElementById("inputField").value;
-            const link = 'https://192.168.1.';
-            const aktarma = '/iadegiris2-0/'
-            window.location.href = link + input + aktarma
-        }
-
-        // Formun varsayılan yenileme davranışını engelle
-        document.getElementById("myForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-        });
-
-        document.addEventListener("keydown", function(event) {
-            // Alt + Shift + P kombinasyonu
-            if (event.altKey && event.shiftKey && event.key === "L") {
-                window.location.href = 'https://localhost/iadegiris2-0'    
-            }
-        });
-        
     </script>
 </body>
 
