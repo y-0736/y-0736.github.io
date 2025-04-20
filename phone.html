@@ -184,38 +184,38 @@
             cursor: pointer;
         }
 
-        .upgry,
-        .downgry {
+
+        .rightgry,
+        .leftgry {
             rotate: 0deg;
             display: block;
-            width: 5px;
+            width: 25px;
             background-color: #333;
-            height: 25px;
+            height: 5px;
             transition: all 0.5s ease;
             border-radius: 2px;
-            position: relative;
-            bottom: -2.5px;
+            position: absolute;
+            display: inline-block;
+            left: -20px;
+
         }
 
-        #openclosedinfo:hover .upgry {
+        #openclosedinfo:hover .rightgry {
             rotate: 25deg;
-            bottom: -2.5px;
         }
 
-        .downgry {
-            top: -2.9px;
+        .leftgry {
+            right: -20px;
+            left: 0px;
         }
 
-        #openclosedinfo:hover .downgry {
+        #openclosedinfo:hover .leftgry {
             rotate: -25deg;
-            top: -2.9px;
         }
 
         #openclosedinfo {
-            position: absolute;
-            top: 50%;
             left: 50%;
-            margin-left: 15px;
+            position: absolute;
             transform: translate(-50%, -50%);
         }
     </style>
@@ -231,44 +231,47 @@
         <div id="errorMessage" class="error"></div>
     </div>
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-        <div id="info" class="container"
-            style="text-align: left; transition: all 0.5s ease;opacity: 0; display: inline; z-index: 0; right: -300px; position: relative; margin-right: 0px; border-radius: 8px  0px 0px 8px;">
-            <h3 style="margin: 0px; margin-bottom: 5px; text-align: center;">Nasıl Giriş Yapılır?</h3>
-            <p style="margin: 0;
+        <div>
+            <div id="form" class="container"
+                style="margin-bottom: 0;position: relative; z-index: 1; border-radius: 8px  8px 8px 8px;">
+                <img src="ico.png" style="width:150px;" alt="turuncukasa.ico">
+                <h1>Yönlendir</h1>
+                <form id="myForm" method="post" action="">
+                    <div class="input" id="username">
+                        <i class="fa-solid fa-terminal icon"></i><input id="inputField" class="input-field"
+                            type="number" placeholder="Yönlendirme Kodu" name="code">
+                    </div>
+                    <p style="margin: 0; margin-bottom: 5px; font-style: italic; font-size: x-small;">*Eğerki
+                        Yönlendirme
+                        Kodu Hatalıysa Sayfa Yönlendirme
+                        Yapmaz.</p>
+                    <p style="margin: 0; margin-bottom: 15px; font-style: italic; font-size: x-small;">*Admin Notu;
+                        Ctrl+Alt+I</p>
+                    <button id="submit" type="submit" name="giris" onclick="deneme()">Yönlendir</button>
+                </form>
+
+                <div id="openclosedinfo" onclick="openinfo()" style="z-index: 2; cursor: pointer; margin-top: 8px;">
+                    <span class="leftgry"></span>
+                    <span class="rightgry"></span>
+                </div>
+            </div>
+            <div id="info" class="container" style="margin-top: 0; position: absolute; top: -367PX; opacity: 0;">
+                <h3 style="margin: 0px; margin-bottom: 5px; text-align: center;">Nasıl Giriş Yapılır?</h3>
+                <p style="margin: 0;
             margin-bottom: 5px;
             font-style: italic;
             font-size: x-small;">*Öncelikle adminin verdiği yönlendirme kodu ile yönlendirmeyi başlatınız.</p>
-            <p style="margin: 0;
+                <p style="margin: 0;
             margin-bottom: 5px;
             font-style: italic;
             font-size: x-small;">*Daha Sonra aşşağıda bulunan dosyadaki talimatları uygulayınız..</p>
-            <img id="infoimg" style="cursor: zoom-in; height: 250px; border-radius: 8px;"
-                src="Ekran görüntüsü 2025-04-03 200251.png" alt="">
-        </div>
-        <div id="myModal" class="modal" style="z-index: 5;">
-            <span class="close">&times;</span>
-            <img class="modal-content" id="img01">
-        </div>
-        <div id="openclosedinfo" onclick="openinfo()" style="z-index: 2; cursor: pointer;">
-            <span class="upgry"></span>
-            <span class="downgry"></span>
-        </div>
-        <div id="form" class="container"
-            style="position: relative; z-index: 1; margin-left: 0px; border-radius: 8px  8px 8px 8px;">
-            <img src="ico.png" style="width:150px;" alt="turuncukasa.ico">
-            <h1>Yönlendir</h1>
-            <form id="myForm" method="post" action="">
-                <div class="input" id="username">
-                    <i class="fa-solid fa-terminal icon"></i><input id="inputField" class="input-field" type="number"
-                        placeholder="Yönlendirme Kodu" name="code">
-                </div>
-                <p style="margin: 0; margin-bottom: 5px; font-style: italic; font-size: x-small;">*Eğerki Yönlendirme
-                    Kodu Hatalıysa Sayfa Yönlendirme
-                    Yapmaz.</p>
-                <p style="margin: 0; margin-bottom: 15px; font-style: italic; font-size: x-small;">*Admin Notu;
-                    Ctrl+Alt+I</p>
-                <button id="submit" type="submit" name="giris" onclick="deneme()">Yönlendir</button>
-            </form>
+                <img id="infoimg" style="cursor: zoom-in; height: 250px; border-radius: 8px;"
+                    src="Ekran görüntüsü 2025-04-03 200251.png" alt="">
+            </div>
+            <div id="myModal" class="modal" style="z-index: 5;">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+            </div>
         </div>
     </div>
     <div class="footer-signature">
@@ -279,7 +282,7 @@
     <script>
         window.onload = function () {
             // Sayfa yüklendikten sonra formun yüksekliğini al
-            document.getElementById('info').style.height = document.getElementById('form').offsetHeight + 'px';
+            // document.getElementById('info').style.top = '-' + document.getElementById('form').offsetHeight + 'px';
         };
         // Resme tıklandığında modal'ı aç
         var img = document.getElementById('infoimg');
@@ -296,24 +299,46 @@
         span.onclick = function () {
             modal.style.display = "none";
         }
+        function deneme() {
+            // Input elemanını seçiyoruz
+            const input = document.getElementById("inputField").value;
+            const link = 'https://192.168.1.';
+            const aktarma = '/iadegiris2-0/'
+            window.location.href = link + input + aktarma
+        }
+
+        // Formun varsayılan yenileme davranışını engelle
+        document.getElementById("myForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+        });
+
+        document.addEventListener("keydown", function (event) {
+            // Alt + Shift + P kombinasyonu
+            if (event.altKey && event.shiftKey && event.key === "L") {
+                window.location.href = 'https://localhost/iadegiris2-0'
+            }
+        });
+
         function openinfo() {
-            document.getElementById("form").style.borderRadius = "0px 8px 8px 0px";
+            document.getElementById("form").style.borderRadius = "8px 8px 0px 0px";
+            document.getElementById("info").style.top = "0" + "px";
+            document.getElementById("info").style.position = "relative";
             document.getElementById("info").style.opacity = "1";
-            document.getElementById("info").style.right = "0px";
-            document.querySelector(".upgry").style.rotate = "-25deg";
-            document.querySelector(".downgry").style.rotate = "25deg";
+            document.querySelector(".leftgry").style.rotate = "25deg";
+            document.querySelector(".rightgry").style.rotate = "-25deg";
             document.getElementById("openclosedinfo").onclick = closedinfo;
         }
 
         function closedinfo() {
+            document.getElementById("form").style.borderRadius = "";
+            document.getElementById("info").style.top = "-367px";
+            document.getElementById("info").style.opacity = "0";
             setTimeout(function () {
-                document.getElementById("info").style.opacity = "0";
-            }, 500);
-            document.getElementById("info").style.right = "-300px";
-            document.querySelector(".upgry").style.rotate = "";
-            document.querySelector(".downgry").style.rotate = "";
-            document.getElementById("openclosedinfo").onclick = openinfo;
-            document.getElementById("form").style.borderRadius = "8px 8px 8px 8px";
+                document.getElementById("info").style.position = "absolute";
+                document.querySelector(".leftgry").style.rotate = "";
+                document.querySelector(".rightgry").style.rotate = "";
+                document.getElementById("openclosedinfo").onclick = closedinfo;
+            }, 200);
         }
     </script>
 </body>
