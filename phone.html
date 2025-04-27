@@ -166,7 +166,7 @@
         }
 
         /* Kapatma butonu */
-        .close {
+        .phoneclose {
             position: absolute;
             top: 15px;
             right: 35px;
@@ -177,8 +177,8 @@
         }
 
         /* Kapatma butonunun üzerine gelindiğinde renk değişir */
-        .close:hover,
-        .close:focus {
+        .phoneclose:hover,
+        .phoneclose:focus {
             color: #bbb;
             text-decoration: none;
             cursor: pointer;
@@ -232,13 +232,13 @@
     </div>
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
         <div>
-            <div id="form" class="container"
+            <div id="phoneform" class="container"
                 style="margin-bottom: 0;position: relative; z-index: 1; border-radius: 8px  8px 8px 8px;">
                 <img src="ico.png" style="width:150px;" alt="turuncukasa.ico">
                 <h1>Yönlendir</h1>
-                <form id="myForm" method="post" action="">
+                <form id="phonemyForm" method="post" action="">
                     <div class="input" id="username">
-                        <i class="fa-solid fa-terminal icon"></i><input id="inputField" class="input-field"
+                        <i class="fa-solid fa-terminal icon"></i><input id="phoneinputField" class="input-field"
                             type="number" placeholder="Yönlendirme Kodu" name="code">
                     </div>
                     <p style="margin: 0; margin-bottom: 5px; font-style: italic; font-size: x-small;">*Eğerki
@@ -247,30 +247,27 @@
                         Yapmaz.</p>
                     <p style="margin: 0; margin-bottom: 15px; font-style: italic; font-size: x-small;">*Admin Notu;
                         Ctrl+Alt+I</p>
-                    <button id="submit" type="submit" name="giris" onclick="deneme()">Yönlendir</button>
+                    <button id="submit" type="submit" name="giris" onclick="phonedeneme()">Yönlendir</button>
                 </form>
 
-                <div id="openclosedinfo" onclick="openinfo()" style="z-index: 2; cursor: pointer; margin-top: 8px;">
+                <div id="openclosedinfo" onclick="phoneopeninfo()"
+                    style="z-index: 2; padding: 5px; cursor: pointer; margin-top: 8px;">
                     <span class="leftgry"></span>
                     <span class="rightgry"></span>
                 </div>
             </div>
-            <div id="info" class="container" style="margin-top: 0; position: absolute; top: -367PX; opacity: 0;">
+            <div id="phoneinfo" class="container" style="margin-top: 0; position: absolute; top: -367PX; opacity: 0;">
                 <h3 style="margin: 0px; margin-bottom: 5px; text-align: center;">Nasıl Giriş Yapılır?</h3>
-                <p style="margin: 0;
-            margin-bottom: 5px;
-            font-style: italic;
+                <p style="margin: 0; margin-bottom: 5px;font-style: italic;
             font-size: x-small;">*Öncelikle adminin verdiği yönlendirme kodu ile yönlendirmeyi başlatınız.</p>
-                <p style="margin: 0;
-            margin-bottom: 5px;
-            font-style: italic;
+                <p style="margin: 0; margin-bottom: 5px;font-style: italic;
             font-size: x-small;">*Daha Sonra aşşağıda bulunan dosyadaki talimatları uygulayınız..</p>
-                <img id="infoimg" style="cursor: zoom-in; height: 250px; border-radius: 8px;"
+                <img id="phoneinfoimg" style="cursor: zoom-in; height: 250px; border-radius: 8px;"
                     src="Ekran görüntüsü 2025-04-03 200251.png" alt="">
             </div>
-            <div id="myModal" class="modal" style="z-index: 5;">
-                <span class="close">&times;</span>
-                <img class="modal-content" id="img01">
+            <div id="phonemyModal" class="modal" style="z-index: 5;">
+                <span class="phoneclose">&times;</span>
+                <img class="modal-content" id="phoneimg01">
             </div>
         </div>
     </div>
@@ -279,68 +276,14 @@
         <span>/</span>
         <p>Powered by <a href="https://chatgpt.com/" target="_blank" style="color: #333333;">ChatGPT</a></p>
     </div>
-    <script>
+    <!-- <script>
         window.onload = function () {
             // Sayfa yüklendikten sonra formun yüksekliğini al
             // document.getElementById('info').style.top = '-' + document.getElementById('form').offsetHeight + 'px';
         };
         // Resme tıklandığında modal'ı aç
-        var img = document.getElementById('infoimg');
-        var modal = document.getElementById('myModal');
-        var modalImg = document.getElementById('img01');
-        var span = document.getElementsByClassName('close')[0];
-
-        img.onclick = function () {
-            modal.style.display = "block";
-            modalImg.src = this.src;
-        }
-
-        // Modal'ı kapat
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
-        function deneme() {
-            // Input elemanını seçiyoruz
-            const input = document.getElementById("inputField").value;
-            const link = 'https://192.168.1.';
-            const aktarma = '/iadegiris2-0/'
-            window.location.href = link + input + aktarma
-        }
-
-        // Formun varsayılan yenileme davranışını engelle
-        document.getElementById("myForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-        });
-
-        document.addEventListener("keydown", function (event) {
-            // Alt + Shift + P kombinasyonu
-            if (event.altKey && event.shiftKey && event.key === "L") {
-                window.location.href = 'https://localhost/iadegiris2-0'
-            }
-        });
-
-        function openinfo() {
-            document.getElementById("form").style.borderRadius = "8px 8px 0px 0px";
-            document.getElementById("info").style.top = "0" + "px";
-            document.getElementById("info").style.position = "relative";
-            document.getElementById("info").style.opacity = "1";
-            document.querySelector(".leftgry").style.rotate = "25deg";
-            document.querySelector(".rightgry").style.rotate = "-25deg";
-            document.getElementById("openclosedinfo").onclick = closedinfo;
-        }
-
-        function closedinfo() {
-            document.getElementById("form").style.borderRadius = "";
-            document.getElementById("info").style.top = "-367px";
-            document.getElementById("info").style.opacity = "0";
-            setTimeout(function () {
-                document.getElementById("info").style.position = "absolute";
-                document.querySelector(".leftgry").style.rotate = "";
-                document.querySelector(".rightgry").style.rotate = "";
-                document.getElementById("openclosedinfo").onclick = closedinfo;
-            }, 200);
-        }
-    </script>
+        
+    </script> -->
 </body>
 
 </html>
