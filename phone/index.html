@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bilgisayar Kontrol Paneli</title>
+</head>
+<body>
+    <h1>Bilgisayarı Kontrol Et</h1>
+
+    <button onclick="sendCommand('kilitle')">Kilitle</button>
+    <button onclick="sendCommand('shutdown')">Kapat</button>
+    <button onclick="sendCommand('restart')">Yeniden Başlat</button>
+    <button onclick="sendCustomMessage()">Mesaj Gönder</button>
+
+    <script>
+        const firebaseUrl = "https://laptopcontrol-9c090-default-rtdb.europe-west1.firebasedatabase.app/";
+
+        function sendCommand(cmd) {
+            fetch(firebaseUrl + 'command.json', {
+                method: 'PUT',
+                body: JSON.stringify(cmd)
+            });
+            alert("Komut gönderildi: " + cmd);
+        }
+
+        function sendCustomMessage() {
+            let mesaj = prompt("Göndermek istediğin mesajı yaz:");
+            if (mesaj) {
+                sendCommand('message:' + mesaj);
+            }
+        }
+    </script>
+</body>
+</html>
