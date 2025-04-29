@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Kontrol Paneli</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
+
 <body>
 
   <h2>Bilgisayarı Kilitle</h2>
@@ -21,11 +23,16 @@
     const db = firebase.database();
 
     // Butona tıklanınca çalışacak
-    document.getElementById("kilitleBtn").onclick = function() {
+    document.getElementById("kilitleBtn").onclick = function () {
       db.ref("/").update({ komut: "kilitle" });
       alert("Kilitle komutu gönderildi!");
+      // setTimeout(function () {
+      //   // Buraya 20 saniye sonra yapılacak işlemi yazın
+      //   db.ref("/").update({ komut: "none" });
+      // }, 20000); // 20000 milisaniye = 20 saniy
     };
   </script>
 
 </body>
+
 </html>
