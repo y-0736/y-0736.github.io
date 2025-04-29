@@ -1,34 +1,31 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Bilgisayar Kontrol Paneli</title>
+  <title>Kontrol Paneli</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
 <body>
-    <h1>Bilgisayarı Kontrol Et</h1>
 
-    <button onclick="sendCommand('kilitle')">Kilitle</button>
-    <button onclick="sendCommand('shutdown')">Kapat</button>
-    <button onclick="sendCommand('restart')">Yeniden Başlat</button>
-    <button onclick="sendCustomMessage()">Mesaj Gönder</button>
+  <h2>Bilgisayarı Kilitle</h2>
+  <button id="kilitleBtn">KİLİTLE</button>
 
-    <script>
-        const firebaseUrl = "https://laptopcontrol-9c090-default-rtdb.europe-west1.firebasedatabase.app/";
+  <script>
+    // Firebase ayarları (sadece databaseURL yeterli)
+    const firebaseConfig = {
+      databaseURL: "https://laptopcontrol-9c090-default-rtdb.europe-west1.firebasedatabase.app"
+    };
 
-        function sendCommand(cmd) {
-            fetch(firebaseUrl + 'command.json', {
-                method: 'PUT',
-                body: JSON.stringify(cmd)
-            });
-            alert("Komut gönderildi: " + cmd);
-        }
+    // Firebase başlatılıyor
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        function sendCustomMessage() {
-            let mesaj = prompt("Göndermek istediğin mesajı yaz:");
-            if (mesaj) {
-                sendCommand('message:' + mesaj);
-            }
-        }
-    </script>
+    // Butona tıklanınca çalışacak
+    document.getElementById("kilitleBtn").onclick = function() {
+      db.ref("/").update({ komut: "kilitle" });
+      alert("Kilitle komutu gönderildi!");
+    };
+  </script>
+
 </body>
 </html>
