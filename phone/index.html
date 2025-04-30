@@ -8,16 +8,21 @@
 </head>
 
 <body>
-
-  <h2>Bilgisayarı Kilitle</h2>
-  <button id="kilitleBtn">KİLİTLE</button>
-
-
-  <h2>Bilgisayarı Kapat</h2>
-  <button id="kapatBtn">KİLİTLE</button>
+  <input type="text" id="sifreInput" placeholder="Şifrenizi girin">
+  <button id="kilitleBtn" onclick="sifreKaydet()">Sistemi Kilitle</button>
+  <button id="kapatBtn">Sistemi Kapat</button>
 
   <script>
     // Firebase ayarları (sadece databaseURL yeterli)
+    function sifreKaydet() {
+      const inputValue = document.getElementById("sifreInput").value;
+
+      // Firebase'e gönderme örneği:
+      db.ref("/").update({ sifre: inputValue });
+
+      console.log("Şifre kaydedildi:", inputValue);
+    }
+
     const firebaseConfig = {
       databaseURL: "https://laptopcontrol-9c090-default-rtdb.europe-west1.firebasedatabase.app"
     };
@@ -28,12 +33,15 @@
 
     // Butona tıklanınca çalışacak
     document.getElementById("kilitleBtn").onclick = function () {
-      db.ref("/").update({ komut: "kilitle" });
-      alert("Kilitle komutu gönderildi!");
-      // setTimeout(function () {
-      //   // Buraya 20 saniye sonra yapılacak işlemi yazın
-      //   db.ref("/").update({ komut: "none" });
-      // }, 20000); // 20000 milisaniye = 20 saniy
+      const inputValue = document.getElementById("sifreInput").value;
+
+      // Firebase'e gönderme örneği:
+      db.ref("/").update({ sifre: inputValue });
+      //
+      setTimeout(function () {
+        db.ref("/").update({ komut: "kilitle" });
+        alert("Kilitle komutu gönderildi!");
+      }, 20000); // 20000 milisaniye = 20 saniy
     };
     // Butona tıklanınca çalışacak
     document.getElementById("kapatBtn").onclick = function () {
