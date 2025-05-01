@@ -10,6 +10,7 @@
 <body>
   <input type="text" id="sifreInput" placeholder="Şifrenizi girin">
   <button id="kilitleBtn" onclick="sifreKaydet()">Sistemi Kilitle</button>
+  <button id="kilitleofflineBtn">Sistemi Kilidini Aç</button>
   <button id="kapatBtn">Sistemi Kapat</button>
 
   <script>
@@ -31,6 +32,12 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    document.getElementById("kilitleofflineBtn").onclick = function () {
+
+      db.ref("/").update({ komut: "offline" });
+      alert("Sistem kilidi Açıldı!");
+    };
+
     // Butona tıklanınca çalışacak
     document.getElementById("kilitleBtn").onclick = function () {
       const inputValue = document.getElementById("sifreInput").value;
@@ -41,7 +48,7 @@
       setTimeout(function () {
         db.ref("/").update({ komut: "kilitle" });
         alert("Kilitle komutu gönderildi!");
-      }, 20000); // 20000 milisaniye = 20 saniy
+      }, 5000); // 20000 milisaniye = 20 saniy
     };
     // Butona tıklanınca çalışacak
     document.getElementById("kapatBtn").onclick = function () {
