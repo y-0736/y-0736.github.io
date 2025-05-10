@@ -2,78 +2,140 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
+  }
+  
+  body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #ffe6f0;
     color: #d63384;
     text-align: center;
     overflow-x: hidden;
     padding: 20px;
-}
-
-h1 {
+  }
+  
+  h1 {
     font-size: 1.8em;
     margin-top: 100px;
     opacity: 0;
     animation: fadeIn 2s ease forwards;
     animation-delay: 2s;
-}
+  }
 
-#letter {
-    background-color: #fff;
-    border-radius: 15px;
+  
+  .envelope {
+    position: relative;
+    width: 300px;
+    transition: all 0.5s ease;
+    height: 200px;
+    transition: height 2s ease;
+    margin: 60px auto;
+    background: #fff;
+    border: 2px solid #d63384;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
+  
+  .auto{
+    height: auto;
+  }
+  .flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: #d63384;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top;
+    transition: transform 1s ease;
+    z-index: 2;
+  }
+  
+  .heart-seal {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  
+  .heart {
+    transition: all 0.2s ease;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    background: #c60d0d;
+    transform: rotate(-45deg);
+    top: 18px;
+    left: 8px;
+  }
+  
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #c60d0d;
+    border-radius: 50%;
+  }
+  
+  .heart::before {
+    top: -12px;
+    left: 0;
+  }
+  
+  .heart::after {
+    top: 0;
+    left: 12px;
+  }
+  
+  
+  .letter-content {
     padding: 20px;
-    margin: 30px auto;
-    max-width: 90%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     opacity: 0;
-    animation: slideUp 2s ease forwards;
-    animation-delay: 4s;
+    transform: translateY(20px);
+    transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
     font-size: 1em;
-    line-height: 1.5em;
-}
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Çiçek animasyonu */
-.flower {
+    z-index: 1;
+    position: relative;
+  }
+  
+  
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  /* Çiçek animasyonu */
+  .flower {
     position: absolute;
     width: 30px;
     height: 30px;
-    background-image: url('flower.svg');
-    /* kendi çiçek PNG/SVG'ni koy */
+    background-image: url('flower.svg'); /* kendi çiçek PNG/SVG'ni koy */
     background-size: contain;
     background-repeat: no-repeat;
     top: 100%;
     animation: floatUp 6s linear forwards;
-}
-
-@keyframes floatUp {
+  }
+  
+  @keyframes floatUp {
     to {
-        transform: translateY(-120vh);
-        opacity: 0;
+      transform: translateY(-120vh);
+      opacity: 0;
     }
-}
-
-.footer-signature {
+  }
+  
+  .footer-signature {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -90,16 +152,45 @@ h1 {
     padding: 5px 10px;
     border-radius: 5px;
     margin: 0;
-}
-
-#screenSize {
+}#screenSize {
     position: fixed;
     top: 10px;
     left: 10px;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0,0,0,0.6);
     color: #fff;
     padding: 8px 12px;
     border-radius: 10px;
     font-size: 14px;
     z-index: 999;
+  }
+#uyariKutusu {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+}
+
+#uyariIcerik {
+  background-color: white;
+  margin: 15% auto;
+  padding: 40px;
+  border-radius: 10px;
+  width: 60%;
+  font-size: 24px;
+  position: relative;
+  text-align: center;
+}
+
+#kapat {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: red;
+  font-size: 30px;
+  cursor: pointer;
 }

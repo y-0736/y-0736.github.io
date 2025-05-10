@@ -18,3 +18,32 @@ function showScreenSize() {
 
 window.addEventListener("resize", showScreenSize); // ekran dönünce günceller
 showScreenSize(); // sayfa açılır açılmaz göster
+
+
+function openLetter() {
+    const flap = document.querySelector('.flap');
+    const content = document.getElementById('letterContent');
+    const heart = document.getElementById('heart');
+    const mektup = document.getElementById('envelope');
+    // Zarf kapağını yukarı doğru çevir
+    flap.style.transform = 'rotateX(-180deg)';
+
+    heart.style.opacity = 0;
+
+
+    // Mektubu göster
+    content.style.opacity = 1;
+    content.style.transform = 'translateY(0)';
+
+    setTimeout(function () {
+        mektup.classList.add("auto");
+    }, 500)
+}
+
+function gosterNot() {
+  document.getElementById("uyariKutusu").style.display = "block";
+}
+
+function kapatNot() {
+  document.getElementById("uyariKutusu").style.display = "none";
+}
