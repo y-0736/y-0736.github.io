@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #ffe6f0;
+    color: #d63384;
+    text-align: center;
+    overflow-x: hidden;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 1.8em;
+    margin-top: 100px;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards;
+    animation-delay: 2s;
+  }
+  
+  #letter {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 90%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    opacity: 0;
+    animation: slideUp 2s ease forwards;
+    animation-delay: 4s;
+    font-size: 1em;
+    line-height: 1.5em;
+  }
+  
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  /* Çiçek animasyonu */
+  .flower {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-image: url('flower.svg'); /* kendi çiçek PNG/SVG'ni koy */
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: 100%;
+    animation: floatUp 6s linear forwards;
+  }
+  
+  @keyframes floatUp {
+    to {
+      transform: translateY(-120vh);
+      opacity: 0;
+    }
+  }
+  
