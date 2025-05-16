@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StandBy Görünüm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet" />
+    <style>
+        @font-face {
+            font-family: 'myfont';
+            src: url(Fonts/SF-Pro/SF-Pro-Rounded-Heavy.otf);
+        }
+
+        body {
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: 'myfont', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+        }
+
+        .clock {
+            font-size: 15em;
+            font-weight: lighter;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .digit {
+            display: inline-block;
+            padding: 0px;
+            background: linear-gradient(90deg, #59c3ff, #a1e3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 8px rgba(0, 123, 255, 0.8), 0 0 15px rgba(0, 123, 255, 0.6);
+        }
+
+        .top-right {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            text-align: right;
+            font-size: 5vw;
+            font-weight: 500;
+            color: #e0e0e0;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-right .temp {
+            font-size: 4vw;
+            color: #bbb;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        /* Şarj barı stili */
+        .battery-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+
+        }
+
+        svg {
+            transform: rotate(-90deg);
+            width: 50px;
+            height: 50px;
+            display: block;
+        }
+
+        circle.background {
+            fill: none;
+            stroke: #444;
+            stroke-width: 5;
+        }
+
+        circle.progress {
+            fill: none;
+            stroke: #4caf50;
+            stroke-width: 5;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        @media (max-width: 600px) {
+            .clock {
+                font-size: 30vw;
+            }
+
+            .top-right {
+                font-size: 6vw;
+                gap: 6px;
+            }
+
+            .top-right .temp {
+                font-size: 5vw;
+                min-width: 40px;
+            }
+
+            .battery-container {
+                width: 40px;
+                height: 40px;
+            }
+
+            svg {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body id="fullscreenButton" onclick="tamEkranYap()">
+    <div class="container">
+        <div class="clock" id="clock"></div>
+    </div>
+    <div class="top-right">
+        <div id="day" style="display: block;">Pzr 5</div>
+        <div style="display: flex; position: absolute; right: 15px;">
+            <div class="temp" id="temp">23°</div>
+            <div style="width: 30px; height: 2px;"></div>
+            <div class="battery-container">
+                <svg>
+                    <circle class="background" cx="25" cy="25" r="20"></circle>
+                    <circle class="progress" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6">
+                    </circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}`;
+
+            const clockDiv = document.getElementById("clock");
+            clockDiv.innerHTML = ''; // Önceki içeriği temizle
+
+            for (const [index, char] of [...timeString].entries()) {
+                const digitDiv = document.createElement('div');
+                digitDiv.className = 'digit';
+
+                if ([1, 4, 5].includes(index)) {
+                    digitDiv.style.marginLeft = "-0.2em";
+                }
+                if ([2, 5, 6].includes(index)) {
+                    digitDiv.style.marginLeft = "-0.1em";
+                }
+
+                digitDiv.textContent = char;
+                clockDiv.appendChild(digitDiv);
+            }
+
+            const days = ["Pzr", "Pzrts", "Salı", "Çrş", "Prş", "Cuma", "Cmts"];
+            const day = days[now.getDay()];
+            const date = now.getDate();
+            document.getElementById("day").textContent = `${day} ${date}`;
+        }
+
+        function fetchWeatherKonumla() {
+            navigator.geolocation.getCurrentPosition(pos => {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const temp = Math.round(data.current_weather.temperature);
+                        document.getElementById("temp").textContent = `${temp}°`;
+                    })
+                    .catch(err => {
+                        console.error("Hava durumu alınamadı", err);
+                    });
+            }, () => {
+                document.getElementById("temp").textContent = "--°";
+            });
+        }
+
+        function updateBattery() {
+            if (!navigator.getBattery) {
+                console.warn("Battery API desteklenmiyor.");
+                return;
+            }
+
+            navigator.getBattery().then(battery => {
+                function setProgress() {
+                    const progressCircle = document.querySelector('circle.progress');
+                    const radius = progressCircle.r.baseVal.value;
+                    const circumference = 2 * Math.PI * radius;
+                    const percent = battery.level; // 0 ile 1 arası
+                    const offset = circumference - percent * circumference;
+                    progressCircle.style.strokeDashoffset = offset;
+
+                    // Rengi doluluk oranına göre ayarla (0.2'den küçükse kırmızı yap)
+                    if (percent > 0.2) {
+                        progressCircle.style.stroke = '#4caf50';
+                    } else {
+                        progressCircle.style.stroke = '#f44336';
+                    }
+                }
+
+                setProgress();
+
+                // Şarj durumu veya seviye değiştiğinde güncelle
+                battery.addEventListener('levelchange', setProgress);
+                battery.addEventListener('chargingchange', setProgress);
+            });
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+        fetchWeatherKonumla();
+        setInterval(fetchWeatherKonumla, 10 * 60 * 1000); // 10 dakikada bir hava durumu güncelle
+        updateBattery();
+
+        function tamEkranYap() {
+            let elem = document.documentElement;
+
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+
+            document.getElementById("fullscreenButton").onclick = tamEkrandanCik;
+        }
+
+        function tamEkrandanCik() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+
+            document.getElementById("fullscreenButton").onclick = tamEkranYap;
+        }
+    </script>
+</body>
+
+</html>
