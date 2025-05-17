@@ -150,7 +150,7 @@
             transform: translate(-50%, -50%);
         }
 
-        #ikincidiv iframe{
+        #ikincidiv iframe {
             display: inline-block;
         }
     </style>
@@ -175,6 +175,7 @@
                 </div>
             </div>
         </div>
+        <p>la</p>
         <div id="spotifybutton"
             style="display: flex; position: absolute; bottom: 15px; cursor: pointer; transition: all 0.5s ease;"
             onclick="yenidivaktif()">
@@ -263,14 +264,32 @@
             });
         }
 
-        function tamEkranYap() {
-            let elem = document.documentElement;
-            if (elem.requestFullscreen) elem.requestFullscreen();
-            else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-            else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+        async function tamEkranYap() {
+            const elem = document.documentElement;
 
+            // Fullscreen moduna geç
+            if (elem.requestFullscreen) {
+                await elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { // Safari
+                await elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { // IE11
+                await elem.msRequestFullscreen();
+            }
+
+            // Ekranı yatay moda döndür
+            if (screen.orientation && screen.orientation.lock) {
+                try {
+                    await screen.orientation.lock('landscape');
+                } catch (err) {
+                    console.warn("Yön kilitleme başarısız:", err);
+                }
+            } else {
+                console.warn("Screen Orientation API desteklenmiyor.");
+            }
             document.getElementById("fullscreenButton").onclick = tamEkrandanCik;
+
         }
+
 
         function tamEkrandanCik() {
             if (document.exitFullscreen) document.exitFullscreen();
