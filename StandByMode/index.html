@@ -15,6 +15,9 @@
         body {
             margin: 0;
             background-color: #101415;
+        }
+
+        #birincidiv {
             color: #fff;
             font-family: 'myfont', sans-serif;
             display: flex;
@@ -22,6 +25,8 @@
             justify-content: center;
             height: 100vh;
             overflow: hidden;
+            flex-direction: column;
+            position: relative;
         }
 
         .container {
@@ -65,12 +70,10 @@
             text-align: right;
         }
 
-        /* Şarj barı stili */
         .battery-container {
             position: relative;
             width: 50px;
             height: 50px;
-
         }
 
         svg {
@@ -119,57 +122,78 @@
                 height: 40px;
             }
         }
+
+        .slide-up {
+            animation: slideUp 0.8s forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+
+        #ikincidiv {
+            display: none;
+            color: white;
+            font-family: 'myfont', sans-serif;
+            font-size: 2em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #ikincidiv iframe{
+            display: inline-block;
+        }
     </style>
 </head>
 
-<body>
-    <div class="container" id="fullscreenButton" onclick="tamEkranYap()">
-        <div class="clock" id="clock"></div>
-    </div>
-    <div class="top-right">
-        <div id="day" style="display: block;">Pzr 5</div>
-        <div style="display: flex; position: absolute; right: 15px;">
-            <div class="temp" id="temp">23°</div>
-            <div style="width: 30px; height: 2px;"></div>
-            <div class="battery-container">
-                <svg>
-                    <circle class="background" cx="25" cy="25" r="20"></circle>
-                    <circle class="progress" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6">
-                    </circle>
-                </svg>
+<body id="body">
+    <div id="birincidiv">
+        <div class="container" id="fullscreenButton" onclick="tamEkranYap()">
+            <div class="clock" id="clock"></div>
+        </div>
+        <div class="top-right">
+            <div id="day" style="display: block;">Pzr 5</div>
+            <div style="display: flex; position: absolute; right: 15px;">
+                <div class="temp" id="temp">23°</div>
+                <div style="width: 30px; height: 2px;"></div>
+                <div class="battery-container">
+                    <svg>
+                        <circle class="background" cx="25" cy="25" r="20"></circle>
+                        <circle class="progress" cx="25" cy="25" r="20" stroke-dasharray="125.6"
+                            stroke-dashoffset="125.6"></circle>
+                    </svg>
+                </div>
             </div>
         </div>
+        <div id="spotifybutton"
+            style="display: flex; position: absolute; bottom: 15px; cursor: pointer; transition: all 0.5s ease;"
+            onclick="yenidivaktif()">
+            <img src="spotify.png" alt="spotify" width="50px">
+        </div>
     </div>
-    <div id="spotifybutton"
-        style="display: flex; position: absolute; bottom: 15px; cursor: pointer; transition: all 0.5s ease;"
-        onclick="Spotifyopen()">
-        <img src="spotify.png" alt="spotify" width="50px">
-    </div>
-    <div id="spotifycontent"
-        style="display: none; position: absolute; bottom: 15px; min-width: 90%;transition: all 0.5s ease; opacity: 0;">
-        <!-- <iframe style="border-radius:12px"
-            src="https://open.spotify.com/embed/playlist/6EOAeLmhGRuc7SNwW8CnSj?utm_source=generator" width="100%"
-            height="152" frameBorder="0" allowfullscreen=""
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> -->
+
+    <div id="ikincidiv">
+        <iframe style="border-radius:12px"
+            src="https://open.spotify.com/embed/playlist/6EOAeLmhGRuc7SNwW8CnSj?utm_source=generator&theme=0"
+            width="100%" height="352" frameBorder="0" allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         <iframe style="border-radius:12px"
             src="https://open.spotify.com/embed/playlist/37i9dQZF1DXdnOj1VEuhgb?utm_source=generator&theme=0"
             width="100%" height="152" frameBorder="0" allowfullscreen=""
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-    <script>
-        function Spotifyopen() {
-            document.getElementById("spotifybutton").style.opacity = '0';
-            setTimeout(function () {
-                document.getElementById("spotifybutton").style.display = 'none';
-            }, 500);
-            setTimeout(function () {
-                document.getElementById("spotifycontent").style.display = 'flex';
-                setTimeout(function () {
-                    document.getElementById("spotifycontent").style.opacity = '1';
-                }, 500);
-            }, 200);
-        }
 
+    <script>
         function updateTime() {
             const now = new Date();
             const hours = now.getHours().toString().padStart(2, '0');
@@ -177,7 +201,7 @@
             const timeString = `${hours}:${minutes}`;
 
             const clockDiv = document.getElementById("clock");
-            clockDiv.innerHTML = ''; // Önceki içeriği temizle
+            clockDiv.innerHTML = '';
 
             for (const [index, char] of [...timeString].entries()) {
                 const digitDiv = document.createElement('div');
@@ -220,67 +244,61 @@
         }
 
         function updateBattery() {
-            if (!navigator.getBattery) {
-                console.warn("Battery API desteklenmiyor.");
-                return;
-            }
+            if (!navigator.getBattery) return;
 
             navigator.getBattery().then(battery => {
                 function setProgress() {
                     const progressCircle = document.querySelector('circle.progress');
                     const radius = progressCircle.r.baseVal.value;
                     const circumference = 2 * Math.PI * radius;
-                    const percent = battery.level; // 0 ile 1 arası
+                    const percent = battery.level;
                     const offset = circumference - percent * circumference;
                     progressCircle.style.strokeDashoffset = offset;
-
-                    // Rengi doluluk oranına göre ayarla (0.2'den küçükse kırmızı yap)
-                    if (percent > 0.2) {
-                        progressCircle.style.stroke = '#4caf50';
-                    } else {
-                        progressCircle.style.stroke = '#f44336';
-                    }
+                    progressCircle.style.stroke = percent > 0.2 ? '#4caf50' : '#f44336';
                 }
 
                 setProgress();
-
-                // Şarj durumu veya seviye değiştiğinde güncelle
                 battery.addEventListener('levelchange', setProgress);
                 battery.addEventListener('chargingchange', setProgress);
             });
         }
 
-        setInterval(updateTime, 1000);
-        updateTime();
-        fetchWeatherKonumla();
-        setInterval(fetchWeatherKonumla, 10 * 60 * 1000); // 10 dakikada bir hava durumu güncelle
-        updateBattery();
-
         function tamEkranYap() {
             let elem = document.documentElement;
-
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) {
-                elem.msRequestFullscreen();
-            }
+            if (elem.requestFullscreen) elem.requestFullscreen();
+            else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+            else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
 
             document.getElementById("fullscreenButton").onclick = tamEkrandanCik;
         }
 
         function tamEkrandanCik() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) document.msExitFullscreen();
 
             document.getElementById("fullscreenButton").onclick = tamEkranYap;
         }
+
+        function yenidivaktif() {
+            const birinciDiv = document.getElementById("birincidiv");
+            const ikinciDiv = document.getElementById("ikincidiv");
+
+            for (const child of [...birinciDiv.children]) {
+                child.classList.add("slide-up");
+            }
+
+            setTimeout(() => {
+                birinciDiv.style.display = "none";
+                ikinciDiv.style.display = "flex";
+            }, 800);
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+        fetchWeatherKonumla();
+        setInterval(fetchWeatherKonumla, 10 * 60 * 1000);
+        updateBattery();
     </script>
 </body>
 
