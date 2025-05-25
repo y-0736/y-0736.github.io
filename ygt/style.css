@@ -1,0 +1,33 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+header {
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    background-color: antiquewhite;
+}
+
+header span {
+    padding: 0px 15px;
+}
+
+main {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100vh;
+}
+
+main .container {
+    justify-content: center;
+    display: grid;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+}
