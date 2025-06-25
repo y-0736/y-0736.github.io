@@ -1,66 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 
 <head>
+  <meta charset="UTF-8">
   <title>Kontrol Paneli</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 
 <body>
-  <input type="text" id="sifreInput" placeholder="Şifrenizi girin">
-  <button id="kilitleBtn" onclick="sifreKaydet()">Sistemi Kilitle</button>
-  <button id="kilitleofflineBtn">Sistemi Kilidini Aç</button>
-  <button id="kapatBtn">Sistemi Kapat</button>
+  <h2>Kontrol Paneli</h2>
+
+  <input type="text" id="sifreInput" placeholder="Şifreyi gir">
+  <br><br>
+
+  <button id="kilitleBtn">🔒 Kilitle</button>
+  <button id="kilitAcBtn">🔓 Kilidi Aç</button>
+  <button id="kapatBtn">⛔ Kapat</button>
+  <button id="yenidenBtn">🔁 Yeniden Başlat</button>
+
+  <p id="durum"></p>
 
   <script>
-    // Firebase ayarları (sadece databaseURL yeterli)
-    function sifreKaydet() {
-      const inputValue = document.getElementById("sifreInput").value;
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "firebase/app";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
 
-      // Firebase'e gönderme örneği:
-      db.ref("/").update({ sifre: inputValue });
-
-      console.log("Şifre kaydedildi:", inputValue);
-    }
-
+    // Your web app's Firebase configuration
     const firebaseConfig = {
-      databaseURL: "https://laptopcontrol-9c090-default-rtdb.europe-west1.firebasedatabase.app"
+      apiKey: "AIzaSyA4accFzCv2kOrhmAE9NSu90hPJ_U6TjYk",
+      authDomain: "laptopcontrol-9c090.firebaseapp.com",
+      databaseURL: "https://laptopcontrol-9c090-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "laptopcontrol-9c090",
+      storageBucket: "laptopcontrol-9c090.firebasestorage.app",
+      messagingSenderId: "367208876377",
+      appId: "1:367208876377:web:4ecbef724a2908778ba448"
     };
 
-    // Firebase başlatılıyor
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    document.getElementById("kilitleofflineBtn").onclick = function () {
+    // Yardımcı fonksiyon
+    function log(mesaj) {
+      document.getElementById("durum").innerText = mesaj;
+      console.log(mesaj);
+    }
 
-      db.ref("/").update({ komut: "offline" });
-      alert("Sistem kilidi Açıldı!");
-    };
-
-    // Butona tıklanınca çalışacak
     document.getElementById("kilitleBtn").onclick = function () {
-      const inputValue = document.getElementById("sifreInput").value;
+      const sifre = document.getElementById("sifreInput").value.trim();
+      if (!sifre) return alert("Lütfen şifre gir.");
 
-      // Firebase'e gönderme örneği:
-      db.ref("/").update({ sifre: inputValue });
-      //
-      setTimeout(function () {
-        db.ref("/").update({ komut: "kilitle" });
-        alert("Kilitle komutu gönderildi!");
-      }, 5000); // 20000 milisaniye = 20 saniy
+      db.ref("/").update({ sifre: sifre }).then(() => {
+        setTimeout(() => {
+          db.ref("/").update({ komut: "kilitle" });
+          log("Kilitle komutu gönderildi.");
+        }, 3000);
+      });
     };
-    // Butona tıklanınca çalışacak
+
+    document.getElementById("kilitAcBtn").onclick = function () {
+      db.ref("/").update({ komut: "offline" });
+      log("Kilidi açma komutu gönderildi.");
+    };
+
     document.getElementById("kapatBtn").onclick = function () {
       db.ref("/").update({ komut: "kapat" });
-      alert("Kilitle komutu gönderildi!");
-      // setTimeout(function () {
-      //   // Buraya 20 saniye sonra yapılacak işlemi yazın
-      //   db.ref("/").update({ komut: "none" });
-      // }, 20000); // 20000 milisaniye = 20 saniy
+      log("Kapatma komutu gönderildi.");
     };
-  </script>
 
+    document.getElementById("yenidenBtn").onclick = function () {
+      db.ref("/").update({ komut: "yeniden" });
+      log("Yeniden başlatma komutu gönderildi.");
+    };
+
+    // Sayfa açıldığında Firebase bağlantısını test et
+    db.ref("/test").set("aktif").then(() => {
+      log("🔗 Firebase bağlantısı başarılı.");
+    }).catch(err => {
+      log("❌ Firebase bağlantı hatası: " + err.message);
+    });
+    firebase.auth().signInWithEmailAndPassword("ygt.0736@gmail.com", "passaword")
+      .then((userCredential) => {
+        auth.uid === "2d7e4cN5JvXFYyVOfG8aQNc6Uhl1"
+        const user = userCredential.user;
+        console.log("Senin UID:", user.uid);
+      })
+      .catch((error) => {
+        console.error("Hata:", error);
+      });
+
+  </script>
 </body>
 
 </html>
