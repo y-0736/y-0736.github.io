@@ -231,7 +231,11 @@
 body {
     margin: 0px;
     padding: 0px;
-    font-family: consolas;
+    font-family: Consolas, monaco, monospace;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 20px;
     background: linear-gradient(135deg, #0d0d0d, #1f1f1f);
     color: #fff;
 }
@@ -295,20 +299,20 @@ main .container {
 /** Scrollbar */
 
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: scroll; 
+    background: scroll;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #000000; 
+    background: #000000;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+    background: #555;
 }
