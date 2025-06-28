@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior: smooth;">
 
 <head>
     <meta charset="UTF-8">
@@ -19,11 +19,10 @@
     <header>
         <span style="font-family: 'Shadows Into Light', cursive;">y-0736</span>
         <span title="I don’t know why I wrote this either, so don’t question it. Anyway, I’m Yiğit. hehe">
-            This is my personal webpage. And yes I'm Yiğit Yeşildağ...
-        </span>
+            This is my personal webpage.</span>
     </header>
     <main>
-        <div class="container" style="height: 100vh;">
+        <div class="container fullscreen">
             <img src="ico (1).png" alt="This is my representative photo." title="This is my representative photo."
                 width="250px">
             <h1 style="margin: 50px 0px 0px 0px;">Who Am I?</h1>
@@ -31,9 +30,11 @@
                 development and I aim to share what I know with
                 everyone. I create educational videos for beginners and share plenty of tips for all skill levels. I'd
                 love to help you on your learning journey.</p>
+            <a href="#contact" class="contactbtn">Click to contact me</a>
         </div>
         <div>
-            <H1 style="margin: 50px 0px 0px 0px; text-align: center;" class="appear">There Are My Projects</H1>
+            <H1 style="margin: 50px 0px 0px 0px; text-align: center;" class="appear fullscreen">There Are My Projects
+            </H1>
 
             <div class="projects-container big-container">
                 <!-- <p>These are my projects.</p> -->
@@ -60,9 +61,46 @@
                 </div>
             </div>
         </div>
+        <div class="container fullscreen" id="contact">
+            <h1 style="margin: 50px 0px 0px 0px;">Contact For Me</h1>
+            <br>
+            <br>
+            <form id="contact-form">
+                <input class="contact-item" type="text" name="name" placeholder="Your Name" required />
+                <input class="contact-item" type="text" name="secondname" placeholder="Your Second Name" required>
+                <input class="contact-item" type="email" name="email" placeholder="Email adresiniz" required />
+                <input class="contact-item" type="number" name="phone">
+                <textarea class="contact-item" style=" resize: none;" name="message" placeholder="Mesajınız"
+                    required></textarea>
+                <span style="display: none;" id="date"></span>
+                <div id="Contactsubmitbutton"> <button class="contact-item contactbtn" type="submit">Gönder</button>
+                </div>
+            </form>
+            <br>
+            <br>
+            <h2 style="margin-bottom: 0;">Address & Contact</h2>
+            <div class="info-container"
+                style="display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; width: 100%;">
+                <div class="info-box" style="text-align: center; flex: 1;">
+                    <h3 style="margin-bottom: 0;">Phone Number</h3>
+                    <hr style="margin-top: 0; margin-bottom: 15px;">
+                    <Span>+90(506) 926 65 07</Span>
+                </div>
+                <div class="info-box" style="text-align: center; flex: 1;">
+                    <h3 style="margin-bottom: 0;">Mail</h3>
+                    <hr style="margin-top: 0; margin-bottom: 15px;">
+                    <Span>info@ygid.com</Span>
+                </div>
+                <div class="info-box" style="text-align: center; flex: 1;">
+                    <h3 style="margin-bottom: 0;">Address</h3>
+                    <hr style="margin-top: 0; margin-bottom: 15px;">
+                    <Span>Muratpaşa / Antalya / Türkiye</Span>
+                </div>
+            </div>
+        </div>
         <div>
-            <H1 style="margin: 50px 0px 0px 0px; text-align: center;" class="appear">There Are My Social Media Account</H1>
-
+            <H1 style="margin: 50px 0px 0px 0px; text-align: center;">There Are My Social Media Account
+            </H1>
             <div class="social-container big-container">
                 <!-- <p>These are my projects.</p> -->
                 <div class="container">
@@ -102,7 +140,43 @@
             </div>
         </div>
     </main>
-    <footer></footer>
+    <footer>
+
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+    <script>
+        function tarihSaatYaz() {
+            const bugun = new Date();
+
+            const gun = bugun.getDate().toString().padStart(2, '0');
+            const ay = (bugun.getMonth() + 1).toString().padStart(2, '0');
+            const yil = bugun.getFullYear();
+
+            const saat = bugun.getHours().toString().padStart(2, '0');
+            const dakika = bugun.getMinutes().toString().padStart(2, '0');
+
+            document.getElementById("date").textContent = `${gun}/${ay}/${yil} ${saat}:${dakika}`;
+        }
+
+        tarihSaatYaz(); // Sayfa açıldığında hemen çalışsın
+        setInterval(tarihSaatYaz, 10000);
+        (function () {
+            emailjs.init("6GUMhI3rYp0xZjZWo"); // user_id
+        })();
+
+        document.getElementById("contact-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            emailjs.sendForm("service_lp6fdy8", "template_kpy2s8n", this)
+                .then(function (response) {
+                    alert("Mesaj başarıyla gönderildi!");
+                    window.location.href = "/ygt/";
+                }, function (error) {
+                    alert("Hata oluştu: " + JSON.stringify(error));
+                });
+        });
+    </script>
+
 </body>
 
 </html>

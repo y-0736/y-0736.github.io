@@ -28,7 +28,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 40px 30px;
+    margin: 40px 20px;
     transition: 0.5s;
 }
 
@@ -230,12 +230,11 @@
 /** Ana Kapsam */
 body {
     margin: 0px;
-    padding: 0px;
+    padding: 0px 15px;
     font-family: Consolas, monaco, monospace;
     font-style: normal;
     font-variant: normal;
     font-weight: 400;
-    line-height: 20px;
     background: linear-gradient(135deg, #0d0d0d, #1f1f1f);
     color: #fff;
 }
@@ -245,11 +244,11 @@ header {
     /* font-family: 'Edu VIC WA NT Hand Pre', cursive; */
     height: 50px;
     width: 100%;
-    position: relative;
+    position: fixed;
     align-items: center;
     justify-content: space-between;
     display: flex;
-    background-color: rgb(49, 42, 33);
+    background: none;
     margin-bottom: 50px;
 }
 
@@ -262,7 +261,7 @@ main {
     /* font-family: 'Edu VIC WA NT Hand Pre', cursive; */
     align-items: center;
     justify-content: center;
-    display: grid;
+    display: block;
     justify-items: center;
 }
 
@@ -304,15 +303,106 @@ main .container {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: scroll;
+    background: #313131;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #000000;
+    background: #1f1f1f;
+    border-radius: 15px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+/* * */
+
+.contactbtn {
+    display: inline-block;
+    font-size: 1.1em;
+    color: #111;
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 0px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.contactbtn:hover {
+    background: #b1b1b1;
+    border: 1px solid #000000;
+    box-shadow: 0 1px 15px rgba(1, 1, 1, 0.2);
+}
+
+/** İletişim Formu */
+
+#contact textarea,
+#contact input,
+#contact button {
+    resize: none;
+    padding: 10px;
+}
+
+#contact textarea {
+    height: 39.2px;
+}
+
+#contact-form {
+    max-width: 80%;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#contact-form *:not(#Contactsubmitbutton):not(#Contactsubmitbutton *) {
+    flex-grow: 1;
+    background: none;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    color: #fff;
+}
+
+#contact-form textarea {
+    width: 100%;
+}
+
+#contact-form div {
+    text-align: center;
+    width: 100%;
+}
+
+/* * */
+.info-box {
+    padding-top: 0.5rem;
+    min-width: 200px;
+    /* Taşmaması için sınır */
+}
+
+/* Mobilde alt alta diz */
+@media (max-width: 768px) {
+    .info-container {
+        flex-direction: column;
+        align-items: center;
+        /* ortala istersen */
+    }
+
+    .info-box {
+        width: 100%;
+        /* Tüm genişliği kaplasın */
+        max-width: 250px;
+    }
+}
+
+.fullscreen {
+    height: 100vh;
+    justify-content: center;
+    display: grid;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
 }
