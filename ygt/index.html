@@ -35,7 +35,6 @@
             <div class="dot" id="dot-contact"></div>
         </a>
     </div>
-
     <main>
         <div class="container fullscreen" id="whoami">
             <img src="ico (1).png" alt="This is my representative photo." title="This is my representative photo."
@@ -90,8 +89,7 @@
                 </div>
             </div>
         </div>
-        </div>
-        </div>
+        <br><br><br>
         <div class="fullscreen" id="socialmedia">
             <H1 style="margin: 50px 0px 0px 0px; text-align: center;" class="appeary">There Are My Social Media Account
             </H1>
@@ -135,48 +133,50 @@
         </div>
 
         <div class="container fullscreen" id="contact">
-            <h1 style="margin: 50px 0px 0px 0px;" class="appeary">Contact For Me</h1>
+            <h1 style="margin: 50px 0px 0px 0px;" class="">Contact For Me</h1>
             <br>
             <br>
             <form id="contact-form">
                 <div class="notstyle" style="width: 100%;">
-                    <input class="contact-item appearx" type="text" name="name" placeholder="Your Name" required />
-                    <input class="contact-item appeary" type="text" name="secondname" placeholder="Your Second Name"
+                    <input class="contact-item " type="text" name="name" placeholder="Your Name" required />
+                    <input class="contact-item " type="text" name="secondname" placeholder="Your Second Name"
                         required>
                 </div>
                 <div class="notstyle" style="width: 100%;">
-                    <input class="contact-item appearx" type="email" name="email" placeholder="Email adresiniz"
+                    <input class="contact-item " type="email" name="email" placeholder="Email adresiniz"
                         required />
-                    <input class="contact-item appeary" type="number" name="phone">
+                    <input class="contact-item " type="number" name="phone">
                 </div>
-                <textarea class="contact-item appearx" style=" resize: none;" name="message" placeholder="Mesajınız"
+                <textarea class="contact-item " style=" resize: none;" name="message" placeholder="Mesajınız"
                     required></textarea>
                 <span style="display: none;" id="date"></span>
-                <div id="Contactsubmitbutton" class="appeary"> <button class="contact-item contactbtn"
+                <div id="Contactsubmitbutton" class=""> <button class="contact-item contactbtn"
                         type="submit">Gönder</button>
                 </div>
             </form>
             <br>
             <br>
-            <h2 style="margin-bottom: 0;" class="appearx">Address & Contact</h2>
+            <h2 style="margin-bottom: 0;" class="">Address & Contact</h2>
             <div class="info-container"
                 style="display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; width: 100%;">
-                <div class="info-box appearx" style="text-align: center; flex: 1;">
+                <div class="info-box " style="text-align: center; flex: 1;">
                     <h3 style="margin-bottom: 0;">Phone Number</h3>
                     <hr style="margin-top: 0; margin-bottom: 15px;">
                     <Span>+90(506) 926 65 07</Span>
                 </div>
-                <div class="info-box appearx" style="text-align: center; flex: 1;">
+                <div class="info-box " style="text-align: center; flex: 1;">
                     <h3 style="margin-bottom: 0;">Mail</h3>
                     <hr style="margin-top: 0; margin-bottom: 15px;">
                     <Span>info@ygid.com</Span>
                 </div>
-                <div class="info-box appeary" style="text-align: center; flex: 1;">
+                <div class="info-box " style="text-align: center; flex: 1;">
                     <h3 style="margin-bottom: 0;">Address</h3>
                     <hr style="margin-top: 0; margin-bottom: 15px;">
                     <Span>Muratpaşa / Antalya / Türkiye</Span>
                 </div>
             </div>
+            <br><br><br><br><br>
+
         </div>
     </main>
     <footer>
@@ -214,7 +214,32 @@
                     alert("Hata oluştu: " + JSON.stringify(error));
                 });
         });
-        const sections = document.querySelectorAll('.fullscreen'); const dots = { whoami: document.getElementById('dot-whoami'), project: document.getElementById('dot-project'), socialmedia: document.getElementById('dot-socialmedia'), contact: document.getElementById('dot-contact'), }; window.addEventListener('scroll', () => { sections.forEach(section => { const rect = section.getBoundingClientRect(); const isVisible = rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2; const dot = dots[section.id]; if (dot) { if (isVisible) { dot.classList.add('active'); } else { dot.classList.remove('active'); } } }); });
+        const sections = document.querySelectorAll('.fullscreen');
+        const dots = {
+            whoami: document.getElementById('dot-whoami'),
+            project: document.getElementById('dot-project'),
+            socialmedia: document.getElementById('dot-socialmedia'),
+            contact: document.getElementById('dot-contact'),
+        };
+        window.addEventListener('scroll', () => {
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2;
+                const dot = dots[section.id];
+                if (dot) {
+                    if (isVisible) {
+                        dot.classList.add('active');
+
+                    } else {
+                        dot.classList.remove('active');
+
+                    }
+                }
+            });
+        });
+window.addEventListener('wheel', function(e) {
+  e.preventDefault();
+}, { passive: false });
 
     </script>
 
