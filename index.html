@@ -1,0 +1,20 @@
+<script>
+  // Önce hedef sayfanın var olup olmadığını kontrol ediyoruz
+  const targetUrl = "/ygt/";  // Öncelikli yönlendirme adresi
+  const fallbackUrl = "/waitpage.html"; // Hedef yoksa yönlendirilecek adres
+
+  fetch(targetUrl, { method: 'HEAD' })
+    .then(response => {
+      if (response.ok) {
+        // Sayfa varsa yönlendir
+        window.location.href = targetUrl;
+      } else {
+        // Sayfa yoksa yedek sayfaya yönlendir
+        window.location.href = fallbackUrl;
+      }
+    })
+    .catch(error => {
+      // Herhangi bir hata oluşursa (404, ağ hatası vs.), yedek sayfaya yönlendir
+      window.location.href = fallbackUrl;
+    });
+</script>
