@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Font ve Slider Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #111;
+      font-family: 'Momo Trust Display', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slider-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slider {
+      position: relative;
+      width: 80%;
+      max-width: 600px;
+      height: auto;
+    }
+
+    .slider img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 200px;
+      height: auto;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slider img.active {
+      opacity: 1;
+    }
+
+    .slider-text {
+      color: whitesmoke;
+      font-size: 2rem;
+      margin-top: 20px;
+      text-align: center;
+      z-index: 10;
+      position: fixed;
+      bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slider-container">
+    <div class="slider">
+      <img src="logo.png" class="active" alt="1">
+      <img src="ygid-store-red-black.png" alt="2">
+    </div>
+    <p class="slider-text">ygid Store</p>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slider img');
+    let current = 0;
+
+    function showNextSlide() {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }
+
+    setInterval(showNextSlide, 3000);
+  </script>
+</body>
+
+</html>
