@@ -196,7 +196,8 @@
 
 /** KART RENKLERİ */
 .remotecontrol:before,
-.remotecontrol::after {
+.remotecontrol::after,.remotecontrol-button:before,
+.remotecontrol-button::after {
     background: linear-gradient(315deg, #ffbc00, #ff0058) !important
 }
 
@@ -271,6 +272,12 @@ header {
     z-index: 999;
     background-color: #00000098;
     left: 0;
+}
+
+header span:first-child {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
 }
 
 header span {
@@ -454,7 +461,6 @@ h6 {
 
 .dot.active {
     background-color: rgb(32, 32, 32);
-    border: #000000 1px solid;
     box-shadow: 0 3px 15px rgb(0, 0, 0);
 }
 
@@ -510,4 +516,12 @@ h6 {
     .notstyle {
         flex-direction: column;
     }
+}
+
+.not-ready-button {
+    cursor: not-allowed;
+}
+
+.not-ready-button:hover {
+    background-color: #f80000 !important;
 }

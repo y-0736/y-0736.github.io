@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="shortcut icon" href="icon-wht.png" type="image/x-icon">
+    <title>Odak 26</title>
+</head>
+
+<body>
+
+    <nav>
+        <h2 style="margin-bottom: 30px; font-size: 1.4rem;">ODAK 26</h2>
+        <div class="nav-item active" onclick="showPage('home')">🏠 Ana Ekran</div>
+        <div class="nav-item" onclick="showPage('all-holidays')">📅 Tüm Tatiller</div>
+        <div class="nav-item" onclick="showPage('notes-page')">📝 Notlarım</div>
+        <div style="margin-top: auto;">
+            <div class="nav-item" onclick="document.body.classList.toggle('dark-mode')">🌓 Görünüm</div>
+            <span style="display: block; height: 50px;"></span>
+            <span style="display: flex; color: #5b5b5b6d; font-size: small; text-align: right; justify-content: space-between;" ><span>© 2026 - yg1d</span> <span>Helped <a href="https://gemini.google.com/" target="_blank"><img height="15px" src="https://upload.wikimedia.org/wikipedia/commons/4/45/Gemini_language_model_logo.png" alt=""></a></span></span>
+        </div>
+    </nav>
+
+    <main>
+        <div class="top-bar">
+            <div class="info-group">
+                <div class="info-item"><span>TARİH</span><b id="top-date">14 Mart 2026</b></div>
+                <div class="info-item"><span>SAAT</span><b id="top-clock">00:00:00</b></div>
+                <div class="info-item"><span>KONUM</span><b>Antalya, TR</b></div>
+            </div>
+            <img src="icon-blck.png" height="50px" alt="icon">
+        </div>
+        <div style="display: flex; gap: 20px; align-content: center;align-items: stretch; justify-content: space-between; margin-bottom: 25px;"
+            class="ayt-mtv-cnt">
+            <div class="section ayt-mtv" style="border-left: 5px solid #10b981; background: var(--card);">
+                <h4 style="margin: 0 0 10px 0; color: #10b981; font-size: 0.8rem;">📖 GÜNÜN AYETİ</h4>
+                <div id="quran-area">
+                    <p id="quran-arabic" dir="rtl"
+                        style="font-size: 1.4rem; font-family: 'Amiri', serif; margin-bottom: 10px;">...</p>
+                    <p id="quran-tr" style="font-style: italic; font-size: 0.9rem; color: var(--text);">Yükleniyor...
+                    </p>
+                    <small id="quran-info" style="color: #64748b; font-weight: bold;"></small>
+                </div>
+            </div>
+            <div class="section ayt-mtv" style="border-right: 5px solid #10b981; background: var(--card);">
+                <h4 style="margin: 0 0 10px 0; text-align: right; color: #10b981; font-size: 0.8rem;">-yg1d</h4>
+                <div style="text-align: center; padding: 10px;">
+                    <div class="quote-container" style="text-align: center; padding: 20px;">
+                        <p id="quote-text"
+                            style="font-size: 1.5rem; font-weight: 400; margin-top: 0; margin-bottom: 15px; transition: opacity 0.5s ease;">
+                        </p>
+
+                        <p id="quote-author"
+                            style="font-size: 1rem; opacity: 0.7; font-style: italic;margin: 0; transition: opacity 0.5s ease;">
+                        </p>
+                    </div>
+                    <button onclick="newQuote()"
+                        style="background: rgba(255,255,255,0.25); border: 1px solid rgb(193, 193, 193); color: rgb(193, 193, 193); padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; backdrop-filter: blur(5px);">
+                        🔄 Yeni İlham Al
+                    </button><button onclick="shareOnInstagram()"
+                        style="background: rgba(255,255,255,0.2); border: 1px solid rgb(193, 193, 193); color: rgb(193, 193, 193); padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; margin-left: 5px;">📸
+                        Paylaş</button>
+                </div>
+            </div>
+        </div>
+        <div id="home" class="page">
+            <div class="section">
+                <h3 style="margin-top:0">Kritik Geri Sayımlar</h3>
+                <div class="focus-grid">
+                    <div class="c-card" style="--accent: #8b5cf6">
+                        <span class="c-label">Sıradaki Ezan (<span id="p-name">İmsak</span>)</span>
+                        <span class="c-val" id="p-timer">-Gün Bitti-</span>
+                    </div>
+                    <div class="c-card" style="--accent: #ef4444">
+                        <span class="c-label">YKS 2026</span>
+                        <span class="c-val" id="yks-timer">--:--:--</span>
+                    </div>
+                    <div class="c-card" style="--accent: #f59e0b">
+                        <span class="c-label">LGS 2026</span>
+                        <span class="c-val" id="lgs-timer">--:--:--</span>
+                    </div>
+                    <div class="c-card" style="--accent: #10b981">
+                        <span class="c-label">Hafta Sonu (Cmt)</span>
+                        <span class="c-val" id="weekend-timer">--:--:--</span>
+                    </div>
+                    <div class="c-card" style="--accent: #ec4899">
+                        <span class="c-label">En Yakın Bayram</span>
+                        <span class="c-val" id="next-holiday-timer">--:--:--</span>
+                        <small id="next-holiday-name" style="color:#64748b; font-size:0.7rem"></small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-main">
+                <div class="section pomo-box">
+                    <div style="font-weight: 600; font-size: 0.9rem; letter-spacing: 1px;">POMODORO SİSTEMİ</div>
+                    <div id="pomo-display" style="font-size: 4rem; font-weight: 800; margin: 15px 0;">25:00</div>
+                    <button onclick="togglePomo()" id="pomo-btn"
+                        style="background:white; color:var(--accent); border:none; padding:12px 30px; border-radius:12px; font-weight:700; cursor:pointer;">BAŞLAT</button>
+                </div>
+                <div class="section">
+                    <div
+                        style="display: flex; gap: 20px; align-content: center;align-items: stretch; justify-content: space-between;">
+                        <h3 style="margin-top:0; font-size:1rem">Takvim Hedefi</h3> <span id="mounth"></span>
+                    </div>
+                    <div class="calendar-grid" id="main-cal"></div>
+                    <div id="custom-goal"
+                        style="margin-top:15px; display:none; border-top:1px solid var(--border); padding-top:10px;">
+                        <span class="c-label">Seçili Gün</span>
+                        <span class="c-val" id="custom-timer" style="color:#ef4444"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="all-holidays" class="page hidden">
+            <div class="section">
+                <h2>2026 Resmi ve Dini Tatiller</h2>
+                <div id="full-holiday-list"
+                    style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px;">
+                </div>
+            </div>
+        </div>
+
+        <div id="notes-page" class="page hidden">
+            <div class="section">
+                <h2>Hızlı Notlar</h2>
+                <textarea id="notepad"
+                    style="width:100%; height:400px; background:transparent; color:var(--text); border:1px solid var(--border); border-radius:15px; padding:20px; font-size:1rem; outline:none;"
+                    placeholder="Planlarını buraya yaz..."></textarea>
+            </div>
+        </div>
+    </main>
+    <script type="module">
+        import './app.js';
+    </script>
+    <div id="share-modal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(5px);">
+        <div
+            style="background:rgba(255, 255, 255, 0.247); width:90%; max-width:800px; border-radius:20px; display:flex; flex-direction:row; overflow:hidden; position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.3);">
+
+            <button onclick="closeShareModal()"
+                style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:24px; cursor:pointer; z-index:10;">&times;</button>
+
+            <div id="modal-preview-container"
+                style="flex:1; background:#00000015; display:flex; align-items:center; justify-content:center; padding:20px; border-right:1px solid #eee;">
+                <div id="modal-preview-box"
+                    style="width:auto; max-width:100%; height: 450px; padding:30px; background:transparent; border:2px dashed #ccc; text-align:center; border-radius: 15px; display:flex; flex-direction:column; justify-content:center; background-repeat: no-repeat; background-size: cover; background-position: center; padding: 0px 25px;">
+                    <p id="modal-quote-body" style="margin:0; word-wrap:break-word; font-weight: 600;"></p>
+                    <p id="modal-quote-author" style="margin-top:20px; font-size: 0.8em; opacity: 0.8;"></p>
+                </div>
+            </div>
+
+            <div
+                style="flex:1; padding:30px; display:flex; background-color: white; flex-direction:column; gap:15px; justify-content:center;">
+                <h3 style="margin-top:0; color:#1f2937;">Tasarım Stüdyosu</h3>
+
+                <div
+                    style=" display: flex;  gap: 20px; align-content: center;  justify-content: center;  flex-direction: row;">
+                    <div style="flex:1;">
+                        <label style="display: block;">Yazı Tipi:</label>
+                        <select id="m-font-family" onchange="updateModalPreview()"
+                            style="padding:8px; border-radius:8px; width: 100%;">
+                            <option value="'Georgia', serif">Klasik</option>
+                            <option value="'Segoe UI', sans-serif">Modern</option>
+                            <option value="'Courier New', monospace">Daktilo</option>
+                            <option value="'Brush Script MT', cursive">El Yazısı</option>
+                        </select>
+                    </div>
+
+                    <div style="flex:1;">
+                        <label>Yazı Rengi:</label>
+                        <input type="color" id="m-font-color" value="#000000" onchange="updateModalPreview()"
+                            style="width:100%; height:40px; border:none; cursor:pointer;">
+                    </div>
+                </div>
+                <div
+                    style=" display: flex;  gap: 20px; align-content: center;  justify-content: center;  flex-direction: row;">
+                    <div class="m-control-group" style="flex: 1;">
+                        <label>Yazı Konumu:</label>
+                        <select id="m-text-align-v" onchange="updateModalPreview()"
+                            style="padding:8px; border-radius:8px; width: 100%;">
+                            <option value="center">Orta</option>
+                            <option value="flex-start">Yukarı</option>
+                            <option value="flex-end">Aşağı</option>
+                        </select>
+                    </div>
+                    
+                    <div style="flex:1;">
+                        <label>Yazı Boyutu:</label>
+                        <input type="range" id="m-font-size" min="16" max="40" value="24"
+                            oninput="updateModalPreview()">
+                    </div>
+                </div>
+
+                <label>Arka Plan Stili:</label>
+                <select id="m-bg-type" onchange="updateModalPreview()" style="padding:8px; border-radius:8px;">
+                    <option value="transparent">Şeffaf (PNG)</option>
+                    <option value="white">Açık</option>
+                    <option value="dark">Koyu</option>
+                    <option value="img">Fotoğraf</option>
+                </select>
+                <div id="upload-container" style="display:none; margin-top: 10px;">
+                    <input type="file" id="m-bg-upload" accept="image/*" style="display:none;"
+                        onchange="handleImageUpload(event)">
+                    <button onclick="document.getElementById('m-bg-upload').click()"
+                        style="width:100%; padding:8px; background:#f0f2f5; border:1px solid #ccc; border-radius:8px; cursor:pointer; font-size:0.8rem;">
+                        🖼️ Fotoğraf Seç
+                    </button>
+                </div>
+                <button onclick="downloadFinalImage()"
+                    style="margin-top:20px; background:#10b981; color:white; border:none; padding:15px; border-radius:10px; font-weight:bold; cursor:pointer;">
+                    📥 Şeffaf PNG Olarak İndir
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
