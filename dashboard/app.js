@@ -94,21 +94,46 @@ window.newQuote = async () => {
     const textEl = document.getElementById('quote-text');
     const authorEl = document.getElementById('quote-author');
     if (!textEl) return;
-    textEl.style.opacity = 0;
-    try {
-        const res = await fetch('https://y-0736.github.io/dashboard/quotes.json');
-        const data = await res.json();
-        const trans = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(data.content)}&langpair=en|tr`);
-        const transData = await trans.json();
 
-        textEl.innerText = transData.responseData.translatedText;
-        authorEl.innerText = `— ${data.author}`;
+    textEl.style.opacity = 0;
+
+    try {
+        // 1. Kendi GitHub sayfandaki JSON dosyasını çekiyoruz
+        const response = await fetch('https://y-0736.github.io/dashboard/quotes.json');
+        if (!response.ok) throw new Error("JSON yüklenemedi");
+        
+        const quotes = await response.json();
+
+        // 2. Rastgele bir söz seçiyoruz
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        
+        // ÖNEMLİ: Dosyandaki anahtarlar "quote" ve "author" olduğu için bunları kullanıyoruz
+        const englishText = randomQuote.quote;
+        const authorName = randomQuote.author;
+
+        // 3. MyMemory ile Çeviri Yapıyoruz (en -> tr)
+        const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishText)}&langpair=en|tr`);
+        const transData = await transRes.json();
+        
+        // Çevrilmiş metni alıyoruz
+        const turkishText = transData.responseData.translatedText;
+
+        // 4. Ekrana Yazdırıyoruz
+        textEl.innerText = turkishText;
+        authorEl.innerText = `— ${authorName}`;
+
     } catch (e) {
+        console.error("Hata:", e);
+        // Hata durumunda (internet yoksa veya API limitine takılırsan) yedek söz
         textEl.innerText = "Başarı, her gün tekrarlanan küçük çabaların toplamıdır.";
         authorEl.innerText = "— Robert Collier";
     }
-    textEl.style.opacity = 1;
-    updateModalPreview();
+
+    // Yumuşak geçişle metni göster
+    setTimeout(() => {
+        textEl.style.opacity = 1;
+        if (typeof updateModalPreview === "function") updateModalPreview();
+    }, 300);
 };
 
 async function fetchDailyAyah() {
