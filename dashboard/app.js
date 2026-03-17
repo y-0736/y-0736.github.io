@@ -94,36 +94,21 @@ window.newQuote = async () => {
     const textEl = document.getElementById('quote-text');
     const authorEl = document.getElementById('quote-author');
     if (!textEl) return;
-
     textEl.style.opacity = 0;
     try {
-        // ZenQuotes'u AllOrigins proxy üzerinden çağırıyoruz
-        const proxyUrl = 'https://api.allorigins.win/get?url=';
-        const targetUrl = encodeURIComponent('https://zenquotes.io/api/random');
-        
-        const res = await fetch(`${proxyUrl}${targetUrl}`);
-        const json = await res.json();
-        
-        // AllOrigins veriyi 'contents' içine string olarak koyar, onu parse etmeliyiz
-        const data = JSON.parse(json.contents);
-        
-        const quoteText = data[0].q;
-        const quoteAuthor = data[0].a;
-
-        // Çeviri işlemi (MyMemory genellikle CORS sorunu çıkarmaz)
-        const trans = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(quoteText)}&langpair=en|tr`);
+        const res = await fetch('https://y-0736.github.io/dashboard/quotes.json');
+        const data = await res.json();
+        const trans = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(data.content)}&langpair=en|tr`);
         const transData = await trans.json();
 
         textEl.innerText = transData.responseData.translatedText;
-        authorEl.innerText = `— ${quoteAuthor}`;
+        authorEl.innerText = `— ${data.author}`;
     } catch (e) {
-        console.error("Detaylı hata:", e);
         textEl.innerText = "Başarı, her gün tekrarlanan küçük çabaların toplamıdır.";
         authorEl.innerText = "— Robert Collier";
     }
-    
     textEl.style.opacity = 1;
-    if (typeof updateModalPreview === "function") updateModalPreview();
+    updateModalPreview();
 };
 
 async function fetchDailyAyah() {
