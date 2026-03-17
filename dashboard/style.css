@@ -202,15 +202,38 @@ main {
         flex-direction: column;
     }
 }
+
 #modal-preview-box {
-    box-sizing: border-box; /* Padding boyutunu genişliğe dahil eder */
-    overflow: hidden;      /* Resmin dışarı taşmasını engeller */
+    box-sizing: border-box;
+    /* Padding boyutunu genişliğe dahil eder */
+    overflow: hidden;
+    /* Resmin dışarı taşmasını engeller */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-size: contain; /* Resmi kutunun içine sığdırır, kesmez */
+    background-size: contain;
+    /* Resmi kutunun içine sığdırır, kesmez */
     background-repeat: no-repeat;
     background-position: center;
-    transition: all 0.3s ease; /* Boyut değişimleri yumuşak olur */
+    transition: all 0.3s ease;
+    /* Boyut değişimleri yumuşak olur */
+}
+
+/* Chrome, Safari ve yeni Edge için iç boşluğu sıfırlar */
+#m-font-color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+/* İçerideki renk kutusunun kenarlıklarını kaldırıp tam sığdırır */
+#m-font-color::-webkit-color-swatch {
+    border: none;
+    border-radius: 7px;
+    /* Dış border-radius 8px ise bu 7px olmalı */
+}
+
+/* Firefox için */
+#m-font-color::-moz-color-swatch {
+    border: none;
+    border-radius: 7px;
 }

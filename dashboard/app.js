@@ -198,6 +198,22 @@ window.updateModalPreview = () => {
     const bodyEl = document.getElementById('modal-quote-body');
     const authorEl = document.getElementById('modal-quote-author');
     const uploadContainer = document.getElementById('upload-container');
+    const input = document.getElementById('m-font-size');
+    let value = parseInt(input.value);
+
+    // Eğer değer sayı değilse veya 16'dan küçükse
+    if (isNaN(value) || value < 16) {
+        // İstersen burada hemen 16'ya eşitleyebilirsin:
+        input.value = 16; 
+    }
+    
+    // Değer 40'tan büyükse üst sınırı da koruyalım
+    if (value > 40) {
+        input.value = 40;
+    }
+
+    // Önizleme güncelleme kodların buraya...
+    console.log("Şu anki font boyutu:", value);
 
     if (!previewBox || !bodyEl) return;
 
