@@ -1,8 +1,8 @@
 <script>
   // Önce hedef sayfanın var olup olmadığını kontrol ediyoruz
   // const targetUrl = "/ygt/";  // Öncelikli yönlendirme adresi
-  const fallbackUrl = "/waitpage.html"; // Hedef yoksa yönlendirilecek adres
-
+  // const fallbackUrl = "/waitpage.html"; // Hedef yoksa yönlendirilecek adres
+const targetUrl = "/waitpage.html";
   fetch(targetUrl, { method: 'HEAD' })
     .then(response => {
       if (response.ok) {
