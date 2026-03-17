@@ -97,19 +97,31 @@ window.newQuote = async () => {
 
     textEl.style.opacity = 0;
     try {
+        // ZenQuotes API çağrısı
         const res = await fetch('https://zenquotes.io/api/random');
         const data = await res.json();
-        const trans = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(data.content)}&langpair=en|tr`);
+        
+        // ZenQuotes verisi bir array içindedir: [{ q: "Söz", a: "Yazar", ... }]
+        const quoteText = data[0].q;
+        const quoteAuthor = data[0].a;
+
+        // Çeviri işlemi
+        const trans = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(quoteText)}&langpair=en|tr`);
         const transData = await trans.json();
 
         textEl.innerText = transData.responseData.translatedText;
-        authorEl.innerText = `— ${data.author}`;
+        authorEl.innerText = `— ${quoteAuthor}`;
     } catch (e) {
+        // Hata durumunda yedek söz
         textEl.innerText = "Başarı, her gün tekrarlanan küçük çabaların toplamıdır.";
         authorEl.innerText = "— Robert Collier";
+        console.error("Hata oluştu:", e);
     }
+    
     textEl.style.opacity = 1;
-    updateModalPreview();
+    if (typeof updateModalPreview === "function") {
+        updateModalPreview();
+    }
 };
 
 async function fetchDailyAyah() {
