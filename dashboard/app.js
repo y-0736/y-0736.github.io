@@ -97,31 +97,33 @@ window.newQuote = async () => {
 
     textEl.style.opacity = 0;
     try {
-        // ZenQuotes API çağrısı
-        const res = await fetch('https://zenquotes.io/api/random');
-        const data = await res.json();
+        // ZenQuotes'u AllOrigins proxy üzerinden çağırıyoruz
+        const proxyUrl = 'https://api.allorigins.win/get?url=';
+        const targetUrl = encodeURIComponent('https://zenquotes.io/api/random');
         
-        // ZenQuotes verisi bir array içindedir: [{ q: "Söz", a: "Yazar", ... }]
+        const res = await fetch(`${proxyUrl}${targetUrl}`);
+        const json = await res.json();
+        
+        // AllOrigins veriyi 'contents' içine string olarak koyar, onu parse etmeliyiz
+        const data = JSON.parse(json.contents);
+        
         const quoteText = data[0].q;
         const quoteAuthor = data[0].a;
 
-        // Çeviri işlemi
+        // Çeviri işlemi (MyMemory genellikle CORS sorunu çıkarmaz)
         const trans = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(quoteText)}&langpair=en|tr`);
         const transData = await trans.json();
 
         textEl.innerText = transData.responseData.translatedText;
         authorEl.innerText = `— ${quoteAuthor}`;
     } catch (e) {
-        // Hata durumunda yedek söz
+        console.error("Detaylı hata:", e);
         textEl.innerText = "Başarı, her gün tekrarlanan küçük çabaların toplamıdır.";
         authorEl.innerText = "— Robert Collier";
-        console.error("Hata oluştu:", e);
     }
     
     textEl.style.opacity = 1;
-    if (typeof updateModalPreview === "function") {
-        updateModalPreview();
-    }
+    if (typeof updateModalPreview === "function") updateModalPreview();
 };
 
 async function fetchDailyAyah() {
