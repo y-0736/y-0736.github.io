@@ -96,6 +96,7 @@ window.newQuote = async () => {
     if (!textEl) return;
 
     textEl.style.opacity = 0;
+    authorEl.style.opacity = 0;
 
     try {
         // 1. Kendi GitHub sayfandaki JSON dosyasını çekiyoruz
@@ -129,9 +130,11 @@ window.newQuote = async () => {
         authorEl.innerText = "— Robert Collier";
     }
 
-    // Yumuşak geçişle metni göster
+    //Yumuşak geçişle metni göster
     setTimeout(() => {
         textEl.style.opacity = 1;
+        if (typeof updateModalPreview === "function") updateModalPreview();
+        authorEl.style.opacity = 0.7;
         if (typeof updateModalPreview === "function") updateModalPreview();
     }, 300);
 };
