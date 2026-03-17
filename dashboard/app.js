@@ -97,7 +97,7 @@ window.newQuote = async () => {
 
     textEl.style.opacity = 0;
     try {
-        const res = await fetch('http://api.quotable.io/random?tags=motivational');
+        const res = await fetch('https://corsproxy.io/?http://api.quotable.io/random?tags=motivational');
         const data = await res.json();
         const trans = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(data.content)}&langpair=en|tr`);
         const transData = await trans.json();
