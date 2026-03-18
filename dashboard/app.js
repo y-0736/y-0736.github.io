@@ -1,5 +1,6 @@
 // 1. AYARLAR VE VERİLER
 const CONFIG = { city: "Antalya", country: "TR" };
+const alarmSound = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
 const HOLIDAYS = [
     { name: "Ramazan Bayramı", date: "2026-03-20T00:00:00" },
     { name: "Ulusal Egemenlik", date: "2026-04-23T00:00:00" },
@@ -292,24 +293,43 @@ window.downloadFinalImage = () => {
 };
 
 // 6. DİĞER ARAÇLAR (Pomodoro, Takvim, Notlar)
-let pMin = 25, pSec = 0, pInt = null;
-window.togglePomo = () => {
+let pMin = 1, pSec = 0, pInt = null;
+
+function togglePomo() {
     const btn = document.getElementById('pomo-btn');
     const display = document.getElementById('pomo-display');
+
     if (pInt) {
-        clearInterval(pInt); pInt = null;
-        btn.innerText = "BAŞLAT";
+        clearInterval(pInt); 
+        pInt = null;
+        if (btn) btn.innerText = "BAŞLAT";
     } else {
         pInt = setInterval(() => {
-            if (pSec === 0) {
-                if (pMin === 0) { clearInterval(pInt); alert("Seans bitti!"); return; }
-                pMin--; pSec = 59;
-            } else pSec--;
-            display.innerText = `${pMin.toString().padStart(2, '0')}:${pSec.toString().padStart(2, '0')}`;
+            if (pSec == 0) {
+                if (pMin == 0) { 
+                    clearInterval(pInt); 
+                    pInt = null;
+                    
+                    // --- SES ÇALMA KISMI BURASI ---
+                    alarmSound.play().catch(e => console.log("Ses çalma hatası:", e));
+                    
+                    if (btn) btn.innerText = "BAŞLAT";
+                    alert("Odaklanma seansı bitti! Mola zamanı. ☕"); 
+                    return; 
+                }
+                pMin--; 
+                pSec = 59;
+            } else {
+                pSec--;
+            }
+
+            if (display) {
+                display.innerText = `${pMin.toString().padStart(2, '0')}:${pSec.toString().padStart(2, '0')}`;
+            }
         }, 1000);
-        btn.innerText = "DURDUR";
+        if (btn) btn.innerText = "DURDUR";
     }
-};
+}
 
 function buildCal() {
     const grid = document.getElementById('main-cal');
