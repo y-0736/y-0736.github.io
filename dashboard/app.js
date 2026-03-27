@@ -1,6 +1,8 @@
 // 1. AYARLAR VE VERİLER
 const CONFIG = { city: "Antalya", country: "TR" };
-const alarmSound = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+const alarmSound = new Audio('https://orangefreesounds.com/wp-content/uploads/2025/08/Short-analog-alarm-clock-sound-effect.mp3');
+alarmSound.loop = true;
+
 const HOLIDAYS = [
     { name: "Ramazan Bayramı", date: "2026-03-20T00:00:00" },
     { name: "Ulusal Egemenlik", date: "2026-04-23T00:00:00" },
@@ -103,12 +105,12 @@ window.newQuote = async () => {
         // 1. Kendi GitHub sayfandaki JSON dosyasını çekiyoruz
         const response = await fetch('https://y-0736.github.io/dashboard/quotes.json');
         if (!response.ok) throw new Error("JSON yüklenemedi");
-        
+
         const quotes = await response.json();
 
         // 2. Rastgele bir söz seçiyoruz
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-        
+
         // ÖNEMLİ: Dosyandaki anahtarlar "quote" ve "author" olduğu için bunları kullanıyoruz
         const englishText = randomQuote.quote;
         const authorName = randomQuote.author;
@@ -116,7 +118,7 @@ window.newQuote = async () => {
         // 3. MyMemory ile Çeviri Yapıyoruz (en -> tr)
         const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishText)}&langpair=en|tr`);
         const transData = await transRes.json();
-        
+
         // Çevrilmiş metni alıyoruz
         const turkishText = transData.responseData.translatedText;
 
@@ -208,9 +210,9 @@ window.updateModalPreview = () => {
     // Eğer değer sayı değilse veya 16'dan küçükse
     if (isNaN(value) || value < 16) {
         // İstersen burada hemen 16'ya eşitleyebilirsin:
-        input.value = 16; 
+        input.value = 16;
     }
-    
+
     // Değer 40'tan büyükse üst sınırı da koruyalım
     if (value > 40) {
         input.value = 40;
@@ -292,45 +294,52 @@ window.downloadFinalImage = () => {
     });
 };
 
-// 6. DİĞER ARAÇLAR (Pomodoro, Takvim, Notlar)
-let pMin = 1, pSec = 0, pInt = null;
+let pMin = 25, pSec = 0, pInt = null;
 
-function togglePomo() {
+window.togglePomo = () => {
     const btn = document.getElementById('pomo-btn');
     const display = document.getElementById('pomo-display');
 
     if (pInt) {
-        clearInterval(pInt); 
+        clearInterval(pInt);
         pInt = null;
-        if (btn) btn.innerText = "BAŞLAT";
+        btn.innerText = "BAŞLAT";
+        // Eğer kullanıcı manuel durdurursa sesi de sustur
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
     } else {
         pInt = setInterval(() => {
-            if (pSec == 0) {
-                if (pMin == 0) { 
-                    clearInterval(pInt); 
+            if (pSec === 0) {
+                if (pMin === 0) {
+                    clearInterval(pInt);
                     pInt = null;
-                    
-                    // --- SES ÇALMA KISMI BURASI ---
+
+                    // Sesi başlat (Döngü sayesinde hiç bitmeyecek)
                     alarmSound.play().catch(e => console.log("Ses çalma hatası:", e));
-                    
-                    if (btn) btn.innerText = "BAŞLAT";
-                    alert("Odaklanma seansı bitti! Mola zamanı. ☕"); 
-                    return; 
+
+                    btn.innerText = "BAŞLAT";
+                    display.innerText = "00:00";
+
+                    // KOD BURADA DURUR: Kullanıcı 'Tamam' diyene kadar alt satıra geçmez
+                    alert("Seans bitti! Mola zamanı. 🚀");
+
+                    // KULLANICI TAMAM'A BASTI: Şimdi sesi susturuyoruz
+                    alarmSound.pause();
+                    alarmSound.currentTime = 0;
+
+                    pMin = 25; pSec = 0;
+                    return;
                 }
-                pMin--; 
+                pMin--;
                 pSec = 59;
             } else {
                 pSec--;
             }
-
-            if (display) {
-                display.innerText = `${pMin.toString().padStart(2, '0')}:${pSec.toString().padStart(2, '0')}`;
-            }
+            display.innerText = `${pMin.toString().padStart(2, '0')}:${pSec.toString().padStart(2, '0')}`;
         }, 1000);
-        if (btn) btn.innerText = "DURDUR";
+        btn.innerText = "DURDUR";
     }
-}
-
+};
 function buildCal() {
     const grid = document.getElementById('main-cal');
     if (!grid) return;
