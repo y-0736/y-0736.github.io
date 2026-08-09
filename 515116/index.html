@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinamik Medya Yöneticisi</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --loader-color: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .folder-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+            border: 2px solid transparent;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent-color);
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .image-card {
+            background-color: var(--panel-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 75%;
+            background-color: #000;
+        }
+
+        .image-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-info {
+            padding: 15px;
+        }
+
+        .image-name {
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 12px;
+            color: #cbd5e1;
+        }
+
+        .download-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+
+        .download-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Yükleniyor Efekti */
+        .spinner {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: var(--loader-color);
+        }
+
+        .empty-message {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 40px;
+            color: #64748b;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Medya Klasörleri</h1>
+        <p>GitHub'dan dinamik olarak yüklenen canlı klasör içeriği</p>
+    </header>
+
+    <div class="folder-tabs" id="folderTabs"></div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<script>
+    // ==================== 1. AYAR KISMI ====================
+    const GITHUB_USER = "y-0736"; // GitHub kullanıcı adın
+    const GITHUB_REPO = "y-0736.github.io"; // Repository (Depo) adın
+    
+    // Sabit kalmasını istediğin klasör isimleri (Birebir klasör adıyla aynı olmalı)
+    const folders = ["Temiz", "video", "Yüz", "Değiştirilebilcek"];
+    // ========================================================
+
+    const folderTabs = document.getElementById('folderTabs');
+    const galleryGrid = document.getElementById('galleryGrid');
+    
+    let mediaData = {};
+    let activeFolder = folders[0];
+
+    // GitHub API'den belirli bir klasörün içindeki dosyaları çeken fonksiyon
+    async function fetchFolderContents(folderName) {
+        const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${encodeURIComponent(folderName)}`;
+        
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Dosyalar alınamadı");
+            const data = await response.json();
+            
+            // Sadece resim uzantılı olan dosyaları filtrele
+            const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg'];
+            
+            return data
+                .filter(file => file.type === 'file' && validExtensions.some(ext => file.name.toLowerCase().endsWith(ext)))
+                .map(file => file.name);
+                
+        } catch (error) {
+            console.error(`${folderName} yüklenirken hata oluştu:`, error);
+            return [];
+        }
+    }
+
+    // Tüm klasörleri sırayla tarayıp hafızaya alan ana fonksiyon
+    async function initGallery() {
+        galleryGrid.innerHTML = '<div class="spinner">🔄 Dosya listesi güncelleniyor, lütfen bekleyin...</div>';
+        
+        // Tüm klasörleri paralel olarak GitHub API'den sorgula
+        const fetchPromises = folders.map(async (folder) => {
+            mediaData[folder] = await fetchFolderContents(folder);
+        });
+        
+        await Promise.all(fetchPromises);
+        
+        renderTabs();
+        renderGallery();
+    }
+
+    // Sekme Butonlarını Çizen Fonksiyon
+    function renderTabs() {
+        folderTabs.innerHTML = '';
+        folders.forEach(folderName => {
+            const button = document.createElement('button');
+            button.className = `tab-btn ${folderName === activeFolder ? 'active' : ''}`;
+            button.innerHTML = `📁 ${folderName} (${mediaData[folderName]?.length || 0})`;
+            
+            button.addEventListener('click', () => {
+                activeFolder = folderName;
+                renderTabs();
+                renderGallery();
+            });
+            folderTabs.appendChild(button);
+        });
+    }
+
+    // Resimleri Ekrana Basan Fonksiyon
+    function renderGallery() {
+        galleryGrid.innerHTML = '';
+        const images = mediaData[activeFolder];
+
+        if (!images || images.length === 0) {
+            galleryGrid.innerHTML = '<div class="empty-message">Bu klasör boş veya resim bulunamadı.</div>';
+            return;
+        }
+
+        images.forEach(imageName => {
+            // GitHub Pages üzerindeki yerel yolunu oluşturuyoruz
+            const imagePath = `${activeFolder}/${imageName}`;
+
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            card.innerHTML = `
+                <div class="image-wrapper">
+                    <img src="${imagePath}" alt="${imageName}" loading="lazy">
+                </div>
+                <div class="image-info">
+                    <div class="image-name" title="${imageName}">${imageName}</div>
+                    <a href="${imagePath}" download="${imageName}" class="download-btn">📥 İndir</a>
+                </div>
+            `;
+            galleryGrid.appendChild(card);
+        });
+    }
+
+    // Sayfa açıldığında operasyonu başlat
+    initGallery();
+</script>
+
+</body>
+</html>

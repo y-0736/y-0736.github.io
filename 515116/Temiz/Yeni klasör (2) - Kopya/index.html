@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özel Video Oynatıcı</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* İmleci gizlemek için kullanılan sınıf */
+        .cursor-gizli {
+            cursor: none !important;
+        }
+    </style>
+</head>
+<body class="cursor-gizli">
+
+    <video id="ozaVideo" autoplay>
+        <source src="video/video.mp4" type="video/mp4">
+        Tarayıcınız video etiketini desteklemiyor.
+    </video>
+
+    <script>
+        const video = document.getElementById('ozaVideo');
+        const body = document.body;
+
+        // Sayfaya ilk tıklandığında oynat ve tam ekran yap
+        window.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+            }
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log("Tam ekran modu başlatılamadı: " + err.message);
+                });
+            }
+        });
+
+        // Klavye Kısayolları Yönetimi
+        window.addEventListener('keydown', (e) => {
+            
+            // --- İmleç Kontrolleri ---
+            if (e.ctrlKey && e.key === '1') {
+                e.preventDefault();
+                body.classList.add('cursor-gizli');
+            }
+            else if (e.ctrlKey && e.key === '2') {
+                e.preventDefault();
+                body.classList.remove('cursor-gizli');
+            }
+
+            // --- Video Kontrolleri ---
+            // Boşluk (Space) : Oynat / Durdur (Hata Düzeltildi)
+            else if (e.key === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause(); // Hatalı kısım düzeltildi
+                }
+            }
+            // Sağ Ok : 5 Saniye İleri
+            else if (e.key === 'ArrowRight') {
+                video.currentTime += 5;
+            }
+            // Sol Ok : 5 Saniye Geri
+            else if (e.key === 'ArrowLeft') {
+                video.currentTime -= 5;
+            }
+            // Yukarı Ok : Ses Artır
+            else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                video.volume = Math.min(1, video.volume + 0.1);
+            }
+            // Aşağı Ok : Ses Azalt
+            else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                video.volume = Math.max(0, video.volume - 0.1);
+            }
+            // M Tuşu : Sesi Kapat / Aç
+            else if (e.key === 'm' || e.key === 'M') {
+                video.muted = !video.muted;
+            }
+        });
+    </script>
+</body>
+</html>
