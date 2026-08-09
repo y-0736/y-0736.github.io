@@ -2,24 +2,28 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 
 <body>
-  <a href="https://www.pornhub.com/view_video.php?viewkey=68659b91a8cdc">1</a>
-  <a href="https://www.pornhub.com/view_video.php?viewkey=65c7b022e053f">1</a>
-  <a href="https://www.pornhub.com/view_video.php?viewkey=6a6ac04a907a2">1</a>
-  <a href="https://www.pornhub.com/view_video.php?viewkey=6a393e4c22ef9">1</a>
-  <a href="https://www.pornhub.com/view_video.php?viewkey=66b98d0506eb2">1</a>
+  <a href="https://www.pornhub.com/view_video.php?viewkey=68659b91a8cdc"></a>
+  <a href="https://www.pornhub.com/view_video.php?viewkey=65c7b022e053f"></a>
+  <a href="https://www.pornhub.com/view_video.php?viewkey=6a6ac04a907a2"></a>
+  <a href="https://www.pornhub.com/view_video.php?viewkey=6a393e4c22ef9"></a>
+  <a href="https://www.pornhub.com/view_video.php?viewkey=66b98d0506eb2"></a>
   <script>
     // Script en altta olduğu için direkt çalıştırabiliriz
+    // Sayfanın herhangi bir yerine ilk tıklamada çalışır
+  document.addEventListener('click', () => {
     const links = document.querySelectorAll('a')
+    
     links.forEach(link => {
-      link.setAttribute('target', '_blank')
-      link.setAttribute('rel', 'noopener noreferrer')
+      // Her bir bağlantıyı yeni sekmede açar
+      window.open(link.href, '_blank')
     })
+  }, { once: true })
   </script>
 </body>
 
