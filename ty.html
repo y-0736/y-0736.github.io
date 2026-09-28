@@ -512,9 +512,6 @@
 
         const supabase = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const initialProducts = [
-        ];
-
         let products = JSON.parse(localStorage.getItem('trendyol_pro_products')) || initialProducts;
         let currentFilter = 'all';
 
