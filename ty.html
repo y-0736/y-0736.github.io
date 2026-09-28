@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trendyol Pro - Kârlılık & Stok Yönetim Programı</title>
     <!-- Tailwind CSS -->
@@ -401,7 +402,7 @@
                         <input type="text" id="maurl" required placeholder="Örn: Alıcı Link"
                             class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
-                    
+
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün S Link
                             *</label>
@@ -501,7 +502,16 @@
     </div>
 
     <script>
+
+        // 1. Project URL (Sadece alan adı kısmı):
+        const SUPABASE_URL = "https://xfehhucsythditvfdnex.supabase.co";
+
+        // 2. Bir önceki ekranda kopyaladığınız Publishable Key (default):
+        const SUPABASE_ANON_KEY = "sb_publishable_bEEcMbgXLRLdGXa1RexrDQ_1wvZzrPl";
         // Default Sample Data
+
+        const supabase = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         const initialProducts = [
         ];
 
@@ -544,7 +554,7 @@
             const feeRateDecimal = (p.comm + p.tax) / 100;
             const breakEven = feeRateDecimal < 1 ? (p.cost + p.box + p.ship) / (1 - feeRateDecimal) : 0;
 
-            return {commTL, taxTL, totalExpense, netProfit, margin, totalStockProfit, totalStockRevenue, breakEven};
+            return { commTL, taxTL, totalExpense, netProfit, margin, totalStockProfit, totalStockRevenue, breakEven };
         }
 
         // Render Table & Summary Cards
@@ -628,8 +638,8 @@
                         <div class="text-xs text-slate-400 font-mono">${p.sku ? escapeHtml(p.sku) : 'SKU Yok'}</div>
                     </td>
                     <td class="p-3.5">
-                        <div class="text-slate-600 text-xs uppercase font-semibold tracking-wider "><a href="${p.sku ? escapeHtml(p.aurl) : 'SKU Yok'}">Alıcı Link</a></div>
-                        <div class="text-slate-600 text-xs uppercase font-semibold tracking-wider "><a href="${p.sku ? escapeHtml(p.surl) : 'SKU Yok'}">Satıcı Link</a></div>
+                        <div class="text-slate-600 text-xs uppercase font-semibold tracking-wider "><a href="${p.aurl ? escapeHtml(p.aurl) : '#'}" target="_blank">Alıcı Link</a></div>
+                        <div class="text-slate-600 text-xs uppercase font-semibold tracking-wider "><a href="${p.sku ? escapeHtml(p.surl) :  '#'}" target="_blank">Satıcı Link</a></div>
                     </td>
                     <td class="p-3.5 text-right">
                         <div class="font-semibold text-slate-700 dark:text-slate-200">${formatTL(p.cost)}</div>
@@ -687,7 +697,7 @@
             const tax = parseFloat(document.getElementById('mTax').value) || 0;
             const sell = parseFloat(document.getElementById('mSell').value) || 0;
 
-            const tempP = {cost, box, ship, comm, tax, sell, stock: 1};
+            const tempP = { cost, box, ship, comm, tax, sell, stock: 1 };
             const m = computeProductMetrics(tempP);
 
             document.getElementById('prevDeductions').innerText = `${formatTL(m.commTL + m.taxTL)}`;
@@ -766,12 +776,22 @@
             if (editId) {
                 const idx = products.findIndex(x => x.id == editId);
                 if (idx !== -1) {
-                    products[idx] = {id: Number(editId), name, aurl, surl, sku, cost, box, ship, comm, tax, stock, sell};
+                    products[idx] = { id: Number(editId), name, aurl, surl, sku, cost, box, ship, comm, tax, stock, sell };
                 }
             } else {
                 const newProduct = {
                     id: Date.now(),
-                    name, aurl, surl, sku, cost, box, ship, comm, tax, stock, sell
+                    name: name,
+                    aurl: aurl, // Supabase'e text olarak gönderilir
+                    surl: surl,
+                    sku: sku,
+                    cost: cost,
+                    box: box,
+                    ship: ship,
+                    tax: tax,
+                    comm: comm,
+                    stock: stock,
+                    sell: sell,
                 };
                 products.push(newProduct);
             }
@@ -790,7 +810,7 @@
         function duplicateProduct(id) {
             const p = products.find(x => x.id === id);
             if (!p) return;
-            const copy = {...p, id: Date.now(), name: `${p.name} (Kopya)`, sku: p.sku ? `${p.sku}-KOPYA` : ''};
+            const copy = { ...p, id: Date.now(), name: `${p.name} (Kopya)`, sku: p.sku ? `${p.sku}-KOPYA` : '' };
             products.push(copy);
             saveToStorage();
             renderTable();
@@ -839,7 +859,7 @@
                 csvContent += `"${p.name}";"${p.aurl}";"${p.surl}";"${p.sku || ''}";${p.cost};${p.box};${p.ship};${p.comm};${p.tax};${p.sell};${m.netProfit.toFixed(2)};${m.margin.toFixed(2)};${m.breakEven.toFixed(2)};${p.stock}\n`;
             });
 
-            const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.setAttribute("href", url);
@@ -881,11 +901,11 @@
 
         // Utility formatting
         function formatTL(val) {
-            return new Intl.NumberFormat('tr-TR', {style: 'currency', currency: 'TRY'}).format(val);
+            return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(val);
         }
 
         function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "& letters;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
     </script>
 </body>
