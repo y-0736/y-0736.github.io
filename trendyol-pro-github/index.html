@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trendyol Pro - Kârlılık & Stok Yönetim Programı</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        },
+                        darkbg: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                            600: '#475569'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        .window-titlebar {
+            -webkit-app-region: drag;
+            user-select: none;
+        }
+
+        .no-drag {
+            -webkit-app-region: no-drag;
+        }
+    </style>
+
+<style>
+    #authScreen input { outline: none; }
+    #authScreen input:focus { box-shadow: 0 0 0 3px rgba(249,115,22,.18); }
+</style>
+
+</head>
+
+<body
+    class="bg-slate-100 dark:bg-darkbg-900 text-slate-800 dark:text-slate-100 font-sans h-screen flex flex-col overflow-hidden transition-colors duration-200">
+<div id="authScreen" class="fixed inset-0 z-[200] bg-slate-950 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-7">
+        <div class="text-center mb-6">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-500 text-2xl mb-3">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <h1 id="authTitle" class="text-2xl font-bold text-slate-900 dark:text-white">Giriş Yap</h1>
+            <p class="text-sm text-slate-500 mt-1">Trendyol Pro • Supabase hesabın</p>
+        </div>
+
+        <form id="authForm" class="space-y-4">
+            <input id="authMode" type="hidden" value="login">
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">E-posta</label>
+                <input id="authEmail" type="email" required autocomplete="email"
+                    class="w-full px-3 py-3 rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                    placeholder="ornek@mail.com">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Şifre</label>
+                <input id="authPassword" type="password" required minlength="6" autocomplete="current-password"
+                    class="w-full px-3 py-3 rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                    placeholder="En az 6 karakter">
+            </div>
+            <button id="authSubmit" type="submit"
+                class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 rounded-lg transition">
+                Giriş Yap
+            </button>
+            <button id="authToggle" type="button" onclick="toggleAuthMode()"
+                class="w-full text-sm text-brand-600 hover:underline">
+                Hesabın yok mu? Kayıt ol
+            </button>
+        </form>
+    </div>
+</div>
+
+<div id="appScreen" class="contents hidden">
+
+    <header
+        class="window-titlebar bg-slate-900 text-slate-300 h-10 px-4 flex items-center justify-between border-b border-slate-800 text-xs shrink-0">
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-1.5 no-drag">
+                <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+            </div>
+            <div class="h-4 w-px bg-slate-700 mx-1"></div>
+            <span class="font-semibold text-slate-200 flex items-center gap-1.5">
+                <i class="fa-solid fa-chart-line text-brand-500"></i> Trendyol Pro v2.4 — Masaüstü Kârlılık Hesabı
+            </span>
+        </div>
+        <div class="flex items-center space-x-3 no-drag">
+            <span id="userEmail" class="hidden sm:inline text-slate-400"></span>
+            <button id="logoutBtn" class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition" title="Çıkış yap">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+            <button onclick="toggleDarkMode()"
+                class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition"
+                title="Koyu/Açık Tema">
+                <i id="themeIcon" class="fa-solid fa-moon"></i>
+            </button>
+            <div class="h-4 w-px bg-slate-700"></div>
+            <button onclick="exportJSON()"
+                class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition"
+                title="Yedek Al (JSON)">
+                <i class="fa-solid fa-download mr-1"></i>Yedekle
+            </button>
+            <label
+                class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition cursor-pointer"
+                title="Yedek Yükle">
+                <i class="fa-solid fa-upload mr-1"></i>İçe Aktar
+                <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importJSON(event)">
+            </label>
+            <button onclick="exportCSV()"
+                class="px-2 py-1 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded transition"
+                title="Excel / CSV Dışa Aktar">
+                <i class="fa-solid fa-file-excel mr-1"></i>Excel / CSV
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+
+        <!-- SIDEBAR: Navigation & Presets -->
+        <aside
+            class="w-64 bg-slate-800 dark:bg-darkbg-800 text-slate-300 flex flex-col shrink-0 border-r border-slate-700/50">
+            <div class="p-4 border-b border-slate-700/50">
+                <button onclick="openAddProductModal()"
+                    class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold py-2.5 px-4 rounded-lg shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2 transition active:scale-95">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    Yeni Ürün Ekle
+                </button>
+            </div>
+
+            <!-- Category Presets -->
+            <div class="p-4 flex-1 overflow-y-auto">
+                <h3
+                    class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
+                    <i class="fa-solid fa-tags text-brand-500"></i> Hızlı Komisyon Şablonları
+                </h3>
+                <div class="space-y-1 text-xs">
+                    <button onclick="applyPreset('Giyim', 21, 10)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                        <span class="group-hover:text-white">Giyim & Tekstil</span>
+                        <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%21</span>
+                    </button>
+                    <button onclick="applyPreset('Elektronik', 10, 20)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                        <span class="group-hover:text-white">Elektronik & Cihazlar</span>
+                        <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%10</span>
+                    </button>
+                    <button onclick="applyPreset('Kozmetik', 18, 20)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                        <span class="group-hover:text-white">Kozmetik & Bakım</span>
+                        <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%18</span>
+                    </button>
+                    <button onclick="applyPreset('Ev & Yaşam', 19, 10)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                        <span class="group-hover:text-white">Ev & Yaşam</span>
+                        <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%19</span>
+                    </button>
+                    <button onclick="applyPreset('Ayakkabı', 22, 10)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                        <span class="group-hover:text-white">Ayakkabı & Çanta</span>
+                        <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%22</span>
+                    </button>
+                    <button onclick="applyPreset('Aksesuar', 23, 20)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                        <span class="group-hover:text-white">Takı & Aksesuar</span>
+                        <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%23</span>
+                    </button>
+                    <button onclick="applyPreset('Aksesuar', 15, 10)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                        <span class="group-hover:text-white">Kitap & Kırtasiye</span>
+                        <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%15</span>
+                    </button>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-700/50">
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Filtreleme</h3>
+                    <div class="space-y-1 text-xs">
+                        <button onclick="setFilter('all')" id="filter-all"
+                            class="w-full text-left px-3 py-1.5 rounded-md bg-brand-500/20 text-brand-400 font-medium">
+                            <i class="fa-solid fa-list mr-1"></i> Tüm Ürünler
+                        </button>
+                        <button onclick="setFilter('profit')" id="filter-profit"
+                            class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
+                            <i class="fa-solid fa-arrow-trend-up text-green-400 mr-1"></i> Sadece Kârlı
+                        </button>
+                        <button onclick="setFilter('loss')" id="filter-loss"
+                            class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
+                            <i class="fa-solid fa-arrow-trend-down text-red-400 mr-1"></i> Zarar Edenler
+                        </button>
+                        <button onclick="setFilter('highmargin')" id="filter-highmargin"
+                            class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
+                            <i class="fa-solid fa-crown text-yellow-400 mr-1"></i> Yüksek Marj (>%20)
+                        </button>
+                        <button onclick="setFilter('lowstock')" id="filter-lowstock"
+                            class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Kritik Stok (<5)
+                                </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Stats -->
+            <div
+                class="p-3 bg-slate-900/60 border-t border-slate-700/50 text-xs text-slate-400 flex items-center justify-between">
+                <span>Veriler Supabase'de Kayıtlı</span>
+                <span
+                    class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-green-500/20 text-green-400 border border-green-500/30">
+                    ● Çevrimdışı Aktif
+                </span>
+            </div>
+        </aside>
+
+        <!-- MAIN DASHBOARD CONTENT -->
+        <main class="flex-1 flex flex-col overflow-hidden bg-slate-100 dark:bg-darkbg-900">
+
+            <div
+                class="p-5 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-darkbg-800 shrink-0 shadow-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                    <div
+                        class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Toplam Portföy
+                                Kârı</p>
+                            <p id="statTotalProfit" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">₺0,00
+                            </p>
+                        </div>
+                        <div
+                            class="w-11 h-11 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-500 text-xl">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                    </div>
+
+                    <div
+                        class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Potansiyel Ciro
+                            </p>
+                            <p id="statTotalRevenue" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+                                ₺0,00</p>
+                        </div>
+                        <div
+                            class="w-11 h-11 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-xl">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </div>
+
+                    <div
+                        class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Ortalama Kâr
+                                Marjı</p>
+                            <p id="statAvgMargin" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">%0.0
+                            </p>
+                        </div>
+                        <div
+                            class="w-11 h-11 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-500 text-xl">
+                            <i class="fa-solid fa-percent"></i>
+                        </div>
+                    </div>
+
+                    <div
+                        class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Toplam Çeşit /
+                                Stok</p>
+                            <p id="statTotalItems" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0 Ürün
+                            </p>
+                        </div>
+                        <div
+                            class="w-11 h-11 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-xl">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div
+                class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-darkbg-800/50 flex flex-wrap gap-3 items-center justify-between shrink-0">
+                <div class="relative flex-1 min-w-[240px]">
+                    <i
+                        class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="renderTable()"
+                        placeholder="Ürün adı veya Stok Kodu (SKU) ara..."
+                        class="w-full pl-10 pr-4 py-2 text-sm bg-white dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
+                </div>
+
+                <div class="flex items-center gap-2 text-xs">
+                    <span class="text-slate-500 font-medium">Sırala:</span>
+                    <select id="sortBy" onchange="renderTable()"
+                        class="bg-white dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <option value="name">Ürün Adı (A-Z)</option>
+                        <option value="profitDesc">En Yüksek Kâr (TL)</option>
+                        <option value="marginDesc">En Yüksek Marj (%)</option>
+                        <option value="stockDesc">Stok Adedi (Çoktan Aza)</option>
+                        <option value="priceDesc">Satış Fiyatı (Yüksek-Düşük)</option>
+                    </select>
+
+                    <button onclick="clearAllData()"
+                        class="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-300 rounded-lg font-medium transition flex items-center gap-1.5 ml-2"
+                        title="Tüm Listeyi Temizle">
+                        <i class="fa-solid fa-trash-can"></i> Temizle
+                    </button>
+                </div>
+            </div>
+
+            <!-- TABLE CONTAINER -->
+            <div class="flex-1 overflow-auto p-4">
+                <div
+                    class="bg-white dark:bg-darkbg-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700/80 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase font-semibold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                                <th class="p-3.5">Ürün & SKU</th>
+                                <th class="p-3.5">Alıcı & Satıcı Link</th>
+                                <th class="p-3.5 text-right">Alış / Gider</th>
+                                <th class="p-3.5 text-right">Komisyon / Vergi</th>
+                                <th class="p-3.5 text-right">Satış Fiyatı</th>
+                                <th class="p-3.5 text-right">Birim Net Kâr</th>
+                                <th class="p-3.5 text-center">Kâr Marjı</th>
+                                <th class="p-3.5 text-right">Başabaş (Zararsız)</th>
+                                <th class="p-3.5 text-center">Stok & Toplam Kâr</th>
+                                <th class="p-3.5 text-center">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody" class="divide-y divide-slate-200 dark:divide-slate-700/50 text-sm">
+                            <!-- Dynamic rows will be inserted here -->
+                        </tbody>
+                    </table>
+
+                    <!-- Empty state -->
+                    <div id="emptyState" class="hidden p-12 text-center">
+                        <div
+                            class="w-16 h-16 bg-slate-100 dark:bg-darkbg-700 rounded-full flex items-center justify-center mx-auto text-slate-400 text-2xl mb-3">
+                            <i class="fa-solid fa-inbox"></i>
+                        </div>
+                        <h4 class="text-base font-semibold text-slate-700 dark:text-slate-300">Henüz Ürün Eklenmedi</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">Sol menüdeki "Yeni
+                            Ürün Ekle" butonuna tıklayarak veya hazır komisyon şablonlarını kullanarak hemen
+                            ekleyebilirsiniz.</p>
+                        <button onclick="openAddProductModal()"
+                            class="mt-4 bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold py-2 px-4 rounded-lg transition">
+                            <i class="fa-solid fa-plus mr-1"></i> İlk Ürününü Ekle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER STATUS BAR -->
+            <div
+                class="px-4 py-2 bg-white dark:bg-darkbg-800 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-4">
+                    <span id="filteredCountText">0 ürün gösteriliyor</span>
+                    <span class="hidden sm:inline text-slate-300 dark:text-slate-700">|</span>
+                    <span class="hidden sm:inline">Hesaplama Formülü: <code
+                            class="text-brand-600 dark:text-brand-400">Satış - (Alış + Kutu + Kargo + Komisyon TL + KDV TL)</code></span>
+                </div>
+                <div>Trendyol Komisyon Oranları 2026 Uyumlu</div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="productModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div
+            class="bg-white dark:bg-darkbg-800 rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-200 dark:border-slate-700 transform transition-all">
+
+            <div class="bg-slate-900 px-6 py-4 flex justify-between items-center text-white">
+                <h3 id="modalTitle" class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-box text-brand-500"></i> Yeni Ürün Ekle
+                </h3>
+                <button onclick="closeProductModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="productForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
+                <input type="hidden" id="editProductId">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün Adı
+                            *</label>
+                        <input type="text" id="mName" required placeholder="Örn: Deri Cüzdan"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün A. Link
+                            *</label>
+                        <input type="text" id="maurl" required placeholder="Örn: Alıcı Link"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün S Link
+                            *</label>
+                        <input type="text" id="msurl" required placeholder="Örn: Satıcı Link"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Stok Kodu /
+                            SKU</label>
+                        <input type="text" id="mSku" placeholder="Örn: CZD-001"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün Alış (₺)
+                            *</label>
+                        <input type="number" id="mCost" step="0.01" required value="50"
+                            oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Kutu /
+                            Ambalaj (₺)</label>
+                        <input type="number" id="mBox" step="0.01" required value="2" oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Kargo Ücreti
+                            (₺)</label>
+                        <input type="number" id="mShip" step="0.01" required value="30"
+                            oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Komisyon (%)
+                            *</label>
+                        <input type="number" id="mComm" step="0.1" required value="22" oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Vergi / KDV
+                            (%)</label>
+                        <input type="number" id="mTax" step="0.1" required value="10" oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Stok
+                            Adedi</label>
+                        <input type="number" id="mStock" required value="50"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Hedef Satış
+                        Fiyatı (₺) *</label>
+                    <input type="number" id="mSell" step="0.01" required value="100" oninput="calculateModalPreview()"
+                        class="w-full px-3 py-2.5 text-base font-bold bg-brand-50 dark:bg-brand-950/40 border border-brand-300 dark:border-brand-600 text-brand-700 dark:text-brand-400 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+
+                <!-- LIVE PREVIEW CARD IN MODAL -->
+                <div
+                    class="p-3 bg-slate-100 dark:bg-darkbg-700/80 rounded-xl border border-slate-200 dark:border-slate-600 text-xs space-y-1.5">
+                    <div class="flex justify-between text-slate-500 dark:text-slate-400">
+                        <span>Kesintiler (Komisyon + Vergi):</span>
+                        <span id="prevDeductions" class="font-medium text-slate-700 dark:text-slate-200">₺0,00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-500 dark:text-slate-400">
+                        <span>Toplam Maliyet:</span>
+                        <span id="prevTotalCost" class="font-medium text-slate-700 dark:text-slate-200">₺0,00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-500 dark:text-slate-400">
+                        <span>Zarar Etmeme (Başabaş) Fiyatı:</span>
+                        <span id="prevBreakEven" class="font-semibold text-blue-600 dark:text-blue-400">₺0,00</span>
+                    </div>
+                    <div
+                        class="pt-1.5 border-t border-slate-200 dark:border-slate-600 flex justify-between items-center">
+                        <span class="font-bold text-slate-700 dark:text-slate-200">Tahmini Net Kâr:</span>
+                        <span id="prevNetProfit" class="text-base font-extrabold text-green-600">₺0,00 (%0)</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeProductModal()"
+                        class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition">İptal</button>
+                    <button type="submit"
+                        class="px-5 py-2 text-xs font-bold bg-brand-500 hover:bg-brand-600 text-white rounded-lg shadow-md transition">Kaydet
+                        ve Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // ============================================================
+    // Trendyol Pro - Supabase Edition
+    // GitHub Pages / Static Hosting uyumlu
+    // ============================================================
+
+    const SUPABASE_URL = "https://xfehhucsythditvfdnex.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_bEEcMbgXLRLdGXa1RexrDQ_1wvZzrPl";
+
+    // @supabase/supabase-js CDN globali: window.supabase
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let products = [];
+    let currentFilter = "all";
+    let currentUser = null;
+    let isLoading = false;
+
+    const $ = (id) => document.getElementById(id);
+
+    window.addEventListener("DOMContentLoaded", async () => {
+        setupAuthUI();
+        calculateModalPreview();
+
+        const { data: { session }, error } = await db.auth.getSession();
+        if (error) {
+            showStatus("Oturum kontrolü başarısız: " + error.message, "error");
+            return;
+        }
+
+        currentUser = session?.user ?? null;
+        updateAuthUI();
+
+        db.auth.onAuthStateChange((_event, session) => {
+            currentUser = session?.user ?? null;
+            updateAuthUI();
+            if (currentUser) loadProducts();
+            else {
+                products = [];
+                renderTable();
+            }
+        });
+
+        if (currentUser) await loadProducts();
+    });
+
+    function setupAuthUI() {
+        const form = $("authForm");
+        if (!form) return;
+
+        form.addEventListener("submit", handleAuthSubmit);
+
+        $("logoutBtn")?.addEventListener("click", async () => {
+            const { error } = await db.auth.signOut();
+            if (error) showStatus("Çıkış yapılamadı: " + error.message, "error");
+        });
+    }
+
+    async function handleAuthSubmit(e) {
+        e.preventDefault();
+
+        const email = $("authEmail").value.trim();
+        const password = $("authPassword").value;
+
+        if (!email || !password) return;
+
+        setAuthBusy(true);
+
+        const mode = $("authMode").value;
+        const result = mode === "signup"
+            ? await db.auth.signUp({ email, password })
+            : await db.auth.signInWithPassword({ email, password });
+
+        setAuthBusy(false);
+
+        if (result.error) {
+            showStatus(result.error.message, "error");
+            return;
+        }
+
+        if (mode === "signup" && !result.data.session) {
+            showStatus("Kayıt tamamlandı. E-posta doğrulaması açıksa gelen kutunu kontrol et.", "success");
+        } else {
+            showStatus("Giriş başarılı.", "success");
+        }
+    }
+
+    function toggleAuthMode() {
+        const mode = $("authMode");
+        mode.value = mode.value === "login" ? "signup" : "login";
+
+        $("authTitle").textContent = mode.value === "login" ? "Giriş Yap" : "Hesap Oluştur";
+        $("authSubmit").textContent = mode.value === "login" ? "Giriş Yap" : "Kayıt Ol";
+        $("authToggle").textContent = mode.value === "login"
+            ? "Hesabın yok mu? Kayıt ol"
+            : "Zaten hesabın var mı? Giriş yap";
+    }
+
+    function setAuthBusy(busy) {
+        $("authSubmit").disabled = busy;
+        $("authSubmit").textContent = busy
+            ? "Bekleyin..."
+            : ($("authMode").value === "login" ? "Giriş Yap" : "Kayıt Ol");
+    }
+
+    function updateAuthUI() {
+        const authScreen = $("authScreen");
+        const appScreen = $("appScreen");
+        const userEmail = $("userEmail");
+
+        if (currentUser) {
+            authScreen?.classList.add("hidden");
+            appScreen?.classList.remove("hidden");
+            if (userEmail) userEmail.textContent = currentUser.email || "";
+            loadProducts();
+        } else {
+            authScreen?.classList.remove("hidden");
+            appScreen?.classList.add("hidden");
+        }
+    }
+
+    async function loadProducts() {
+        if (!currentUser) return;
+
+        setLoading(true);
+
+        const { data, error } = await db
+            .from("products")
+            .select("*")
+            .order("name", { ascending: true });
+
+        setLoading(false);
+
+        if (error) {
+            console.error("Supabase SELECT error:", error);
+            showStatus("Ürünler yüklenemedi: " + error.message, "error");
+            return;
+        }
+
+        products = (data || []).map(normalizeProduct);
+        renderTable();
+    }
+
+    function normalizeProduct(p) {
+        return {
+            id: p.id,
+            name: p.name ?? "",
+            aurl: p.aurl ?? "",
+            surl: p.surl ?? "",
+            sku: p.sku ?? "",
+            cost: Number(p.cost) || 0,
+            box: Number(p.box) || 0,
+            ship: Number(p.ship) || 0,
+            comm: Number(p.comm) || 0,
+            tax: Number(p.tax) || 0,
+            stock: Number(p.stock) || 0,
+            sell: Number(p.sell) || 0
+        };
+    }
+
+    function productPayload(p) {
+        return {
+            name: p.name,
+            aurl: p.aurl,
+            surl: p.surl,
+            sku: p.sku || null,
+            cost: p.cost,
+            box: p.box,
+            ship: p.ship,
+            comm: p.comm,
+            tax: p.tax,
+            stock: p.stock,
+            sell: p.sell
+        };
+    }
+
+    async function insertProduct(product) {
+        const { data, error } = await db
+            .from("products")
+            .insert(productPayload(product))
+            .select()
+            .single();
+
+        if (error) throw error;
+        return normalizeProduct(data);
+    }
+
+    async function updateProduct(id, product) {
+        const { data, error } = await db
+            .from("products")
+            .update(productPayload(product))
+            .eq("id", id)
+            .select()
+            .single();
+
+        if (error) throw error;
+        return normalizeProduct(data);
+    }
+
+    async function deleteProduct(id) {
+        if (!currentUser) return;
+
+        if (!confirm("Bu ürün Supabase'den kalıcı olarak silinecek. Emin misiniz?")) return;
+
+        setLoading(true);
+
+        const { error } = await db
+            .from("products")
+            .delete()
+            .eq("id", id);
+
+        setLoading(false);
+
+        if (error) {
+            console.error("Supabase DELETE error:", error);
+            showStatus("Ürün silinemedi: " + error.message, "error");
+            return;
+        }
+
+        products = products.filter(p => p.id !== id);
+        renderTable();
+        showStatus("Ürün silindi.", "success");
+    }
+
+    async function clearAllData() {
+        if (!currentUser) return;
+        if (!confirm("Tüm ürün listeniz Supabase'den kalıcı olarak silinecek. Emin misiniz?")) return;
+
+        setLoading(true);
+
+        const { error } = await db
+            .from("products")
+            .delete()
+            .eq("user_id", currentUser.id);
+
+        setLoading(false);
+
+        if (error) {
+            showStatus("Ürünler silinemedi: " + error.message, "error");
+            return;
+        }
+
+        products = [];
+        renderTable();
+        showStatus("Tüm ürünler silindi.", "success");
+    }
+
+    async function handleFormSubmit(e) {
+        e.preventDefault();
+
+        if (!currentUser) {
+            showStatus("Önce giriş yapmalısınız.", "error");
+            return;
+        }
+
+        const editId = $("editProductId").value || null;
+
+        const product = {
+            name: $("mName").value.trim(),
+            aurl: $("maurl").value.trim(),
+            surl: $("msurl").value.trim(),
+            sku: $("mSku").value.trim(),
+            cost: parseFloat($("mCost").value) || 0,
+            box: parseFloat($("mBox").value) || 0,
+            ship: parseFloat($("mShip").value) || 0,
+            comm: parseFloat($("mComm").value) || 0,
+            tax: parseFloat($("mTax").value) || 0,
+            stock: parseInt($("mStock").value, 10) || 0,
+            sell: parseFloat($("mSell").value) || 0
+        };
+
+        if (!product.name || !product.aurl || !product.surl) {
+            showStatus("Ürün adı, alıcı linki ve satıcı linki zorunludur.", "error");
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            if (editId) {
+                const updated = await updateProduct(editId, product);
+                const index = products.findIndex(p => String(p.id) === String(editId));
+                if (index !== -1) products[index] = updated;
+                showStatus("Ürün Supabase'de güncellendi.", "success");
+            } else {
+                const created = await insertProduct(product);
+                products.push(created);
+                showStatus("Ürün Supabase'e kaydedildi.", "success");
+            }
+
+            setLoading(false);
+            renderTable();
+            closeProductModal();
+        } catch (error) {
+            setLoading(false);
+            console.error("Supabase SAVE error:", error);
+            showStatus("Kaydetme başarısız: " + error.message, "error");
+        }
+    }
+
+    async function duplicateProduct(id) {
+        const p = products.find(x => String(x.id) === String(id));
+        if (!p) return;
+
+        try {
+            setLoading(true);
+            const copy = {
+                ...p,
+                id: undefined,
+                name: `${p.name} (Kopya)`,
+                sku: p.sku ? `${p.sku}-KOPYA` : ""
+            };
+            const created = await insertProduct(copy);
+            products.push(created);
+            setLoading(false);
+            renderTable();
+            showStatus("Ürün kopyalandı.", "success");
+        } catch (error) {
+            setLoading(false);
+            showStatus("Kopyalama başarısız: " + error.message, "error");
+        }
+    }
+
+    function saveToStorage() {
+        // Eski localStorage mimarisi kaldırıldı.
+        // Verinin tek kaynağı Supabase'dir.
+    }
+
+    function computeProductMetrics(p) {
+        const commTL = p.sell * (p.comm / 100);
+        const taxTL = p.sell * (p.tax / 100);
+        const totalExpense = p.cost + p.box + p.ship + commTL + taxTL;
+        const netProfit = p.sell - totalExpense;
+        const margin = p.sell > 0 ? (netProfit / p.sell) * 100 : 0;
+        const totalStockProfit = netProfit * p.stock;
+        const totalStockRevenue = p.sell * p.stock;
+
+        const feeRateDecimal = (p.comm + p.tax) / 100;
+        const breakEven = feeRateDecimal < 1
+            ? (p.cost + p.box + p.ship) / (1 - feeRateDecimal)
+            : 0;
+
+        return { commTL, taxTL, totalExpense, netProfit, margin, totalStockProfit, totalStockRevenue, breakEven };
+    }
+
+    function renderTable() {
+        const tbody = $("productTableBody");
+        const emptyState = $("emptyState");
+        if (!tbody || !emptyState) return;
+
+        const searchVal = ($("searchInput")?.value || "").toLowerCase().trim();
+        const sortBy = $("sortBy")?.value || "name";
+
+        tbody.innerHTML = "";
+
+        let filtered = products.filter(p => {
+            const matchesSearch =
+                p.name.toLowerCase().includes(searchVal) ||
+                (p.sku && p.sku.toLowerCase().includes(searchVal));
+
+            if (!matchesSearch) return false;
+
+            const m = computeProductMetrics(p);
+            if (currentFilter === "profit") return m.netProfit > 0;
+            if (currentFilter === "loss") return m.netProfit <= 0;
+            if (currentFilter === "highmargin") return m.margin >= 20;
+            if (currentFilter === "lowstock") return p.stock < 5;
+            return true;
+        });
+
+        filtered.sort((a, b) => {
+            const mA = computeProductMetrics(a);
+            const mB = computeProductMetrics(b);
+
+            if (sortBy === "name") return a.name.localeCompare(b.name, "tr");
+            if (sortBy === "profitDesc") return mB.netProfit - mA.netProfit;
+            if (sortBy === "marginDesc") return mB.margin - mA.margin;
+            if (sortBy === "stockDesc") return b.stock - a.stock;
+            if (sortBy === "priceDesc") return b.sell - a.sell;
+            return 0;
+        });
+
+        let sumProfit = 0;
+        let sumRevenue = 0;
+        let sumMargin = 0;
+
+        products.forEach(p => {
+            const m = computeProductMetrics(p);
+            sumProfit += m.totalStockProfit;
+            sumRevenue += m.totalStockRevenue;
+            sumMargin += m.margin;
+        });
+
+        const avgMargin = products.length ? sumMargin / products.length : 0;
+
+        $("statTotalProfit").innerText = formatTL(sumProfit);
+        $("statTotalRevenue").innerText = formatTL(sumRevenue);
+        $("statAvgMargin").innerText = `%${avgMargin.toFixed(1)}`;
+        $("statTotalItems").innerText = `${products.length} Çeşit`;
+        $("filteredCountText").innerText = `${filtered.length} / ${products.length} ürün listeleniyor`;
+
+        emptyState.classList.toggle("hidden", filtered.length !== 0);
+
+        filtered.forEach(p => {
+            const m = computeProductMetrics(p);
+            const tr = document.createElement("tr");
+
+            const isProfit = m.netProfit >= 0;
+            const profitColorClass = isProfit
+                ? "text-green-600 dark:text-green-400"
+                : "text-red-600 dark:text-red-400";
+
+            const marginBadgeClass = isProfit
+                ? "bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300"
+                : "bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300";
+
+            const isLowStock = p.stock < 5;
+
+            const buyerLink = safeUrl(p.aurl);
+            const sellerLink = safeUrl(p.surl);
+
+            tr.className = "hover:bg-slate-50 dark:hover:bg-darkbg-700/50 transition border-b border-slate-100 dark:border-slate-800";
+
+            tr.innerHTML = `
+                <td class="p-3.5">
+                    <div class="font-bold text-slate-800 dark:text-slate-100">${escapeHtml(p.name)}</div>
+                    <div class="text-xs text-slate-400 font-mono">${p.sku ? escapeHtml(p.sku) : "SKU Yok"}</div>
+                </td>
+                <td class="p-3.5">
+                    <div class="text-xs uppercase font-semibold tracking-wider">
+                        ${buyerLink ? `<a class="text-blue-600 hover:underline" href="${buyerLink}" target="_blank" rel="noopener noreferrer">Alıcı Link ↗</a>` : "Alıcı Link Yok"}
+                    </div>
+                    <div class="text-xs uppercase font-semibold tracking-wider mt-1">
+                        ${sellerLink ? `<a class="text-blue-600 hover:underline" href="${sellerLink}" target="_blank" rel="noopener noreferrer">Satıcı Link ↗</a>` : "Satıcı Link Yok"}
+                    </div>
+                </td>
+                <td class="p-3.5 text-right">
+                    <div class="font-semibold text-slate-700 dark:text-slate-200">${formatTL(p.cost)}</div>
+                    <div class="text-[11px] text-slate-400">Kutu: ${formatTL(p.box)} | Kargo: ${formatTL(p.ship)}</div>
+                </td>
+                <td class="p-3.5 text-right">
+                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">Kom: ${formatTL(m.commTL)} (%${p.comm})</div>
+                    <div class="text-[11px] text-slate-400">Vergi: ${formatTL(m.taxTL)} (%${p.tax})</div>
+                </td>
+                <td class="p-3.5 text-right font-bold text-slate-900 dark:text-white">${formatTL(p.sell)}</td>
+                <td class="p-3.5 text-right font-extrabold ${profitColorClass}">${formatTL(m.netProfit)}</td>
+                <td class="p-3.5 text-center">
+                    <span class="inline-block px-2 py-0.5 rounded-full text-xs font-bold ${marginBadgeClass}">
+                        %${m.margin.toFixed(1)}
+                    </span>
+                </td>
+                <td class="p-3.5 text-right text-xs font-medium text-blue-600 dark:text-blue-400">${formatTL(m.breakEven)}</td>
+                <td class="p-3.5 text-center">
+                    <div class="flex items-center justify-center gap-1">
+                        <span class="font-bold ${isLowStock ? "text-amber-500" : ""}">${p.stock} Adet</span>
+                        ${isLowStock ? '<i class="fa-solid fa-triangle-exclamation text-amber-500 text-xs"></i>' : ""}
+                    </div>
+                    <div class="text-[11px] ${profitColorClass} font-semibold">Toplam: ${formatTL(m.totalStockProfit)}</div>
+                </td>
+                <td class="p-3.5 text-center">
+                    <div class="flex items-center justify-center space-x-1">
+                        <button onclick="duplicateProduct('${String(p.id).replace(/'/g, "\\'")}')" class="p-1.5 text-slate-400 hover:text-brand-500 rounded transition" title="Çoğalt">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        <button onclick="openEditProductModal('${String(p.id).replace(/'/g, "\\'")}')" class="p-1.5 text-slate-400 hover:text-blue-500 rounded transition" title="Düzenle">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteProduct('${String(p.id).replace(/'/g, "\\'")}')" class="p-1.5 text-slate-400 hover:text-red-500 rounded transition" title="Sil">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+    }
+
+    function calculateModalPreview() {
+        const cost = parseFloat($("mCost")?.value) || 0;
+        const box = parseFloat($("mBox")?.value) || 0;
+        const ship = parseFloat($("mShip")?.value) || 0;
+        const comm = parseFloat($("mComm")?.value) || 0;
+        const tax = parseFloat($("mTax")?.value) || 0;
+        const sell = parseFloat($("mSell")?.value) || 0;
+
+        const m = computeProductMetrics({ cost, box, ship, comm, tax, sell, stock: 1 });
+
+        $("prevDeductions").innerText = formatTL(m.commTL + m.taxTL);
+        $("prevTotalCost").innerText = formatTL(m.totalExpense);
+        $("prevBreakEven").innerText = formatTL(m.breakEven);
+
+        const netElem = $("prevNetProfit");
+        netElem.innerText = `${formatTL(m.netProfit)} (%${m.margin.toFixed(1)})`;
+        netElem.className = m.netProfit >= 0
+            ? "text-base font-extrabold text-green-600 dark:text-green-400"
+            : "text-base font-extrabold text-red-600 dark:text-red-400";
+    }
+
+    function openAddProductModal() {
+        $("editProductId").value = "";
+        $("modalTitle").innerHTML = '<i class="fa-solid fa-box text-brand-500"></i> Yeni Ürün Ekle';
+        $("productForm").reset();
+
+        $("mCost").value = "50";
+        $("mBox").value = "2";
+        $("mShip").value = "30";
+        $("mComm").value = "22";
+        $("mTax").value = "10";
+        $("mStock").value = "50";
+        $("mSell").value = "100";
+
+        calculateModalPreview();
+        $("productModal").classList.remove("hidden");
+        $("productModal").classList.add("flex");
+        $("mName").focus();
+    }
+
+    function openEditProductModal(id) {
+        const p = products.find(x => String(x.id) === String(id));
+        if (!p) return;
+
+        $("editProductId").value = p.id;
+        $("modalTitle").innerHTML = '<i class="fa-solid fa-pen-to-square text-blue-500"></i> Ürünü Düzenle';
+
+        $("mName").value = p.name;
+        $("maurl").value = p.aurl;
+        $("msurl").value = p.surl;
+        $("mSku").value = p.sku || "";
+        $("mCost").value = p.cost;
+        $("mBox").value = p.box;
+        $("mShip").value = p.ship;
+        $("mComm").value = p.comm;
+        $("mTax").value = p.tax;
+        $("mStock").value = p.stock;
+        $("mSell").value = p.sell;
+
+        calculateModalPreview();
+        $("productModal").classList.remove("hidden");
+        $("productModal").classList.add("flex");
+    }
+
+    function closeProductModal() {
+        $("productModal").classList.add("hidden");
+        $("productModal").classList.remove("flex");
+    }
+
+    function applyPreset(catName, commRate, taxRate) {
+        openAddProductModal();
+        $("mName").value = `${catName} Ürünü`;
+        $("mComm").value = commRate;
+        $("mTax").value = taxRate;
+        calculateModalPreview();
+    }
+
+    function setFilter(filterType) {
+        currentFilter = filterType;
+
+        ["all", "profit", "loss", "highmargin", "lowstock"].forEach(f => {
+            const btn = $(`filter-${f}`);
+            if (!btn) return;
+
+            btn.className = f === filterType
+                ? "w-full text-left px-3 py-1.5 rounded-md bg-brand-500/20 text-brand-400 font-semibold"
+                : "w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50 text-slate-300";
+        });
+
+        renderTable();
+    }
+
+    function toggleDarkMode() {
+        const isDark = document.documentElement.classList.toggle("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        $("themeIcon").className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
+    }
+
+    function exportCSV() {
+        if (!products.length) {
+            alert("Dışa aktarılacak ürün bulunamadı.");
+            return;
+        }
+
+        let csvContent = "\uFEFF";
+        csvContent += "Urun Adı;Alıcı Link;Satıcı Link;SKU;Alıs (TL);Kutu (TL);Kargo (TL);Komisyon (%);KDV (%);Satis Fiyati (TL);Net Kar (TL);Kar Marji (%);Basabas Fiyati (TL);Stok Adedi\n";
+
+        products.forEach(p => {
+            const m = computeProductMetrics(p);
+            csvContent += `"${csvEscape(p.name)}";"${csvEscape(p.aurl)}";"${csvEscape(p.surl)}";"${csvEscape(p.sku || "")}";${p.cost};${p.box};${p.ship};${p.comm};${p.tax};${p.sell};${m.netProfit.toFixed(2)};${m.margin.toFixed(2)};${m.breakEven.toFixed(2)};${p.stock}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `Trendyol_Karlilik_Raporu_${new Date().toISOString().slice(0, 10)}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function exportJSON() {
+        const dataStr = "data:application/json;charset=utf-8," +
+            encodeURIComponent(JSON.stringify(products, null, 2));
+
+        const a = document.createElement("a");
+        a.href = dataStr;
+        a.download = `trendyol_urun_yedek_${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+    }
+
+    function importJSON(event) {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+            try {
+                const importedProducts = JSON.parse(e.target.result);
+
+                if (!Array.isArray(importedProducts)) {
+                    throw new Error("JSON bir ürün dizisi içermiyor.");
+                }
+
+                if (!currentUser) {
+                    showStatus("Önce giriş yapmalısınız.", "error");
+                    return;
+                }
+
+                setLoading(true);
+
+                const payload = importedProducts.map(p => productPayload(normalizeProduct(p)));
+
+                const { data, error } = await db
+                    .from("products")
+                    .insert(payload)
+                    .select();
+
+                setLoading(false);
+
+                if (error) throw error;
+
+                products.push(...(data || []).map(normalizeProduct));
+                renderTable();
+                showStatus(`${data.length} ürün Supabase'e aktarıldı.`, "success");
+            } catch (err) {
+                setLoading(false);
+                showStatus("JSON içe aktarılamadı: " + err.message, "error");
+            } finally {
+                event.target.value = "";
+            }
+        };
+
+        reader.readAsText(file);
+    }
+
+    function formatTL(val) {
+        return new Intl.NumberFormat("tr-TR", {
+            style: "currency",
+            currency: "TRY"
+        }).format(Number(val) || 0);
+    }
+
+    function escapeHtml(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function csvEscape(str) {
+        return String(str ?? "").replace(/"/g, '""');
+    }
+
+    function safeUrl(value) {
+        const raw = String(value ?? "").trim();
+        if (!raw) return "";
+
+        try {
+            const url = new URL(raw);
+            if (!["http:", "https:"].includes(url.protocol)) return "";
+            return escapeHtml(url.href);
+        } catch {
+            return "";
+        }
+    }
+
+    function setLoading(loading) {
+        isLoading = loading;
+        document.body.classList.toggle("cursor-wait", loading);
+        const status = $("connectionStatus");
+
+        if (status) {
+            status.textContent = loading ? "● Supabase işlem yapıyor..." : "● Supabase bağlı";
+            status.className = loading
+                ? "inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                : "inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-green-500/20 text-green-400 border border-green-500/30";
+        }
+    }
+
+    function showStatus(message, type = "success") {
+        let el = $("appToast");
+
+        if (!el) {
+            el = document.createElement("div");
+            el.id = "appToast";
+            el.className = "fixed bottom-5 right-5 z-[100] max-w-md px-4 py-3 rounded-xl shadow-xl text-sm font-medium transition";
+            document.body.appendChild(el);
+        }
+
+        el.textContent = message;
+        el.className = `fixed bottom-5 right-5 z-[100] max-w-md px-4 py-3 rounded-xl shadow-xl text-sm font-medium ${
+            type === "error"
+                ? "bg-red-600 text-white"
+                : "bg-green-600 text-white"
+        }`;
+
+        clearTimeout(window.__toastTimer);
+        window.__toastTimer = setTimeout(() => el.remove(), 4500);
+    }
+</script>
+</div>
+</body>
+
+</html>
