@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,38 +43,49 @@
             width: 8px;
             height: 8px;
         }
+
         ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
         }
+
         .dark ::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
         }
+
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
         }
+
         .dark ::-webkit-scrollbar-thumb {
             background: #475569;
             border-radius: 4px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
         .dark ::-webkit-scrollbar-thumb:hover {
             background: #64748b;
         }
+
         .window-titlebar {
             -webkit-app-region: drag;
             user-select: none;
         }
+
         .no-drag {
             -webkit-app-region: no-drag;
         }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-darkbg-900 text-slate-800 dark:text-slate-100 font-sans h-screen flex flex-col overflow-hidden transition-colors duration-200">
 
-    <header class="window-titlebar bg-slate-900 text-slate-300 h-10 px-4 flex items-center justify-between border-b border-slate-800 text-xs shrink-0">
+<body
+    class="bg-slate-100 dark:bg-darkbg-900 text-slate-800 dark:text-slate-100 font-sans h-screen flex flex-col overflow-hidden transition-colors duration-200">
+
+    <header
+        class="window-titlebar bg-slate-900 text-slate-300 h-10 px-4 flex items-center justify-between border-b border-slate-800 text-xs shrink-0">
         <div class="flex items-center space-x-3">
             <div class="flex items-center space-x-1.5 no-drag">
                 <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
@@ -86,29 +98,39 @@
             </span>
         </div>
         <div class="flex items-center space-x-3 no-drag">
-            <button onclick="toggleDarkMode()" class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition" title="Koyu/Açık Tema">
+            <button onclick="toggleDarkMode()"
+                class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition"
+                title="Koyu/Açık Tema">
                 <i id="themeIcon" class="fa-solid fa-moon"></i>
             </button>
             <div class="h-4 w-px bg-slate-700"></div>
-            <button onclick="exportJSON()" class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition" title="Yedek Al (JSON)">
+            <button onclick="exportJSON()"
+                class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition"
+                title="Yedek Al (JSON)">
                 <i class="fa-solid fa-download mr-1"></i>Yedekle
             </button>
-            <label class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition cursor-pointer" title="Yedek Yükle">
+            <label
+                class="px-2 py-1 hover:bg-slate-800 rounded text-slate-400 hover:text-slate-200 transition cursor-pointer"
+                title="Yedek Yükle">
                 <i class="fa-solid fa-upload mr-1"></i>İçe Aktar
                 <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importJSON(event)">
             </label>
-            <button onclick="exportCSV()" class="px-2 py-1 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded transition" title="Excel / CSV Dışa Aktar">
+            <button onclick="exportCSV()"
+                class="px-2 py-1 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded transition"
+                title="Excel / CSV Dışa Aktar">
                 <i class="fa-solid fa-file-excel mr-1"></i>Excel / CSV
             </button>
         </div>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
-        
+
         <!-- SIDEBAR: Navigation & Presets -->
-        <aside class="w-64 bg-slate-800 dark:bg-darkbg-800 text-slate-300 flex flex-col shrink-0 border-r border-slate-700/50">
+        <aside
+            class="w-64 bg-slate-800 dark:bg-darkbg-800 text-slate-300 flex flex-col shrink-0 border-r border-slate-700/50">
             <div class="p-4 border-b border-slate-700/50">
-                <button onclick="openAddProductModal()" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold py-2.5 px-4 rounded-lg shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2 transition active:scale-95">
+                <button onclick="openAddProductModal()"
+                    class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold py-2.5 px-4 rounded-lg shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2 transition active:scale-95">
                     <i class="fa-solid fa-plus-circle"></i>
                     Yeni Ürün Ekle
                 </button>
@@ -116,35 +138,43 @@
 
             <!-- Category Presets -->
             <div class="p-4 flex-1 overflow-y-auto">
-                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
+                <h3
+                    class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
                     <i class="fa-solid fa-tags text-brand-500"></i> Hızlı Komisyon Şablonları
                 </h3>
                 <div class="space-y-1 text-xs">
-                    <button onclick="applyPreset('Giyim', 21, 10)" class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                    <button onclick="applyPreset('Giyim', 21, 10)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
                         <span class="group-hover:text-white">Giyim & Tekstil</span>
                         <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%21</span>
                     </button>
-                    <button onclick="applyPreset('Elektronik', 10, 20)" class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                    <button onclick="applyPreset('Elektronik', 10, 20)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
                         <span class="group-hover:text-white">Elektronik & Cihazlar</span>
                         <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%10</span>
                     </button>
-                    <button onclick="applyPreset('Kozmetik', 18, 20)" class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                    <button onclick="applyPreset('Kozmetik', 18, 20)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
                         <span class="group-hover:text-white">Kozmetik & Bakım</span>
                         <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%18</span>
                     </button>
-                    <button onclick="applyPreset('Ev & Yaşam', 19, 10)" class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                    <button onclick="applyPreset('Ev & Yaşam', 19, 10)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
                         <span class="group-hover:text-white">Ev & Yaşam</span>
                         <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%19</span>
                     </button>
-                    <button onclick="applyPreset('Ayakkabı', 22, 10)" class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                    <button onclick="applyPreset('Ayakkabı', 22, 10)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
                         <span class="group-hover:text-white">Ayakkabı & Çanta</span>
                         <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%22</span>
                     </button>
-                    <button onclick="applyPreset('Aksesuar', 23, 20)" class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                    <button onclick="applyPreset('Aksesuar', 23, 20)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
                         <span class="group-hover:text-white">Takı & Aksesuar</span>
                         <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%23</span>
                     </button>
-                    <button onclick="applyPreset('Aksesuar', 15, 10)" class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
+                    <button onclick="applyPreset('Aksesuar', 15, 10)"
+                        class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-700/60 transition flex justify-between items-center group">
                         <span class="group-hover:text-white">Kitap & Kırtasiye</span>
                         <span class="bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-mono">%15</span>
                     </button>
@@ -153,29 +183,36 @@
                 <div class="mt-6 pt-4 border-t border-slate-700/50">
                     <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Filtreleme</h3>
                     <div class="space-y-1 text-xs">
-                        <button onclick="setFilter('all')" id="filter-all" class="w-full text-left px-3 py-1.5 rounded-md bg-brand-500/20 text-brand-400 font-medium">
+                        <button onclick="setFilter('all')" id="filter-all"
+                            class="w-full text-left px-3 py-1.5 rounded-md bg-brand-500/20 text-brand-400 font-medium">
                             <i class="fa-solid fa-list mr-1"></i> Tüm Ürünler
                         </button>
-                        <button onclick="setFilter('profit')" id="filter-profit" class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
+                        <button onclick="setFilter('profit')" id="filter-profit"
+                            class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
                             <i class="fa-solid fa-arrow-trend-up text-green-400 mr-1"></i> Sadece Kârlı
                         </button>
-                        <button onclick="setFilter('loss')" id="filter-loss" class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
+                        <button onclick="setFilter('loss')" id="filter-loss"
+                            class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
                             <i class="fa-solid fa-arrow-trend-down text-red-400 mr-1"></i> Zarar Edenler
                         </button>
-                        <button onclick="setFilter('highmargin')" id="filter-highmargin" class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
+                        <button onclick="setFilter('highmargin')" id="filter-highmargin"
+                            class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
                             <i class="fa-solid fa-crown text-yellow-400 mr-1"></i> Yüksek Marj (>%20)
                         </button>
-                        <button onclick="setFilter('lowstock')" id="filter-lowstock" class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
+                        <button onclick="setFilter('lowstock')" id="filter-lowstock"
+                            class="w-full text-left px-3 py-1.5 rounded-md hover:bg-slate-700/50">
                             <i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Kritik Stok (<5)
-                        </button>
+                                </button>
                     </div>
                 </div>
             </div>
 
             <!-- Footer Stats -->
-            <div class="p-3 bg-slate-900/60 border-t border-slate-700/50 text-xs text-slate-400 flex items-center justify-between">
+            <div
+                class="p-3 bg-slate-900/60 border-t border-slate-700/50 text-xs text-slate-400 flex items-center justify-between">
                 <span>Veriler Yerel Kayıtlı</span>
-                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-green-500/20 text-green-400 border border-green-500/30">
+                <span
+                    class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-green-500/20 text-green-400 border border-green-500/30">
                     ● Çevrimdışı Aktif
                 </span>
             </div>
@@ -183,46 +220,63 @@
 
         <!-- MAIN DASHBOARD CONTENT -->
         <main class="flex-1 flex flex-col overflow-hidden bg-slate-100 dark:bg-darkbg-900">
-            
-            <div class="p-5 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-darkbg-800 shrink-0 shadow-sm">
+
+            <div
+                class="p-5 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-darkbg-800 shrink-0 shadow-sm">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    
-                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
+
+                    <div
+                        class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Toplam Portföy Kârı</p>
-                            <p id="statTotalProfit" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">₺0,00</p>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Toplam Portföy
+                                Kârı</p>
+                            <p id="statTotalProfit" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">₺0,00
+                            </p>
                         </div>
-                        <div class="w-11 h-11 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-500 text-xl">
+                        <div
+                            class="w-11 h-11 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-500 text-xl">
                             <i class="fa-solid fa-wallet"></i>
                         </div>
                     </div>
 
-                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
+                    <div
+                        class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Potansiyel Ciro</p>
-                            <p id="statTotalRevenue" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">₺0,00</p>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Potansiyel Ciro
+                            </p>
+                            <p id="statTotalRevenue" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+                                ₺0,00</p>
                         </div>
-                        <div class="w-11 h-11 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-xl">
+                        <div
+                            class="w-11 h-11 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-xl">
                             <i class="fa-solid fa-chart-line"></i>
                         </div>
                     </div>
 
-                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
+                    <div
+                        class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Ortalama Kâr Marjı</p>
-                            <p id="statAvgMargin" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">%0.0</p>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Ortalama Kâr
+                                Marjı</p>
+                            <p id="statAvgMargin" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">%0.0
+                            </p>
                         </div>
-                        <div class="w-11 h-11 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-500 text-xl">
+                        <div
+                            class="w-11 h-11 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-500 text-xl">
                             <i class="fa-solid fa-percent"></i>
                         </div>
                     </div>
 
-                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
+                    <div
+                        class="p-4 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Toplam Çeşit / Stok</p>
-                            <p id="statTotalItems" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0 Ürün</p>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Toplam Çeşit /
+                                Stok</p>
+                            <p id="statTotalItems" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0 Ürün
+                            </p>
                         </div>
-                        <div class="w-11 h-11 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-xl">
+                        <div
+                            class="w-11 h-11 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-xl">
                             <i class="fa-solid fa-boxes-stacked"></i>
                         </div>
                     </div>
@@ -230,23 +284,30 @@
                 </div>
             </div>
 
-            <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-darkbg-800/50 flex flex-wrap gap-3 items-center justify-between shrink-0">
+            <div
+                class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-darkbg-800/50 flex flex-wrap gap-3 items-center justify-between shrink-0">
                 <div class="relative flex-1 min-w-[240px]">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="Ürün adı veya Stok Kodu (SKU) ara..." class="w-full pl-10 pr-4 py-2 text-sm bg-white dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
+                    <i
+                        class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="renderTable()"
+                        placeholder="Ürün adı veya Stok Kodu (SKU) ara..."
+                        class="w-full pl-10 pr-4 py-2 text-sm bg-white dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none transition">
                 </div>
-                
+
                 <div class="flex items-center gap-2 text-xs">
                     <span class="text-slate-500 font-medium">Sırala:</span>
-                    <select id="sortBy" onchange="renderTable()" class="bg-white dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <select id="sortBy" onchange="renderTable()"
+                        class="bg-white dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-500">
                         <option value="name">Ürün Adı (A-Z)</option>
                         <option value="profitDesc">En Yüksek Kâr (TL)</option>
                         <option value="marginDesc">En Yüksek Marj (%)</option>
                         <option value="stockDesc">Stok Adedi (Çoktan Aza)</option>
                         <option value="priceDesc">Satış Fiyatı (Yüksek-Düşük)</option>
                     </select>
-                    
-                    <button onclick="clearAllData()" class="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-300 rounded-lg font-medium transition flex items-center gap-1.5 ml-2" title="Tüm Listeyi Temizle">
+
+                    <button onclick="clearAllData()"
+                        class="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-300 rounded-lg font-medium transition flex items-center gap-1.5 ml-2"
+                        title="Tüm Listeyi Temizle">
                         <i class="fa-solid fa-trash-can"></i> Temizle
                     </button>
                 </div>
@@ -254,11 +315,14 @@
 
             <!-- TABLE CONTAINER -->
             <div class="flex-1 overflow-auto p-4">
-                <div class="bg-white dark:bg-darkbg-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700/80 overflow-hidden">
+                <div
+                    class="bg-white dark:bg-darkbg-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700/80 overflow-hidden">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase font-semibold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <tr
+                                class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase font-semibold tracking-wider border-b border-slate-200 dark:border-slate-700">
                                 <th class="p-3.5">Ürün & SKU</th>
+                                <th class="p-3.5">Alıcı & Satıcı Link</th>
                                 <th class="p-3.5 text-right">Alış / Gider</th>
                                 <th class="p-3.5 text-right">Komisyon / Vergi</th>
                                 <th class="p-3.5 text-right">Satış Fiyatı</th>
@@ -273,15 +337,19 @@
                             <!-- Dynamic rows will be inserted here -->
                         </tbody>
                     </table>
-                    
+
                     <!-- Empty state -->
                     <div id="emptyState" class="hidden p-12 text-center">
-                        <div class="w-16 h-16 bg-slate-100 dark:bg-darkbg-700 rounded-full flex items-center justify-center mx-auto text-slate-400 text-2xl mb-3">
+                        <div
+                            class="w-16 h-16 bg-slate-100 dark:bg-darkbg-700 rounded-full flex items-center justify-center mx-auto text-slate-400 text-2xl mb-3">
                             <i class="fa-solid fa-inbox"></i>
                         </div>
                         <h4 class="text-base font-semibold text-slate-700 dark:text-slate-300">Henüz Ürün Eklenmedi</h4>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">Sol menüdeki "Yeni Ürün Ekle" butonuna tıklayarak veya hazır komisyon şablonlarını kullanarak hemen ekleyebilirsiniz.</p>
-                        <button onclick="openAddProductModal()" class="mt-4 bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold py-2 px-4 rounded-lg transition">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">Sol menüdeki "Yeni
+                            Ürün Ekle" butonuna tıklayarak veya hazır komisyon şablonlarını kullanarak hemen
+                            ekleyebilirsiniz.</p>
+                        <button onclick="openAddProductModal()"
+                            class="mt-4 bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold py-2 px-4 rounded-lg transition">
                             <i class="fa-solid fa-plus mr-1"></i> İlk Ürününü Ekle
                         </button>
                     </div>
@@ -289,11 +357,13 @@
             </div>
 
             <!-- FOOTER STATUS BAR -->
-            <div class="px-4 py-2 bg-white dark:bg-darkbg-800 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between shrink-0">
+            <div
+                class="px-4 py-2 bg-white dark:bg-darkbg-800 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between shrink-0">
                 <div class="flex items-center gap-4">
                     <span id="filteredCountText">0 ürün gösteriliyor</span>
                     <span class="hidden sm:inline text-slate-300 dark:text-slate-700">|</span>
-                    <span class="hidden sm:inline">Hesaplama Formülü: <code class="text-brand-600 dark:text-brand-400">Satış - (Alış + Kutu + Kargo + Komisyon TL + KDV TL)</code></span>
+                    <span class="hidden sm:inline">Hesaplama Formülü: <code
+                            class="text-brand-600 dark:text-brand-400">Satış - (Alış + Kutu + Kargo + Komisyon TL + KDV TL)</code></span>
                 </div>
                 <div>Trendyol Komisyon Oranları 2026 Uyumlu</div>
             </div>
@@ -301,9 +371,11 @@
         </main>
     </div>
 
-    <div id="productModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
-        <div class="bg-white dark:bg-darkbg-800 rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-200 dark:border-slate-700 transform transition-all">
-            
+    <div id="productModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div
+            class="bg-white dark:bg-darkbg-800 rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-200 dark:border-slate-700 transform transition-all">
+
             <div class="bg-slate-900 px-6 py-4 flex justify-between items-center text-white">
                 <h3 id="modalTitle" class="font-bold text-base flex items-center gap-2">
                     <i class="fa-solid fa-box text-brand-500"></i> Yeni Ürün Ekle
@@ -318,52 +390,86 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün Adı *</label>
-                        <input type="text" id="mName" required placeholder="Örn: Deri Cüzdan" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün Adı
+                            *</label>
+                        <input type="text" id="mName" required placeholder="Örn: Deri Cüzdan"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Stok Kodu / SKU</label>
-                        <input type="text" id="mSku" placeholder="Örn: CZD-001" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün A. Link
+                            *</label>
+                        <input type="text" id="maurl" required placeholder="Örn: Alıcı Link"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün S Link
+                            *</label>
+                        <input type="text" id="msurl" required placeholder="Örn: Satıcı Link"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Stok Kodu /
+                            SKU</label>
+                        <input type="text" id="mSku" placeholder="Örn: CZD-001"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün Alış (₺) *</label>
-                        <input type="number" id="mCost" step="0.01" required value="50" oninput="calculateModalPreview()" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Ürün Alış (₺)
+                            *</label>
+                        <input type="number" id="mCost" step="0.01" required value="50"
+                            oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Kutu / Ambalaj (₺)</label>
-                        <input type="number" id="mBox" step="0.01" required value="2" oninput="calculateModalPreview()" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Kutu /
+                            Ambalaj (₺)</label>
+                        <input type="number" id="mBox" step="0.01" required value="2" oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Kargo Ücreti (₺)</label>
-                        <input type="number" id="mShip" step="0.01" required value="30" oninput="calculateModalPreview()" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Kargo Ücreti
+                            (₺)</label>
+                        <input type="number" id="mShip" step="0.01" required value="30"
+                            oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Komisyon (%) *</label>
-                        <input type="number" id="mComm" step="0.1" required value="22" oninput="calculateModalPreview()" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Komisyon (%)
+                            *</label>
+                        <input type="number" id="mComm" step="0.1" required value="22" oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Vergi / KDV (%)</label>
-                        <input type="number" id="mTax" step="0.1" required value="10" oninput="calculateModalPreview()" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Vergi / KDV
+                            (%)</label>
+                        <input type="number" id="mTax" step="0.1" required value="10" oninput="calculateModalPreview()"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Stok Adedi</label>
-                        <input type="number" id="mStock" required value="50" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Stok
+                            Adedi</label>
+                        <input type="number" id="mStock" required value="50"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-darkbg-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Hedef Satış Fiyatı (₺) *</label>
-                    <input type="number" id="mSell" step="0.01" required value="100" oninput="calculateModalPreview()" class="w-full px-3 py-2.5 text-base font-bold bg-brand-50 dark:bg-brand-950/40 border border-brand-300 dark:border-brand-600 text-brand-700 dark:text-brand-400 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Hedef Satış
+                        Fiyatı (₺) *</label>
+                    <input type="number" id="mSell" step="0.01" required value="100" oninput="calculateModalPreview()"
+                        class="w-full px-3 py-2.5 text-base font-bold bg-brand-50 dark:bg-brand-950/40 border border-brand-300 dark:border-brand-600 text-brand-700 dark:text-brand-400 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
                 </div>
 
                 <!-- LIVE PREVIEW CARD IN MODAL -->
-                <div class="p-3 bg-slate-100 dark:bg-darkbg-700/80 rounded-xl border border-slate-200 dark:border-slate-600 text-xs space-y-1.5">
+                <div
+                    class="p-3 bg-slate-100 dark:bg-darkbg-700/80 rounded-xl border border-slate-200 dark:border-slate-600 text-xs space-y-1.5">
                     <div class="flex justify-between text-slate-500 dark:text-slate-400">
                         <span>Kesintiler (Komisyon + Vergi):</span>
                         <span id="prevDeductions" class="font-medium text-slate-700 dark:text-slate-200">₺0,00</span>
@@ -376,15 +482,19 @@
                         <span>Zarar Etmeme (Başabaş) Fiyatı:</span>
                         <span id="prevBreakEven" class="font-semibold text-blue-600 dark:text-blue-400">₺0,00</span>
                     </div>
-                    <div class="pt-1.5 border-t border-slate-200 dark:border-slate-600 flex justify-between items-center">
+                    <div
+                        class="pt-1.5 border-t border-slate-200 dark:border-slate-600 flex justify-between items-center">
                         <span class="font-bold text-slate-700 dark:text-slate-200">Tahmini Net Kâr:</span>
                         <span id="prevNetProfit" class="text-base font-extrabold text-green-600">₺0,00 (%0)</span>
                     </div>
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeProductModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition">İptal</button>
-                    <button type="submit" class="px-5 py-2 text-xs font-bold bg-brand-500 hover:bg-brand-600 text-white rounded-lg shadow-md transition">Kaydet ve Ekle</button>
+                    <button type="button" onclick="closeProductModal()"
+                        class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition">İptal</button>
+                    <button type="submit"
+                        class="px-5 py-2 text-xs font-bold bg-brand-500 hover:bg-brand-600 text-white rounded-lg shadow-md transition">Kaydet
+                        ve Ekle</button>
                 </div>
             </form>
         </div>
@@ -402,7 +512,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             renderTable();
             calculateModalPreview();
-            
+
             // Check stored dark mode preference
             if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
@@ -434,7 +544,7 @@
             const feeRateDecimal = (p.comm + p.tax) / 100;
             const breakEven = feeRateDecimal < 1 ? (p.cost + p.box + p.ship) / (1 - feeRateDecimal) : 0;
 
-            return { commTL, taxTL, totalExpense, netProfit, margin, totalStockProfit, totalStockRevenue, breakEven };
+            return {commTL, taxTL, totalExpense, netProfit, margin, totalStockProfit, totalStockRevenue, breakEven};
         }
 
         // Render Table & Summary Cards
@@ -506,8 +616,8 @@
 
                 const isProfit = m.netProfit >= 0;
                 const profitColorClass = isProfit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
-                const marginBadgeClass = isProfit 
-                    ? 'bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300' 
+                const marginBadgeClass = isProfit
+                    ? 'bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300'
                     : 'bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300';
 
                 const isLowStock = p.stock < 5;
@@ -516,6 +626,10 @@
                     <td class="p-3.5">
                         <div class="font-bold text-slate-800 dark:text-slate-100">${escapeHtml(p.name)}</div>
                         <div class="text-xs text-slate-400 font-mono">${p.sku ? escapeHtml(p.sku) : 'SKU Yok'}</div>
+                    </td>
+                    <td class="p-3.5">
+                        <div class="text-slate-600 text-xs uppercase font-semibold tracking-wider "><a href="${p.sku ? escapeHtml(p.aurl) : 'SKU Yok'}">Alıcı Link</a></div>
+                        <div class="text-slate-600 text-xs uppercase font-semibold tracking-wider "><a href="${p.sku ? escapeHtml(p.surl) : 'SKU Yok'}">Satıcı Link</a></div>
                     </td>
                     <td class="p-3.5 text-right">
                         <div class="font-semibold text-slate-700 dark:text-slate-200">${formatTL(p.cost)}</div>
@@ -573,7 +687,7 @@
             const tax = parseFloat(document.getElementById('mTax').value) || 0;
             const sell = parseFloat(document.getElementById('mSell').value) || 0;
 
-            const tempP = { cost, box, ship, comm, tax, sell, stock: 1 };
+            const tempP = {cost, box, ship, comm, tax, sell, stock: 1};
             const m = computeProductMetrics(tempP);
 
             document.getElementById('prevDeductions').innerText = `${formatTL(m.commTL + m.taxTL)}`;
@@ -589,7 +703,7 @@
             document.getElementById('editProductId').value = '';
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-box text-brand-500"></i> Yeni Ürün Ekle';
             document.getElementById('productForm').reset();
-            
+
             // Set default preset values
             document.getElementById('mCost').value = "50";
             document.getElementById('mBox').value = "2";
@@ -612,6 +726,8 @@
             document.getElementById('editProductId').value = p.id;
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square text-blue-500"></i> Ürünü Düzenle';
             document.getElementById('mName').value = p.name;
+            document.getElementById('maurl').value = p.aurl;
+            document.getElementById('msurl').value = p.surl;
             document.getElementById('mSku').value = p.sku || '';
             document.getElementById('mCost').value = p.cost;
             document.getElementById('mBox').value = p.box;
@@ -636,6 +752,8 @@
 
             const editId = document.getElementById('editProductId').value;
             const name = document.getElementById('mName').value;
+            const aurl = document.getElementById('maurl').value;
+            const surl = document.getElementById('msurl').value;
             const sku = document.getElementById('mSku').value;
             const cost = parseFloat(document.getElementById('mCost').value) || 0;
             const box = parseFloat(document.getElementById('mBox').value) || 0;
@@ -648,12 +766,12 @@
             if (editId) {
                 const idx = products.findIndex(x => x.id == editId);
                 if (idx !== -1) {
-                    products[idx] = { id: Number(editId), name, sku, cost, box, ship, comm, tax, stock, sell };
+                    products[idx] = {id: Number(editId), name, aurl, surl, sku, cost, box, ship, comm, tax, stock, sell};
                 }
             } else {
                 const newProduct = {
                     id: Date.now(),
-                    name, sku, cost, box, ship, comm, tax, stock, sell
+                    name, aurl, surl, sku, cost, box, ship, comm, tax, stock, sell
                 };
                 products.push(newProduct);
             }
@@ -672,7 +790,7 @@
         function duplicateProduct(id) {
             const p = products.find(x => x.id === id);
             if (!p) return;
-            const copy = { ...p, id: Date.now(), name: `${p.name} (Kopya)`, sku: p.sku ? `${p.sku}-KOPYA` : '' };
+            const copy = {...p, id: Date.now(), name: `${p.name} (Kopya)`, sku: p.sku ? `${p.sku}-KOPYA` : ''};
             products.push(copy);
             saveToStorage();
             renderTable();
@@ -714,18 +832,18 @@
                 return;
             }
             let csvContent = "\uFEFF"; // UTF-8 BOM for Excel Turkish character support
-            csvContent += "Urun Adı;SKU;Alıs (TL);Kutu (TL);Kargo (TL);Komisyon (%);KDV (%);Satis Fiyati (TL);Net Kar (TL);Kar Marji (%);Basabas Fiyati (TL);Stok Adedi\n";
+            csvContent += "Urun Adı;Alıcı Link;Satıcı Link;SKU;Alıs (TL);Kutu (TL);Kargo (TL);Komisyon (%);KDV (%);Satis Fiyati (TL);Net Kar (TL);Kar Marji (%);Basabas Fiyati (TL);Stok Adedi\n";
 
             products.forEach(p => {
                 const m = computeProductMetrics(p);
-                csvContent += `"${p.name}";"${p.sku || ''}";${p.cost};${p.box};${p.ship};${p.comm};${p.tax};${p.sell};${m.netProfit.toFixed(2)};${m.margin.toFixed(2)};${m.breakEven.toFixed(2)};${p.stock}\n`;
+                csvContent += `"${p.name}";"${p.aurl}";"${p.surl}";"${p.sku || ''}";${p.cost};${p.box};${p.ship};${p.comm};${p.tax};${p.sell};${m.netProfit.toFixed(2)};${m.margin.toFixed(2)};${m.breakEven.toFixed(2)};${p.stock}\n`;
             });
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.setAttribute("href", url);
-            link.setAttribute("download", `Trendyol_Karlilik_Raporu_${new Date().toISOString().slice(0,10)}.csv`);
+            link.setAttribute("download", `Trendyol_Karlilik_Raporu_${new Date().toISOString().slice(0, 10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -735,7 +853,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(products, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `trendyol_urun_yedek_${new Date().toISOString().slice(0,10)}.json`);
+            downloadAnchor.setAttribute("download", `trendyol_urun_yedek_${new Date().toISOString().slice(0, 10)}.json`);
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
@@ -743,7 +861,7 @@
 
         function importJSON(event) {
             const fileReader = new FileReader();
-            fileReader.onload = function(e) {
+            fileReader.onload = function (e) {
                 try {
                     const importedProducts = JSON.parse(e.target.result);
                     if (Array.isArray(importedProducts)) {
@@ -763,7 +881,7 @@
 
         // Utility formatting
         function formatTL(val) {
-            return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(val);
+            return new Intl.NumberFormat('tr-TR', {style: 'currency', currency: 'TRY'}).format(val);
         }
 
         function escapeHtml(str) {
@@ -771,4 +889,5 @@
         }
     </script>
 </body>
+
 </html>
